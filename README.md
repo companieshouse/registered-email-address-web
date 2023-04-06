@@ -1,2 +1,2 @@
-# rea.web.ch.gov.uk
+# registered-email-address-web
 Web front-end for the Registered Email Address service
