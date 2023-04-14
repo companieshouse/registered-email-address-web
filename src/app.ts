@@ -23,8 +23,7 @@ njk.express(app);
 app.set("view engine", "njk");
 
 // Serve static files
-app.use(express.static(path.join(__dirname, "/../assets/public")));
-// app.use("/assets", express.static("./../node_modules/govuk-frontend/govuk/assets"));
+app.use("/assets", express.static("./../node_modules/govuk-frontend/govuk/assets"));
 
 njk.addGlobal("cdnUrlCss", process.env.CDN_URL_CSS);
 njk.addGlobal("cdnUrlJs", process.env.CDN_URL_JS);
@@ -39,7 +38,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Unhandled errors
-app.use((err: any, req:express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
     logger.error(`${err.name} - appError: ${err.message} - ${err.stack}`);
 });
 

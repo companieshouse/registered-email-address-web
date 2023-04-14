@@ -27,7 +27,7 @@ export class GenericValidator {
 
     isValidEmail (email: string): boolean {
         logger.info(`Request to validate email: ${email}`);
-        const regex = /^[-!#$%&'*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z{|}~])*@[a-zA-Z](-?[a-zA-Z0-9])*(\.[a-zA-Z](-?[a-zA-Z0-9])*)+$/ig;
+        const regex = /^.+@.+\..+$/;
         if (regex.test(email)) {
             return true;
         }
@@ -39,41 +39,6 @@ export class GenericValidator {
         // eslint-disable-next-line
         const regex = /^[a-z\d\_-][a-z\d\_\-\.\s\&]{1,71}$/ig;
         if (regex.test(companyName)) {
-            return true;
-        }
-        return false;
-    }
-
-    isValidDescription (description: string): boolean {
-        logger.info(`Request to validate description`);
-        if (description.length > 0 || description.length < 121) {
-            return true;
-        }
-        return false;
-    }
-
-    isValidUsername (username: string): boolean {
-        logger.info(`Request to validate username: ${username}`);
-        const regex = /^[username_regex]$/ig;
-        if (regex.test(username)) {
-            return true;
-        }
-        return false;
-    }
-
-    isValidGender (gender: string): boolean {
-        logger.info(`Request to validate gender: ${gender}`);
-        const regex = /^[gender_regex]$/ig;
-        if (regex.test(gender)) {
-            return true;
-        }
-        return false;
-    }
-
-    isValidPostCode (postCode: string): boolean {
-        logger.info(`Request to validate PostCode: ${postCode}`);
-        const regex = /^[postCode_regex]$/ig;
-        if (regex.test(postCode)) {
             return true;
         }
         return false;
