@@ -1,5 +1,5 @@
 {
-  "name": "rea-web",
+  "name": "registered-email-address-web",
   "version": "1.0.0",
   "description": "Web front-end for Registered Email Address Service",
   "main": "dist/server.js",
