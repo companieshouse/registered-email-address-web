@@ -1,0 +1,6 @@
+app_name: registered-email-address-web
+group: web
+
+weight: 100
+routes:
+  1: ^/registered-email-address/*
