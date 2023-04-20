@@ -1,0 +1,11 @@
+export const APP_NAME = "registered-email-address-web";
+export const LOG_LEVEL = "info";
+export const NODE_ENV = "dev";
+export const NODE_PORT = "3000";
+export const NODE_PORT_SSL = "3443";
+export const NUNJUCKS_LOADER_WATCH = "false";
+export const NUNJUCKS_LOADER_NO_CACHE = "true";
+export const CDN_HOST = "//drv45oe4qnhl0.cloudfront.net";
+export const CDN_URL_CSS = "/css";
+export const CDN_URL_JS = "/js";
+export const CHS_URL = "";
