@@ -4,7 +4,7 @@ import ApplicationLogger from "@companieshouse/structured-logging-node/lib/Appli
 export const logger: ApplicationLogger = createLogger("registered-email-address-web");
 
 export const createAndLogError = (description: string): Error => {
-    const error = new Error (description);
+    const error = new Error(description);
     logger.error(`${error.stack}`);
     return error;
 };
