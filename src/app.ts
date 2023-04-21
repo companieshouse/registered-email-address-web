@@ -29,6 +29,7 @@ app.set("view engine", "njk");
 // Serve static files
 app.use("/assets", express.static("./../node_modules/govuk-frontend/govuk/assets"));
 
+njk.addGlobal("chsUrl", config.CHS_URL);
 njk.addGlobal("cdnUrlCss", config.CDN_URL_CSS);
 njk.addGlobal("cdnUrlJs", config.CDN_URL_JS);
 njk.addGlobal("cdnHost", config.CDN_HOST);
