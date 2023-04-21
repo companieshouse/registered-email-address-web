@@ -6,6 +6,9 @@ import routerDispatch from "./router.dispatch";
 import * as config from "./config";
 
 const app = express();
+// parse body into req.body
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 const viewPath = path.join(__dirname, "/views");
 app.set("views", viewPath);
@@ -29,15 +32,10 @@ app.use("/assets", express.static("./../node_modules/govuk-frontend/govuk/assets
 njk.addGlobal("cdnUrlCss", config.CDN_URL_CSS);
 njk.addGlobal("cdnUrlJs", config.CDN_URL_JS);
 njk.addGlobal("cdnHost", config.CDN_HOST);
-njk.addGlobal("chsUrl", config.CHS_URL);
 njk.addGlobal("logLevel", config.LOG_LEVEL);
 
 // If app is behind a front-facing proxy, and to use the X-Forwarded-* headers to determine the connection and the IP address of the client
 app.enable("trust proxy");
-
-// parse body into req.body
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 
 // Unhandled errors
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
