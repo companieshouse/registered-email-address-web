@@ -23,11 +23,35 @@ const njk = new nunjucks.Environment(
         nunjucksLoaderOpts)
 );
 
+// set up the template engine
+const nunjucksEnv = nunjucks.configure([
+    "views",
+    "views/update",
+    "node_modules/govuk-frontend/",
+    "node_modules/govuk-frontend/govuk/components",
+], {
+    autoescape: true,
+    express: app,
+});
+   nunjucksEnv.addGlobal("CDN_HOST", config.CDN_HOST);
+   nunjucksEnv.addGlobal("SERVICE_NAME", config.APPLICATION_NAME);
+// //   nunjucksEnv.addGlobal("OE_CONFIGS", config);
+// //   nunjucksEnv.addGlobal("ERROR_MESSAGES", ErrorMessages);
+// //   nunjucksEnv.addGlobal("COUNTRY_FILTER", countryFilter );
+// //   nunjucksEnv.addGlobal("CREATE_CHANGE_LINK", createChangeLinkConfig);
+// //   nunjucksEnv.addGlobal("SUMMARY_LIST_LINK", createSummaryListLink);
+// //   nunjucksEnv.addGlobal("PIWIK_URL", config.PIWIK_URL);
+// //   nunjucksEnv.addGlobal("PIWIK_SITE_ID", config.PIWIK_SITE_ID);
+// //   nunjucksEnv.addGlobal("PIWIK_START_GOAL_ID", config.PIWIK_START_GOAL_ID);
+// //   nunjucksEnv.addGlobal("PIWIK_UPDATE_START_GOAL_ID", config.PIWIK_UPDATE_START_GOAL_ID);
+// //   nunjucksEnv.addGlobal("MATOMO_ASSET_PATH", `//${config.CDN_HOST}`);
+
 njk.express(app);
 app.set("view engine", "njk");
 
 // Serve static files
-app.use("/assets", express.static("./../node_modules/govuk-frontend/govuk/assets"));
+//app.use("/assets", express.static("./../node_modules/govuk-frontend/govuk/assets"));
+//app.use(express.static("./../node_modules/govuk-frontend/govuk"));
 
 njk.addGlobal("chsUrl", config.CHS_URL);
 njk.addGlobal("cdnUrlCss", config.CDN_URL_CSS);
