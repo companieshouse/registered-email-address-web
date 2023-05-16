@@ -1,0 +1,47 @@
+{# {% extends "layouts/default.njk" %} #}
+{# src/views/layouts/default.njk #}
+
+{% block pageTitle %}
+  {# Before you start - {{ SERVICE_NAME }} - GOV.UK #}
+  Register an Email Address
+{% endblock %}
+
+{% extends "layout.html" %}
+{# src/views/router_views/index/layout.html #}
+
+{% from "govuk/components/button/macro.njk"           import govukButton %}
+
+<link rel="stylesheet" type="text/css" media="all" href="//{{CDN_HOST}}/stylesheets/govuk-frontend/v3.11.0/govuk-frontend-3.11.0.min.css" />
+
+{% block content %}
+
+  <div class="govuk-grid-row govuk-!-margin-top-7">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">{{ "Update a registered company email address - NOT FINAL" }}</h1>
+      <p class="govuk-body-l">Use this service to update a registered company email address</p>
+      <p class="govuk-body">You'll need:</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>to sign in to or create a Companies House account, which is different from a WebFiling account</li>
+        <li>the company number</li>
+        <li>the company authentication code</li>
+      </ul>
+      <p class="govuk-body">You cannot add one here</p>
+      <form method="post">
+        {{
+         govukButton({
+            text: 'Start now',
+            isStartButton: true,
+            attributes: {
+              id: 'start-now',
+              'data-event-id': 'start-now-button' if piwik
+            }
+          })
+        }}
+      </form>
+      <h2 class="govuk-heading-m">Before you start</h2>
+      <p class="govuk-body-s">Read the guidance on <a href="https://www.gov.uk/government/publications/etc/etc/etc" target="_blank" class="govuk-link">registered company email addresses</a>.</p>
+    </div>
+  </div>
+
+
+{% endblock %}

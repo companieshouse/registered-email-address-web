@@ -16,3 +16,12 @@ export const PIWIK_SITE_ID = getEnvironmentValue("PIWIK_SITE_ID", "24");
 export const PIWIK_START_GOAL_ID = getEnvironmentValue("PIWIK_START_GOAL_ID", "3");
 export const PIWIK_UPDATE_START_GOAL_ID = getEnvironmentValue("PIWIK_UPDATE_START_GOAL_ID", "10");
 export const LOG_LEVEL = getEnvironmentValue("LOG_LEVEL", "info");
+
+// TEMPLATES
+export const LANDING_PAGE = "landing";
+export const SIGN_IN_PAGE = "sign-in";
+
+// ROUTING PATHS
+export const LANDING_URL = "/registered-email-address";
+export const REGISTER_AN_EMAIL_ADDRESS_URL = LANDING_URL + "/";
+export const SIGN_IN_URL = REGISTER_AN_EMAIL_ADDRESS_URL + SIGN_IN_PAGE;
