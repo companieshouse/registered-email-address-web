@@ -1,10 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import { GenericHandler } from "./../generic";
 import logger from "../../../lib/Logger";
+import * as config from "../../../config";
 
 export const get = (req: Request, res: Response, _: NextFunction) => {
-    return res.render("sign-in", {
+    logger.debugRequest(req, `GET ${config.SIGN_IN_PAGE}`);
+
+    return res.render(config.SIGN_IN_PAGE, {
         backLinkUrl: "placeholder",
-        templateName: "sign-in"
+        templateName: config.SIGN_IN_PAGE
     });
 };
