@@ -1,7 +1,7 @@
 import { getEnvironmentValue } from "../utils/environment.value";
 
-// APP CONFIGs
-export const APPLICATION_NAME = "registered-email-address-web";
+// APP CONFIGsweb
+export const APPLICATION_NAME = "registered-email-address-";
 export const NODE_ENV = process.env.NODE_ENV;
 export const PORT = getEnvironmentValue("PORT", "3000");
 export const CHS_URL = getEnvironmentValue("CHS_URL", "");
@@ -16,6 +16,7 @@ export const PIWIK_SITE_ID = getEnvironmentValue("PIWIK_SITE_ID", "24");
 export const PIWIK_START_GOAL_ID = getEnvironmentValue("PIWIK_START_GOAL_ID", "3");
 export const PIWIK_UPDATE_START_GOAL_ID = getEnvironmentValue("PIWIK_UPDATE_START_GOAL_ID", "10");
 export const LOG_LEVEL = getEnvironmentValue("LOG_LEVEL", "info");
+export const SERVICE_NAME = "Update a registered company email address";
 
 // TEMPLATES
 export const LANDING_PAGE = "landing";

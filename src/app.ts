@@ -24,7 +24,7 @@ const nunjucksEnv = nunjucks.configure([
     express: app
 });
 nunjucksEnv.addGlobal("CDN_HOST", config.CDN_HOST);
-nunjucksEnv.addGlobal("SERVICE_NAME", config.APPLICATION_NAME);
+nunjucksEnv.addGlobal("SERVICE_NAME", config.SERVICE_NAME);
 
 app.set("view engine", "html");
 
