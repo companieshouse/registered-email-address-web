@@ -6,13 +6,16 @@ export class HomeHandler extends GenericHandler {
 
     constructor () {
         super();
-        this.viewData.title = "Home handler for index router";
-        this.viewData.sampleKey = "sample value for home page screen";
+        this.viewData.title = "Update a registered company email address";
     }
 
-    execute (req: Request, response: Response): Promise<Object> {
+    get (req: Request, response: Response): Promise<Object> {
         logger.info(`GET request to serve home page`);
-        // ...process request here and return data for the view
+        return Promise.resolve(this.viewData);
+    }
+
+    post (req: Request, response: Response): Promise<Object> {
+        logger.info(`POST request to serve home page`);
         return Promise.resolve(this.viewData);
     }
 };
