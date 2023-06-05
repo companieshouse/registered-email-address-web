@@ -1,18 +1,18 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
+import { GenericHandler } from "./../generic";
 import logger from "../../../lib/Logger";
-import * as config from "../../../config";
 
-export const get = (req: Request, res: Response, _: NextFunction) => {
-    logger.debugRequest(req, `GET ${config.LANDING_PAGE}`);
+export class HomeHandler extends GenericHandler {
 
-    return res.render(config.LANDING_PAGE, {
-        backLinkUrl: "placeholder",
-        templateName: config.LANDING_PAGE
-    });
-};
+    constructor () {
+        super();
+        this.viewData.title = "Home handler for index router";
+        this.viewData.sampleKey = "sample value for home page screen";
+    }
 
-export const post = (req: Request, res: Response, _: NextFunction) => {
-    logger.debugRequest(req, `POST ${config.LANDING_PAGE}`);
-
-    return res.redirect(config.SIGN_IN_URL);
+    execute (req: Request, response: Response): Promise<Object> {
+        logger.info(`GET request to serve home page`);
+        // ...process request here and return data for the view
+        return Promise.resolve(this.viewData);
+    }
 };

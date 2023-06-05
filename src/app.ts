@@ -13,20 +13,27 @@ app.use(express.urlencoded({ extended: false }));
 const viewPath = path.join(__dirname, "/views");
 app.set("views", viewPath);
 
-// set up the template engine
-const nunjucksEnv = nunjucks.configure([
-    "views",
-    "views/update",
-    "node_modules/govuk-frontend/",
-    "node_modules/govuk-frontend/govuk/components"
-], {
-    autoescape: true,
-    express: app
-});
-nunjucksEnv.addGlobal("CDN_HOST", config.CDN_HOST);
-nunjucksEnv.addGlobal("SERVICE_NAME", config.SERVICE_NAME);
+const nunjucksLoaderOpts = {
+    watch: process.env.NUNJUCKS_LOADER_WATCH !== "false",
+    noCache: process.env.NUNJUCKS_LOADER_NO_CACHE !== "true"
+};
 
-app.set("view engine", "html");
+const njk = new nunjucks.Environment(
+    new nunjucks.FileSystemLoader(app.get("views"),
+        nunjucksLoaderOpts)
+);
+
+njk.express(app);
+app.set("view engine", "njk");
+
+// Serve static files
+app.use("/assets", express.static("./../node_modules/govuk-frontend/govuk/assets"));
+
+njk.addGlobal("chsUrl", config.CHS_URL);
+njk.addGlobal("cdnUrlCss", config.CDN_URL_CSS);
+njk.addGlobal("cdnUrlJs", config.CDN_URL_JS);
+njk.addGlobal("cdnHost", config.CDN_HOST);
+njk.addGlobal("logLevel", config.LOG_LEVEL);
 
 // If app is behind a front-facing proxy, and to use the X-Forwarded-* headers to determine the connection and the IP address of the client
 app.enable("trust proxy");
