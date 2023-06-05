@@ -22,14 +22,9 @@ export const LOG_LEVEL = getEnvironmentValue("LOG_LEVEL", "DEBUG");
 
 // TEMPLATES
 export const HOME_PAGE = "home";
-export const REA_HOME_PAGE = "/registered-email-address";
-export const COMPANY_SEARCH_PAGE = "company-search";
-export const VIEW_COMPANY_INFORMATION_PAGE = "view-company-information";
-export const CONFIRM_COMPANY_PAGE = "confirm-company";
+export const PLACEHOLDER_PAGE = "placeholder";
 
 // ROUTING PATHS
-export const HOME_URL = `${REA_HOME_PAGE}`;
-export const REGISTER_AN_EMAIL_ADDRESS_URL = `${HOME_URL}/`;
-export const COMPANY_NUMBER_URL = `${HOME_URL}/${COMPANY_SEARCH_PAGE}`;
-export const VIEW_COMPANY_INFORMATION_URI = `${HOME_URL}/${VIEW_COMPANY_INFORMATION_PAGE}`;
-export const CONFIRM_COMPANY_URL = `${HOME_URL}/${CONFIRM_COMPANY_PAGE}`;
+export const HOME_URL = "/registered-email-address";
+export const REGISTER_AN_EMAIL_ADDRESS_URL = HOME_URL + "/";
+export const PLACEHOLDER_URL = REGISTER_AN_EMAIL_ADDRESS_URL + PLACEHOLDER_PAGE;

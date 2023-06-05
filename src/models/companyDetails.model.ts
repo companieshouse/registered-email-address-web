@@ -4,4 +4,5 @@ export default interface CompanyDetails {
     companyStatus: string
     companyIncDate: string
     companyType: string
-};;
+    companyRegOffice: string
+};
