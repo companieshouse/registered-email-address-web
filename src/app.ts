@@ -1,3 +1,6 @@
+import "reflect-metadata";
+// import { Container } from 'inversify'
+// import initContainer from './inversify.config'
 import express, { Request, Response, NextFunction } from "express";
 import nunjucks from "nunjucks";
 import path from "path";
@@ -68,7 +71,7 @@ app.use(`${config.HOME_URL}*`, sessionMiddleware);
 
 // Login redirect
 app.use(cookieParser());
-const userAuthRegex = new RegExp("^" + config.HOME_URL + "/.+");
+const userAuthRegex = new RegExp(`^${config.HOME_URL}/.+`);
 app.use(userAuthRegex, authenticationMiddleware);
 
 // Channel all requests through router dispatch

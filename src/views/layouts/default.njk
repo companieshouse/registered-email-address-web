@@ -3,11 +3,25 @@
 <!--[(if gt IE 8) | (!IE)]><!--><html lang="en" class="govuk-template"><!--<![endif]-->
 
   {% include "partials/__meta_header.njk" %}
+  {% from "govuk/components/back-link/macro.njk"           import govukBackLink %}
+  {% from "govuk/components/button/macro.njk"              import govukButton %}
+  {% from "govuk/components/details/macro.njk"             import govukDetails %}
+  {% from "govuk/components/error-summary/macro.njk"       import govukErrorSummary %}
+  {% from "govuk/components/inset-text/macro.njk"          import govukInsetText %}
+  {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+  {% from "govuk/components/phase-banner/macro.njk"        import govukPhaseBanner %}
+  {% from "govuk/components/summary-list/macro.njk"        import govukSummaryList %}
+  {% from "govuk/components/warning-text/macro.njk"        import govukWarningText %}
+  {% from "govuk/components/radios/macro.njk"              import govukRadios %}
+  {% from "govuk/components/table/macro.njk"               import govukTable %}
+  {% from "govuk/components/tag/macro.njk"                 import govukTag %}
+  {% from "govuk/components/date-input/macro.njk"          import govukDateInput %}
+  {% from "govuk/components/panel/macro.njk"               import govukPanel %}
+  {% from "govuk/components/pagination/macro.njk"          import govukPagination %}
 
   <body class="govuk-template__body" >
 
     <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
-{#    {% include "partials/cookie_consent_banner.njk" %}#}
     <a href="#main-page-content" class="govuk-skip-link">Skip to main content</a>
     {% include "partials/__header.njk" %}
 
