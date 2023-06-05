@@ -13,14 +13,11 @@
 
     <div class="govuk-width-container ">
 
-      <main class="govuk-main-wrapper " id="main-content">
+      <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing govuk-body" id="main-content">
 
         <div class="govuk-grid-row">
           {% include "partials/error_summary.njk" %}
-          <div class="govuk-grid-column-one-third">
-            {% include "partials/nav/left.njk" %}
-          </div>
-          <div class="govuk-grid-column-two-thirds" id="main-page-content">
+          <div id="main-page-content">
             {% block main_content %}
             {% endblock %}
           </div>
@@ -33,3 +30,4 @@
 
   </body>
 </html>
+

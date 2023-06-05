@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Web front-end for Registered Email Address Service",
   "main": "dist/server.js",
+  "engines": {
+    "node": "16.19.1",
+    "npm": "^8"
+  },
   "scripts": {
     "build:server": "tsc && cp -r src/views dist/ && cp -r src/config dist/",
     "build:assets": "gulp build",
@@ -16,7 +20,7 @@
     "sonarqube-pull-request": "sonar-scanner -D sonar.pullrequest.base=main",
     "sonarqube": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); if [[ $branch == \"HEAD\" ]]; then echo $branch && npm run sonarqube-base-branch; else echo $branch && npm run sonarqube-pull-request; fi;",
     "test": "mocha --recursive test/src/**/*.ts",
-    "start": "npm run build && source ./dist/config/.env && node dist/server.js",
+    "start": "npm run build && node dist/server.js",
     "start:watch": "nodemon"
   },
   "husky": {
@@ -99,8 +103,7 @@
     "legacyWatch": true,
     "ignore": [
       "**/*.test.ts"
-    ],
-    "exec": "npm run build && source ./dist/config/.env && node dist/server.js"
+    ]
   },
   "directories": {
     "test": "test"
