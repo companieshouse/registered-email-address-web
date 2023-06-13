@@ -4,6 +4,10 @@ import path from "path";
 import logger from "./lib/Logger";
 import routerDispatch from "./router.dispatch";
 import * as config from "./config";
+import { authenticationMiddleware } from "./middleware/authentication.middleware";
+import { companyAuthenticationMiddleware } from "./middleware/company.authentication.middleware";
+import cookieParser from "cookie-parser";
+import { sessionMiddleware } from "./middleware/session.middleware";
 
 const app = express();
 
@@ -47,9 +51,6 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     res.render("partials/error_500");
 });
 
-// Channel all requests through router dispatch
-routerDispatch(app);
-
 // Unhandled exceptions
 process.on("uncaughtException", (err: any) => {
     logger.error(`${err.name} - uncaughtException: ${err.message} - ${err.stack}`);
@@ -61,5 +62,14 @@ process.on("unhandledRejection", (err: any) => {
     logger.error(`${err.name} - unhandledRejection: ${err.message} - ${err.stack}`);
     process.exit(1);
 });
+
+// apply middleware
+app.use(cookieParser());
+const userAuthRegex = new RegExp("^" + config.HOME_URL + "$");
+app.use(userAuthRegex, authenticationMiddleware);
+app.use(`${config.HOME_URL}*`, sessionMiddleware);
+
+// Channel all requests through router dispatch
+routerDispatch(app);
 
 export default app;

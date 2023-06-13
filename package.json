@@ -34,8 +34,9 @@
     "@companieshouse/api-sdk-node": "^2.0.70",
     "@companieshouse/node-session-handler": "^4.1.9",
     "@companieshouse/structured-logging-node": "^1.0.8",
+    "@companieshouse/web-security-node": "^2.0.3",
     "axios": "0.21.4",
-    "cookie-parser": "1.4.5",
+    "cookie-parser": "^1.4.5",
     "express": "4.18.2",
     "govuk_frontend_toolkit": "^9.0.1",
     "govuk-elements-sass": "^3.1.3",
@@ -90,9 +91,9 @@
     "sass": "^1.59.2",
     "sinon": "9.0.2",
     "sinon-chai": "3.5.0",
+    "sonarqube-scanner": "^2.8.1",
     "ts-node": "8.10.1",
-    "typescript": "4.9.5",
-    "sonarqube-scanner": "^2.8.1"
+    "typescript": "4.9.5"
   },
   "nodemonConfig": {
     "watch": [
