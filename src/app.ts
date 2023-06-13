@@ -8,6 +8,7 @@ import { authenticationMiddleware } from "./middleware/authentication.middleware
 import { companyAuthenticationMiddleware } from "./middleware/company.authentication.middleware";
 import cookieParser from "cookie-parser";
 import { sessionMiddleware } from "./middleware/session.middleware";
+import { serviceAvailabilityMiddleware } from "./middleware/service.availability.middleware";
 
 const app = express();
 
