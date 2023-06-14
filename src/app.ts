@@ -69,7 +69,7 @@ app.use(`${config.HOME_URL}*`, sessionMiddleware);
 
 // Login redirect
 app.use(cookieParser());
-const userAuthRegex = new RegExp("^" + config.HOME_URL + "$");
+const userAuthRegex = new RegExp("^" + config.HOME_URL + "/.+");
 app.use(userAuthRegex, authenticationMiddleware);
 
 // Channel all requests through router dispatch
