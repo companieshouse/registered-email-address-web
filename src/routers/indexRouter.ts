@@ -2,7 +2,7 @@ import { Request, Response, Router, NextFunction } from "express";
 import { HomeHandler } from "./handlers/index/home";
 import { PlaceholderHandler } from "./handlers/index/placeholder";
 import * as config from "../config/index";
-// import { authentication } from "../middleware/authSignin.middleware";
+
 const router: Router = Router();
 const routeViews: string = "router_views/index/";
 

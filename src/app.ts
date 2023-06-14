@@ -5,10 +5,8 @@ import logger from "./lib/Logger";
 import routerDispatch from "./router.dispatch";
 import * as config from "./config";
 import { authenticationMiddleware } from "./middleware/authentication.middleware";
-import { companyAuthenticationMiddleware } from "./middleware/company.authentication.middleware";
 import cookieParser from "cookie-parser";
 import { sessionMiddleware } from "./middleware/session.middleware";
-import { serviceAvailabilityMiddleware } from "./middleware/service.availability.middleware";
 
 const app = express();
 
