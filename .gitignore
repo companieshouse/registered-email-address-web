@@ -107,3 +107,6 @@ dist
 # IDE
 .idea/
 .vscode/
+
+# Generated files
+assets
