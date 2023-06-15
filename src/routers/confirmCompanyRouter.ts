@@ -7,13 +7,13 @@ const router: Router = Router();
 // TODO point to correct display?
 const routeViews: string = "router_views/index/";
 
-router.get(config.HOME_URL, async (req: Request, res: Response, next: NextFunction) => {
+router.get(config.CONFIRM_COMPANY_URL, async (req: Request, res: Response, next: NextFunction) => {
     const handler = new ConfirmCompanyHandler();
     const viewData = await handler.get(req, res);
     res.render(Templates.CONFIRM_COMPANY, viewData);
 });
 
-router.post(config.HOME_URL, async (req: Request, res: Response, next: NextFunction) => {
+router.post(config.CONFIRM_COMPANY_URL, async (req: Request, res: Response, next: NextFunction) => {
     const handler = new ConfirmCompanyHandler();
     const viewData = await handler.post(req, res);
     res.redirect(config.PLACEHOLDER_URL);
