@@ -4,10 +4,12 @@ custom_build(
     command = 'DOCKER_BUILDKIT=0 docker build --build-arg SSH_PRIVATE_KEY="$(cat ~/.ssh/id_rsa)" --build-arg SSH_PRIVATE_KEY_PASSPHRASE --tag $EXPECTED_REF . -f Dockerfile',
     live_update = [
         sync(local_path = './src', remote_path = '/app/src'),
-        run('npm install', trigger=['./package.json', './package-lock.json'])
-    ],
-    deps = [
-    './src',
-    './views'
-    ]
+        sync(local_path = './views', remote_path = '/app/views'),
+        restart_container()
+      ],
+      deps = [
+        './dist',
+        './src',
+        './views'
+      ]
 )
