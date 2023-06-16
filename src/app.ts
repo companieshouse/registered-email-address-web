@@ -11,8 +11,9 @@ import { sessionMiddleware } from "./middleware/session.middleware";
 const app = express();
 
 app.set("views", [
-    path.join(__dirname, "views"),
-    path.join(__dirname, "../node_modules/govuk-frontend")
+    path.join(__dirname, "/views"),
+    path.join(__dirname, "/node_modules/govuk-frontend"),
+    path.join(__dirname, "/node_modules/govuk-frontend/components")
 ]);
 
 const nunjucksLoaderOpts = {
