@@ -8,6 +8,7 @@ export const CHS_URL = getEnvironmentValue("CHS_URL", "http://chs.local");
 export const CDN_HOST = getEnvironmentValue("CDN_HOST", "cdn.chs.local");
 export const CDN_URL_CSS = getEnvironmentValue("CDN_URL_CSS", "/css");
 export const CDN_URL_JS = getEnvironmentValue("CDN_URL_JS", "/js");
+export const CACHE_SERVER = getEnvironmentValue("CACHE_SERVER", "redis");
 export const COOKIE_SECRET = getEnvironmentValue("COOKIE_SECRET", "ChGovUk-XQrbf3sLj2abFxIY2TlapsJ");
 export const COOKIE_DOMAIN = getEnvironmentValue("COOKIE_DOMAIN", "chs.local");
 export const COOKIE_NAME = getEnvironmentValue("COOKIE_NAME", "__SID");
