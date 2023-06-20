@@ -16,18 +16,19 @@
     "noImplicitAny": true,
     "typeRoots": [
       "node_modules/@types"
-    ],
-    "types": [
-      "node",
-      "mocha"
     ]
+  },
+  "paths": {
+    "app/*": ["./*"],
+    "test/*": ["../test/*"]
   },
   "ts-node": {
     "esm": true
   },
   "lib": ["esnext"],
   "include": [
-    "./src/**/*.ts"
+    "./src/**/*.ts",
+    "node_modules/inversify/type_definitions/inversify/inversify.d.ts"
   ],
   "exclude": [
     "node_modules",
