@@ -1,4 +1,5 @@
 {% extends "layouts/default.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% set title = "Confirm the company" %}
 
@@ -57,6 +58,15 @@
               value: {
                 text: company.type
               }
+            },
+            {
+              key: {
+                text: "Registered office address"
+              },
+              value: {
+                html: address
+
+              }
             }
           ]
         }) }}
@@ -76,6 +86,9 @@
           text: "Confirm and continue"
         }) }}
       </form>
+      <p class="govuk-body">
+        <a href="/registered-email-address/company/number" data-event-id="choose-a-different-company-link">Choose a different company</a>
+      </p>
     </div>
   </div>
 {% endblock %}

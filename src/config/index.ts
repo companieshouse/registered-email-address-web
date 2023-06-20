@@ -22,9 +22,23 @@ export const LOG_LEVEL = getEnvironmentValue("LOG_LEVEL", "DEBUG");
 
 // TEMPLATES
 export const HOME_PAGE = "home";
-export const PLACEHOLDER_PAGE = "placeholder";
+export const REA_HOME_PAGE = "/registered-email-address";
+export const COMPANY_SEARCH_PAGE = "company-search";
+export const COMPANY_NUMBER_PAGE = "company/number";
+export const COMPANY_CONFIRM_PAGE = "company/confirm";
+export const VIEW_COMPANY_INFORMATION_PAGE = "view-company-information";
 
 // ROUTING PATHS
-export const HOME_URL = "/registered-email-address";
-export const REGISTER_AN_EMAIL_ADDRESS_URL = HOME_URL + "/";
-export const PLACEHOLDER_URL = REGISTER_AN_EMAIL_ADDRESS_URL + PLACEHOLDER_PAGE;
+export const HOME_URL = `${REA_HOME_PAGE}`;
+export const REGISTER_AN_EMAIL_ADDRESS_URL = `${HOME_URL}/`;
+
+// Company routes
+export const COMPANY_LOOKUP = "/company-lookup/search?forward=" + REA_HOME_PAGE + "/company/confirm?companyNumber={companyNumber}";
+
+export const COMPANY_BASE_URL = `${REA_HOME_PAGE}/company`;
+export const NUMBER_URL = "/number";
+export const CONFIRM_URL = "/confirm";
+
+export const COMPANY_NUMBER_URL = `${HOME_URL}/${COMPANY_NUMBER_PAGE}`;
+export const COMPANY_CONFIRM_URL = `${HOME_URL}/${COMPANY_CONFIRM_PAGE}`;
+export const VIEW_COMPANY_INFORMATION_URI = `${HOME_URL}/${VIEW_COMPANY_INFORMATION_PAGE}`;
