@@ -1,6 +1,8 @@
 import { Request, Response, Router, NextFunction } from "express";
 import { CompanySearchHandlerPost } from "./handlers/company/companySearch";
 import { ConfirmCompanyHandler } from "./handlers/company/confirm";
+import { InvalidCompanyHandler } from "./handlers/company/invalidCompany";
+
 
 import * as config from "../config/index";
 import logger from "../lib/Logger";
@@ -13,6 +15,7 @@ const router: Router = Router();
 const routeViews: string = "router_views/company/";
 const errorsConst: string = "errors";
 const companyDetailsConst: string = "companyDetails";
+const invalidCompany: string = "invalidCompany";
 
 router.get(config.NUMBER_URL, async (req: Request, res: Response, next: NextFunction) => {
     logger.info(`GET request to enter company number`);
@@ -44,8 +47,22 @@ router.get(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFun
 
 router.post(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFunction) => {
     const handler = new ConfirmCompanyHandler();
-    const viewData = await handler.post(req, res);
-    res.redirect(config.VIEW_COMPANY_INFORMATION_URI);
+    const viewData = await handler.post(req, res).then((data) => {
+        if(data.hasOwnProperty(invalidCompany)){
+            const link = config.INVALID_URL
+            res.redirect(config.INVALID_COMPANY_URL);
+        }
+        else {
+            res.redirect(config.VIEW_COMPANY_INFORMATION_URI);
+        }
+    });
+    }
+);
+
+router.get(config.INVALID_URL, async (req: Request, res: Response, next: NextFunction) => {
+    const handler = new InvalidCompanyHandler();
+    const viewData = await handler.get(req, res);
+    res.render(`${routeViews}` + config.COMPANY_INVALID_PAGE, viewData);
 });
 
 export default router;

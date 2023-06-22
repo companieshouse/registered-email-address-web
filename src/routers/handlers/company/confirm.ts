@@ -5,6 +5,10 @@ import { Session } from "@companieshouse/node-session-handler";
 import { getCompanyProfile } from "../../../services/company/company.profile.service";
 import { buildAddress, formatForDisplay } from "../../../services/company/confirm.company.service";
 import logger from "../../../lib/Logger";
+import * as config from "../../../config/index";
+import { valid } from "joi";
+
+
 
 export class ConfirmCompanyHandler extends GenericHandler {
 
@@ -23,9 +27,14 @@ export class ConfirmCompanyHandler extends GenericHandler {
         return Promise.resolve(this.viewData);
     }
 
-    post (req: Request, response: Response): Promise<Object> {
+    async post (req: Request, response: Response): Promise<Object> {
         logger.info(`POST request to serve company confirm page`);
-        // TODO this is launch point for validation?
+        const session: Session = req.session as Session;
+        const validCompanyType =  config.VALID_COMPANY_TYPES 
+        const companyType = session.data.extra_data.companyDetails.companyType
+        if(!validCompanyType.includes(companyType)){
+            this.viewData.invalidCompany = "invalidCompanyType"
+        }
         return Promise.resolve(this.viewData);
     }
 };

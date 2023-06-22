@@ -27,6 +27,7 @@ export const COMPANY_SEARCH_PAGE = "company-search";
 export const COMPANY_NUMBER_PAGE = "company/number";
 export const COMPANY_CONFIRM_PAGE = "company/confirm";
 export const VIEW_COMPANY_INFORMATION_PAGE = "view-company-information";
+export const COMPANY_INVALID_PAGE = "company/invalid";
 
 // ROUTING PATHS
 export const HOME_URL = `${REA_HOME_PAGE}`;
@@ -38,7 +39,17 @@ export const COMPANY_LOOKUP = "/company-lookup/search?forward=" + REA_HOME_PAGE 
 export const COMPANY_BASE_URL = `${REA_HOME_PAGE}/company`;
 export const NUMBER_URL = "/number";
 export const CONFIRM_URL = "/confirm";
+export const INVALID_URL = "/invalid";
+
 
 export const COMPANY_NUMBER_URL = `${HOME_URL}/${COMPANY_NUMBER_PAGE}`;
 export const COMPANY_CONFIRM_URL = `${HOME_URL}/${COMPANY_CONFIRM_PAGE}`;
 export const VIEW_COMPANY_INFORMATION_URI = `${HOME_URL}/${VIEW_COMPANY_INFORMATION_PAGE}`;
+export const INVALID_COMPANY_URL = `${HOME_URL}/${COMPANY_INVALID_PAGE}`;
+
+
+
+
+// APP CONSTANTS
+export const VALID_COMPANY_TYPES = ['private-unlimited', 'ltd', 'plc', 'private-limited-guarant-nsc-limited-exemption', 'private-limited-guarant-nsc', 'private-unlimited-nsc']
+
