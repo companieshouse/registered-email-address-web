@@ -1,4 +1,4 @@
-jest.mock("../../src/services/company/company.profile.service");
+jest.mock("../../../src/services/company/company.profile.service");
 
 import { Resource } from "@companieshouse/api-sdk-node";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";

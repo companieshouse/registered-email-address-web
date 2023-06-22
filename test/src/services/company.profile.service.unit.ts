@@ -5,7 +5,7 @@ import { getCompanyProfile } from "../../../src/services/company/company.profile
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
 import { createAndLogError } from "../../../src/utils/logger";
-import { validSDKResource } from "../../mocks/company.profile.mock";
+import { validSDKResource } from "../mocks/company.profile.mock";
 jest.mock("@companieshouse/api-sdk-node");
 jest.mock("../../../src/utils/logger");
 
