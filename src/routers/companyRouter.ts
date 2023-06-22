@@ -7,12 +7,12 @@ import logger from "../lib/Logger";
 
 import FormValidator from "../utils/formValidator.util";
 import CompanyNumberSanitizer from "../utils/companyNumberSanitizer";
+import * as constants from "../constants/app.const";
 
 const router: Router = Router();
 
 const routeViews: string = "router_views/company/";
 const errorsConst: string = "errors";
-const companyDetailsConst: string = "companyDetails";
 
 router.get(config.NUMBER_URL, async (req: Request, res: Response, next: NextFunction) => {
     logger.info(`GET request to enter company number`);
@@ -30,7 +30,7 @@ router.post(config.NUMBER_URL, async (req: Request, res: Response, next: NextFun
             res.render(`${routeViews}` + config.COMPANY_SEARCH_PAGE, data);
         } else {
             // eslint-disable-next-line no-unused-expressions
-            req.session?.setExtraData(companyDetailsConst, data);
+            req.session?.setExtraData(constants.COMPANY_PROFILE, data);
             res.redirect(config.COMPANY_CONFIRM_URL);
         }
     });
@@ -39,7 +39,12 @@ router.post(config.NUMBER_URL, async (req: Request, res: Response, next: NextFun
 router.get(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFunction) => {
     const handler = new ConfirmCompanyHandler();
     const viewData = await handler.get(req, res);
-    res.render(`${routeViews}` + config.CONFIRM_URL, viewData);
+    // eslint-disable-next-line no-prototype-builtins
+    if (viewData.hasOwnProperty(errorsConst) === true) {
+        res.render(`${routeViews}` + config.COMPANY_SEARCH_PAGE, viewData);
+    } else {
+        res.render(`${routeViews}` + config.CONFIRM_URL, viewData);
+    }
 });
 
 router.post(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFunction) => {
