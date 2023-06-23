@@ -8,9 +8,6 @@
         "sourceType": "module",
         "ecmaFeatures": {}
     },
-    "extends": [
-        "standard"
-    ],
     "parser": "@typescript-eslint/parser",
     "overrides": [
         {

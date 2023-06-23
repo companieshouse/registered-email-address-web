@@ -2,6 +2,8 @@ import { Request, Response, Router, NextFunction } from "express";
 import { CompanySearchHandlerPost } from "./handlers/company/companySearch";
 import { ConfirmCompanyHandler } from "./handlers/company/confirm";
 import { ChangeEmailAddressHandler } from "./handlers/company/changeEmailAddress";
+import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
+import CompanyDetails from "../mapper/company/companyDetails.mapper";
 
 import * as config from "../config/index";
 import logger from "../lib/Logger";
@@ -51,13 +53,25 @@ router.get(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFun
 router.post(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFunction) => {
     const handler = new ConfirmCompanyHandler();
     const viewData = await handler.post(req, res);
-    res.redirect(config.VIEW_COMPANY_INFORMATION_URI);
+    const companyProfile: CompanyProfile | undefined = req.session?.getExtraData("companyProfile");
+    if (companyProfile !== undefined) {
+        req.session?.setExtraData("companyNumber", companyProfile.companyNumber);
+    }
+    res.redirect(config.COMPANY_CHANGE_EMAIL_ADDRESS_URL);
 });
 
 // GET: /change-email-address
 router.get(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
     const handler = new ChangeEmailAddressHandler();
-    const viewData = await handler.get(req, res);
+    await handler.get(req, res).then((viewData) => {
+        res.render(`${routeViews}` + config.CHANGE_EMAIL_ADDRESS_URL, viewData);
+    });
+});
+
+// POST: /change-email-address
+router.post(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
+    const handler = new ChangeEmailAddressHandler();
+    const viewData = await handler.post(req, res);
     res.render(`${routeViews}` + config.CHANGE_EMAIL_ADDRESS_URL, viewData);
 });
 

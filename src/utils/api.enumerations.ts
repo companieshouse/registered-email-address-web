@@ -8,8 +8,8 @@ interface ApiEnumerationsConstants {
 const apiConstantsFile = fs.readFileSync("api-enumerations/constants.yml", "utf8");
 const apiConstants: ApiEnumerationsConstants = yaml.load(apiConstantsFile) as ApiEnumerationsConstants;
 
-const officerFilingFile = fs.readFileSync("api-enumerations/officer_filing.yml", "utf8");
-const officerFilingMessages: ApiEnumerationsConstants = yaml.load(officerFilingFile) as ApiEnumerationsConstants;
+const registeredEmailAddressFile = fs.readFileSync("api-enumerations/errors.yml", "utf8");
+const registeredEmailAddressMessages: ApiEnumerationsConstants = yaml.load(registeredEmailAddressFile) as ApiEnumerationsConstants;
 
 export const lookupCompanyType = (companyTypeKey: string): string => {
     return apiConstants.company_type[companyTypeKey] || companyTypeKey;
@@ -20,11 +20,11 @@ export const lookupCompanyStatus = (companyStatusKey: string): string => {
 };
 
 export const lookupAPIValidationMessage = (validationMessageKey: string): string => {
-    return officerFilingMessages.validation[validationMessageKey] || validationMessageKey;
+    return registeredEmailAddressMessages.validation[validationMessageKey] || validationMessageKey;
 };
 
 export const lookupWebValidationMessage = (validationMessageKey: string): string => {
-    return officerFilingMessages.validation_web[validationMessageKey] || validationMessageKey;
+    return registeredEmailAddressMessages.validation_web[validationMessageKey] || validationMessageKey;
 };
 
 export const overwriteDirectorName = (validationMessage: string, directorName: string): string => {
@@ -33,7 +33,7 @@ export const overwriteDirectorName = (validationMessage: string, directorName: s
 
 export const convertAPIMessageToKey = (validationMessage: string): string => {
 
-    for (const element of Object.keys(officerFilingMessages.validation)) {
+    for (const element of Object.keys(registeredEmailAddressMessages.validation)) {
         var message = lookupAPIValidationMessage(element);
 
         message = message.replace(/<.*>/g, "(.*)");

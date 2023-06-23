@@ -1,5 +1,23 @@
 import { getEnvironmentValue } from "../utils/environment.value";
 
+// URL params
+export enum urlParams {
+    PARAM_COMPANY_NUMBER = "companyNumber",
+    PARAM_TRANSACTION_ID = "transactionId",
+    PARAM_SUBMISSION_ID = "submissionId",
+    PARAM_APPOINTMENT_ID = "appointmentId"
+}
+
+// Transaction statuses
+export const transactionStatuses = {
+    CLOSED: "closed"
+};
+
+// Headers
+export const headers = {
+    PAYMENT_REQUIRED: "x-payment-required"
+};
+
 // APP CONFIGs
 export const APPLICATION_NAME = "registered-email-address-web";
 export const NODE_ENV = process.env.NODE_ENV;
@@ -23,6 +41,7 @@ export const API_URL = getEnvironmentValue("API_URL", "http://api.chs.local:4001
 export const DESCRIPTION = "Update Registered Email Address Transaction";
 export const REFERENCE = "UpdateRegisteredEmailAddressReference";
 export const STATIC_SUBMISSION_ID = "72hw92jw992km90mw9002m22";
+export const VALID_EMAIL_REGEX_PATTERN = "/^(.)@(.)\.(.*)$/";
 
 // TEMPLATES
 export const HOME_PAGE = "home";
@@ -30,6 +49,7 @@ export const REA_HOME_PAGE = "/registered-email-address";
 export const COMPANY_SEARCH_PAGE = "company-search";
 export const COMPANY_NUMBER_PAGE = "company/number";
 export const COMPANY_CONFIRM_PAGE = "company/confirm";
+export const COMPANY_CHANGE_EMAIL_ADDRESS = "company/change-email-address";
 export const VIEW_COMPANY_INFORMATION_PAGE = "view-company-information";
 export const CHANGE_EMAIL_ADDRESS_PAGE = "change-email-address";
 
@@ -48,3 +68,5 @@ export const CHANGE_EMAIL_ADDRESS_URL = "/change-email-address";
 export const COMPANY_NUMBER_URL = `${HOME_URL}/${COMPANY_NUMBER_PAGE}`;
 export const COMPANY_CONFIRM_URL = `${HOME_URL}/${COMPANY_CONFIRM_PAGE}`;
 export const VIEW_COMPANY_INFORMATION_URI = `${HOME_URL}/${VIEW_COMPANY_INFORMATION_PAGE}`;
+export const COMPANY_CHANGE_EMAIL_ADDRESS_URL = `${HOME_URL}/${COMPANY_CHANGE_EMAIL_ADDRESS}`;
+

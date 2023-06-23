@@ -17,21 +17,13 @@
       href: backUri
     })
   }}
-  <ul id="navigation" class="mobile-hidden">
-    <li class="user" id="signed-in-user">
-      
-    </li>
-    <li>
-      <a href="javascript:void(0)" id="user-signout">Sign out</a>
-    </li>
-  </ul>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
        <label class="govuk-label" for="change-email-address">
         <h1 class="govuk-heading-xl">What is the new registered email address?</h1>
        </label>
        <div id="change-email-address-hint" class="govuk-hint">
-        The current registered email address is ${email_address}
+        The current registered email address is <b>{{companyEmailAddress}}</b>
        </div>
       <form method="post">
         {{
