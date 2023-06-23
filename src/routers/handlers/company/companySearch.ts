@@ -12,13 +12,12 @@ import CompanyNumberSanitizer from "../../../utils/companyNumberSanitizer";
 
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getCompanyProfile } from "../../../services/company/company.profile.service";
-import CompanyDetailsMapper from "../../../mapper/company/companyDetails.mapper";
-import CompanyDetails from "../../../models/companyDetails.model";
+
+import * as constants from "../../../constants/app.const";
 
 // class constants
 const pageTitleConst: string = "Company Number";
 const postRequestLogConst: string = "POST request to get company details page";
-const invalidCompanyNumberConst: string = "You must enter a valid company number";
 
 export class CompanySearchHandlerPost extends GenericHandler {
     constructor (
@@ -41,12 +40,10 @@ export class CompanySearchHandlerPost extends GenericHandler {
         }
         try {
             const companyProfile: CompanyProfile = await getCompanyProfile(body.companyNumber);
-            var companyDetailsMapper = new CompanyDetailsMapper();
-            const companyDetails: CompanyDetails = companyDetailsMapper.mapToCompanyDetails(companyProfile);
-            return companyDetails;
+            return companyProfile;
         } catch (e) {
             this.viewData.errors = {
-                companyNumber: invalidCompanyNumberConst
+                companyNumber: constants.INVALID_COMPANY_NUMBER
             };
             return this.viewData;
         }
