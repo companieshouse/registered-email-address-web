@@ -1,12 +1,9 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "./../generic";
-import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { Session } from "@companieshouse/node-session-handler";
-import { getCompanyProfile } from "../../../services/company/company.profile.service";
-import { buildAddress, formatForDisplay } from "../../../services/company/confirm.company.service";
 import logger from "../../../lib/Logger";
-import * as config from "../../../config/index";
-import { valid } from "joi";
+import {limitedUnlimited, COMPANY_NAME_PLACEHOLDER} from "../../../constants/validation.const"
+
 
 
 
@@ -14,12 +11,17 @@ export class InvalidCompanyHandler extends GenericHandler {
 
     constructor () {
         super();
-        this.viewData.title = "Invalid Company";
+        this.viewData
     }
 
     async get (req: Request, res: Response): Promise<Object> {
         logger.info(`GET request to serve company Invalid Company`);
         const session: Session = req.session as Session;
+
+        this.viewData.pageHeader = limitedUnlimited.pageHeader;
+        this.viewData.pageBody = limitedUnlimited.pageBody.replace(new RegExp(COMPANY_NAME_PLACEHOLDER, 'g'), 
+        session.data.extra_data.companyProfile.companyName)
+
         return Promise.resolve(this.viewData);
     }
 

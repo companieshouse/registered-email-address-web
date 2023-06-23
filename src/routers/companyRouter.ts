@@ -9,6 +9,7 @@ import logger from "../lib/Logger";
 
 import FormValidator from "../utils/formValidator.util";
 import CompanyNumberSanitizer from "../utils/companyNumberSanitizer";
+import * as constants from "../constants/app.const";
 
 const router: Router = Router();
 
@@ -33,7 +34,7 @@ router.post(config.NUMBER_URL, async (req: Request, res: Response, next: NextFun
             res.render(`${routeViews}` + config.COMPANY_SEARCH_PAGE, data);
         } else {
             // eslint-disable-next-line no-unused-expressions
-            req.session?.setExtraData(companyDetailsConst, data);
+            req.session?.setExtraData(constants.COMPANY_PROFILE, data);
             res.redirect(config.COMPANY_CONFIRM_URL);
         }
     });
@@ -42,14 +43,18 @@ router.post(config.NUMBER_URL, async (req: Request, res: Response, next: NextFun
 router.get(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFunction) => {
     const handler = new ConfirmCompanyHandler();
     const viewData = await handler.get(req, res);
-    res.render(`${routeViews}` + config.CONFIRM_URL, viewData);
+    // eslint-disable-next-line no-prototype-builtins
+    if (viewData.hasOwnProperty(errorsConst) === true) {
+        res.render(`${routeViews}` + config.COMPANY_SEARCH_PAGE, viewData);
+    } else {
+        res.render(`${routeViews}` + config.CONFIRM_URL, viewData);
+    }
 });
 
 router.post(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFunction) => {
     const handler = new ConfirmCompanyHandler();
     const viewData = await handler.post(req, res).then((data) => {
         if(data.hasOwnProperty(invalidCompany)){
-            const link = config.INVALID_URL
             res.redirect(config.INVALID_COMPANY_URL);
         }
         else {
