@@ -16,7 +16,7 @@ export abstract class GenericHandler<T extends object = {}> extends BaseHttpCont
         this.errorManifest = errorManifest;
         this.viewData = {};
     }
-
+    
     processHandlerException (err: any): Object {
         if (err.name === "VALIDATION_ERRORS") {
             return err.stack;

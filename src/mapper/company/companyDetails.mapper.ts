@@ -14,7 +14,8 @@ export default class CompanyDetailsMapper {
             companyName: company.companyName,
             companyStatus: company.companyStatus,
             companyIncDate: company.dateOfCreation,
-            companyType: company.type
+            companyType: company.type,
+            companyRegOffice: "to be completed"
         };
     }
 }
