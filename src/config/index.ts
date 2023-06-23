@@ -37,7 +37,7 @@ export const COMPANY_LOOKUP = "/company-lookup/search?forward=" + REA_HOME_PAGE 
 
 export const COMPANY_BASE_URL = `${REA_HOME_PAGE}/company`;
 export const NUMBER_URL = "/number";
-export const CONFIRM_URL = "/confirm";
+export const CONFIRM_URL = "/confirm-company";
 
 export const COMPANY_NUMBER_URL = `${HOME_URL}/${COMPANY_NUMBER_PAGE}`;
 export const COMPANY_CONFIRM_URL = `${HOME_URL}/${COMPANY_CONFIRM_PAGE}`;

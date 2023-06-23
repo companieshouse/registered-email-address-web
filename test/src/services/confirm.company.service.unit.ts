@@ -10,7 +10,6 @@ import { validCompanyProfile } from "../mocks/company.profile.mock";
 import { toReadableFormat } from "../../../src/utils/date";
 import { lookupCompanyStatus, lookupCompanyType } from "../../../src/utils/api.enumerations";
 import { buildAddress, formatForDisplay } from "../../../src/services/company/confirm.company.service";
-import { add } from "winston";
 
 const mockCreateApiClient = createApiClient as jest.Mock;
 const mockGetCompanyProfile = jest.fn();

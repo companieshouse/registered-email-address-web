@@ -6,6 +6,8 @@ import { getCompanyProfile } from "../../../services/company/company.profile.ser
 import { buildAddress, formatForDisplay } from "../../../services/company/confirm.company.service";
 import logger from "../../../lib/Logger";
 
+//todo rename to confirm.company.router.ts + test file?
+
 export class ConfirmCompanyHandler extends GenericHandler {
 
     constructor () {
