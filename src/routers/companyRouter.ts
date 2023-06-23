@@ -1,6 +1,7 @@
 import { Request, Response, Router, NextFunction } from "express";
 import { CompanySearchHandlerPost } from "./handlers/company/companySearch";
 import { ConfirmCompanyHandler } from "./handlers/company/confirm";
+import { ChangeEmailAddressHandler } from "./handlers/company/changeEmailAddress";
 
 import * as config from "../config/index";
 import logger from "../lib/Logger";
@@ -46,6 +47,13 @@ router.post(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFu
     const handler = new ConfirmCompanyHandler();
     const viewData = await handler.post(req, res);
     res.redirect(config.VIEW_COMPANY_INFORMATION_URI);
+});
+
+// GET: /change-email-address
+router.get(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
+    const handler = new ChangeEmailAddressHandler();
+    const viewData = await handler.get(req, res);
+    res.render(`${routeViews}` + config.CHANGE_EMAIL_ADDRESS_URL, viewData);
 });
 
 export default router;
