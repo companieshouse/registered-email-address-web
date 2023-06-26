@@ -4,24 +4,24 @@ import { CHS_API_KEY } from "../../config/index";
 import { logger, createAndLogError } from "../../utils/logger";
 
 export const getCompanyProfile = async (companyNumber: string): Promise<CompanyProfile> => {
-    const apiClient = createApiClient(CHS_API_KEY);
+  const apiClient = createApiClient(CHS_API_KEY);
 
-    logger.debug(`Looking for company profile with company number ${companyNumber}`);
-    const sdkResponse: Resource<CompanyProfile> = await apiClient.companyProfile.getCompanyProfile(companyNumber);
+  logger.debug(`Looking for company profile with company number ${companyNumber}`);
+  const sdkResponse: Resource<CompanyProfile> = await apiClient.companyProfile.getCompanyProfile(companyNumber);
 
-    if (!sdkResponse) {
-        throw createAndLogError(`Company Profile API returned no response for company number ${companyNumber}`);
-    }
+  if (!sdkResponse) {
+    throw createAndLogError(`Company Profile API returned no response for company number ${companyNumber}`);
+  }
 
-    if (sdkResponse.httpStatusCode >= 400) {
-        throw createAndLogError(`Http status code ${sdkResponse.httpStatusCode} - Failed to get company profile for company number ${companyNumber}`);
-    }
+  if (sdkResponse.httpStatusCode >= 400) {
+    throw createAndLogError(`Http status code ${sdkResponse.httpStatusCode} - Failed to get company profile for company number ${companyNumber}`);
+  }
 
-    if (!sdkResponse.resource) {
-        throw createAndLogError(`Company Profile API returned no resource for company number ${companyNumber}`);
-    }
+  if (!sdkResponse.resource) {
+    throw createAndLogError(`Company Profile API returned no resource for company number ${companyNumber}`);
+  }
 
-    logger.debug(`Received company profile ${JSON.stringify(sdkResponse)}`);
+  logger.debug(`Received company profile ${JSON.stringify(sdkResponse)}`);
 
-    return sdkResponse.resource;
+  return sdkResponse.resource;
 };

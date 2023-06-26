@@ -8,14 +8,14 @@ import CompanyDetails from "../../models/companyDetails.model";
 @provide(CompanyDetailsMapper)
 export default class CompanyDetailsMapper {
 
-    public mapToCompanyDetails (company: CompanyProfile): CompanyDetails {
-        return {
-            companyNumber: company.companyNumber,
-            companyName: company.companyName,
-            companyStatus: company.companyStatus,
-            companyIncDate: company.dateOfCreation,
-            companyType: company.type,
-            companyRegOffice: "to be completed"
-        };
-    }
+  public mapToCompanyDetails (company: CompanyProfile): CompanyDetails {
+    return {
+      companyNumber: company.companyNumber,
+      companyName: company.companyName,
+      companyStatus: company.companyStatus,
+      companyIncDate: company.dateOfCreation,
+      companyType: company.type,
+      companyRegOffice: "to be completed"
+    };
+  }
 }

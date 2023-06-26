@@ -20,32 +20,32 @@ const pageTitleConst: string = "Company Number";
 const postRequestLogConst: string = "POST request to get company details page";
 
 export class CompanySearchHandlerPost extends GenericHandler {
-    constructor (
+  constructor (
         @inject(FormValidator) private validator: FormValidator,
         @inject(CompanyNumberSanitizer) private companyNumberSanitizer: CompanyNumberSanitizer
-    ) {
-        super();
-        this.viewData.title = pageTitleConst;
-        this.viewData.backUri = config.REA_HOME_PAGE;
-    }
+  ) {
+    super();
+    this.viewData.title = pageTitleConst;
+    this.viewData.backUri = config.REA_HOME_PAGE;
+  }
 
-    async post (req: Request, res: Response): Promise<Object> {
-        logger.info(postRequestLogConst);
-        var body = req.body;
-        body.companyNumber = this.companyNumberSanitizer.sanitizeCompany(body.companyNumber!);
-        const errors: Optional<ValidationErrors> = this.validator.validate(body, formSchema);
-        if (errors) {
-            this.viewData.errors = errors;
-            return this.viewData;
-        }
-        try {
-            const companyProfile: CompanyProfile = await getCompanyProfile(body.companyNumber);
-            return companyProfile;
-        } catch (e) {
-            this.viewData.errors = {
-                companyNumber: constants.INVALID_COMPANY_NUMBER
-            };
-            return this.viewData;
-        }
+  async post (req: Request, res: Response): Promise<Object> {
+    logger.info(postRequestLogConst);
+    const body = req.body;
+    const companyNumber = this.companyNumberSanitizer.sanitizeCompany(body.companyNumber);
+    const errors: Optional<ValidationErrors> = this.validator.validate(body, formSchema);
+    if (errors) {
+      this.viewData.errors = errors;
+      return this.viewData;
     }
-};
+    try {
+      const companyProfile: CompanyProfile = await getCompanyProfile(companyNumber);
+      return companyProfile;
+    } catch (e) {
+      this.viewData.errors = {
+        companyNumber: constants.INVALID_COMPANY_NUMBER
+      };
+      return this.viewData;
+    }
+  }
+}
