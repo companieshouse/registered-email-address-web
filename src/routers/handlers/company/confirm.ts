@@ -41,10 +41,10 @@ export class ConfirmCompanyHandler extends GenericHandler {
     async post (req: Request, response: Response): Promise<Object> {
         logger.info(`POST request to serve company confirm page`);
         const session: Session = req.session as Session;
-        const validCompanyType =  config.VALID_COMPANY_TYPES 
-        const companyType = session.data.extra_data.companyProfile.type
-        if(!validCompanyType.includes(companyType)){
-            this.viewData.invalidCompany = "invalidCompanyType"
+        const validCompanyType = config.VALID_COMPANY_TYPES;
+        const companyType = session.data.extra_data.companyProfile.type;
+        if (!validCompanyType.includes(companyType)) {
+            this.viewData.invalidCompany = "invalidCompanyType";
         }
         return Promise.resolve(this.viewData);
     }
