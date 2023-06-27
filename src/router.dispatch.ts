@@ -5,8 +5,8 @@ import indexRouter from "./routers/indexRouter";
 import companyRouter from "./routers/companyRouter";
 
 const routerDispatch = (app: Application) => {
-    app.use("/", indexRouter);
-    app.use(config.COMPANY_BASE_URL, companyRouter);
+  app.use("/", indexRouter);
+  app.use(config.COMPANY_BASE_URL, companyRouter);
 };
 
 export default routerDispatch;

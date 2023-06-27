@@ -2,43 +2,57 @@ import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/compa
 import { lookupCompanyStatus, lookupCompanyType } from "../../utils/api.enumerations";
 import { toReadableFormat } from "../../utils/date";
 
-export const buildAddress = (addressArray: Array<string>): string => {
-    let address = "";
-    for (const addressValue of addressArray) {
-        if (addressValue != null && addressValue !== "") {
-            address = address + addressValue;
-            address = address + "<br>";
-        }
+export const buildAddress = (formattedCompanyProfile: any): string => {
+  const addressArray: string[] = [
+    formattedCompanyProfile.registeredOfficeAddress.poBox,
+    formattedCompanyProfile.registeredOfficeAddress.premises, 
+    formattedCompanyProfile.registeredOfficeAddress.addressLineOne,
+    formattedCompanyProfile.registeredOfficeAddress.addressLineTwo, 
+    formattedCompanyProfile.registeredOfficeAddress.locality,
+    formattedCompanyProfile.registeredOfficeAddress.region, 
+    formattedCompanyProfile.registeredOfficeAddress.country,
+    formattedCompanyProfile.registeredOfficeAddress.postalCode
+  ];
+
+  let address = "";
+  for (const addressValue of addressArray) {
+    if (addressValue !== null && addressValue !== "" && addressValue !== undefined) {
+      address = address + addressValue;
+      address = address + "<br>";
     }
-    return address;
+  }
+  return address;
 };
 
-export const formatForDisplay = (companyProfile: CompanyProfile): CompanyProfile => {
-    companyProfile.type = lookupCompanyType(companyProfile.type);
-    companyProfile.companyStatus = lookupCompanyStatus(companyProfile.companyStatus);
-    companyProfile.dateOfCreation = toReadableFormat(companyProfile.dateOfCreation);
-    companyProfile.registeredOfficeAddress.premises = formatTitleCase(companyProfile.registeredOfficeAddress.premises);
-    companyProfile.registeredOfficeAddress.addressLineOne = formatTitleCase(companyProfile.registeredOfficeAddress.addressLineOne);
-    companyProfile.registeredOfficeAddress.addressLineTwo = formatTitleCase(companyProfile.registeredOfficeAddress.addressLineTwo);
-    companyProfile.registeredOfficeAddress.locality = formatTitleCase(companyProfile.registeredOfficeAddress.locality);
-    companyProfile.registeredOfficeAddress.region = formatTitleCase(companyProfile.registeredOfficeAddress.region);
-    companyProfile.registeredOfficeAddress.country = formatTitleCase(companyProfile.registeredOfficeAddress.country);
-    if (companyProfile.registeredOfficeAddress.postalCode != null) {
-        companyProfile.registeredOfficeAddress.postalCode = companyProfile.registeredOfficeAddress.postalCode.toUpperCase();
-    }
-    if (companyProfile.registeredOfficeAddress.poBox != null) {
-        companyProfile.registeredOfficeAddress.poBox = companyProfile.registeredOfficeAddress.poBox.toUpperCase();
-    }
-    return companyProfile;
+export const formatForDisplay = (companyProfile: CompanyProfile) => {
+  const registeredOfficeAddress = {
+    addressLineOne : formatTitleCase(companyProfile.registeredOfficeAddress.addressLineOne),
+    addressLineTwo : formatTitleCase(companyProfile.registeredOfficeAddress.addressLineTwo),
+    locality : formatTitleCase(companyProfile.registeredOfficeAddress.locality),
+    region : formatTitleCase(companyProfile.registeredOfficeAddress.region),
+    country : formatTitleCase(companyProfile.registeredOfficeAddress.country),
+    postalCode : companyProfile.registeredOfficeAddress.postalCode !== null ? companyProfile.registeredOfficeAddress.postalCode.toUpperCase() : null,
+    poBox  : companyProfile.registeredOfficeAddress.poBox !== undefined ? companyProfile.registeredOfficeAddress.poBox.toUpperCase() : null
+  };
+
+  const formattedCompanyProfile = {
+    companyNumber : companyProfile.companyNumber,
+    companyName :  companyProfile.companyName,
+    type : lookupCompanyType(companyProfile.type),
+    companyStatus : lookupCompanyStatus(companyProfile.companyStatus),
+    dateOfCreation : toReadableFormat(companyProfile.dateOfCreation),
+    registeredOfficeAddress : registeredOfficeAddress
+  };
+  return formattedCompanyProfile;
 };
 
 export const formatTitleCase = (str: string|undefined): string => {
-    if (!str) {
-        return "";
-    }
+  if (!str) {
+    return "";
+  }
 
-    return str.replace(
-        /\w\S*/g, (word) => {
-            return word.charAt(0).toUpperCase() + word.substring(1).toLowerCase();
-        });
+  return str.replace(
+    /\w\S*/g, (word) => {
+      return word.charAt(0).toUpperCase() + word.substring(1).toLowerCase();
+    });
 };

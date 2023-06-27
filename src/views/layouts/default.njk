@@ -19,6 +19,7 @@
   {% from "govuk/components/panel/macro.njk"               import govukPanel %}
   {% from "govuk/components/pagination/macro.njk"          import govukPagination %}
 
+
   <body class="govuk-template__body" >
 
     <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
@@ -27,8 +28,8 @@
 
     <div class="govuk-width-container ">
 
-      <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing govuk-body" id="main-content">
-
+      <main class="govuk-main-wrapper govuk-main-wrapper govuk-body" id="main-content">
+        {% include "./signout-banner.njk" %}
         <div class="govuk-grid-row">
           {% include "partials/error_summary.njk" %}
           <div id="main-page-content">
