@@ -8,7 +8,6 @@ import * as config from "./config";
 import { authenticationMiddleware } from "./middleware/authentication.middleware";
 import cookieParser from "cookie-parser";
 import { sessionMiddleware } from "./middleware/session.middleware";
-import { commonViewVariablesMiddleware } from "./middleware/common.variables.middleware";
 
 const app = express();
 
@@ -72,8 +71,6 @@ app.use(`${config.HOME_URL}*`, sessionMiddleware);
 app.use(cookieParser());
 const userAuthRegex = new RegExp(`^${config.HOME_URL}/.+`);
 app.use(userAuthRegex, authenticationMiddleware);
-
-app.use(commonViewVariablesMiddleware);
 
 // Channel all requests through router dispatch
 routerDispatch(app);
