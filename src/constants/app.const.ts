@@ -8,3 +8,4 @@ export const BANNER_FEEDBACK_LINK = "https://www.smartsurvey.co.uk/s/closing-a-c
 export const CONFIRMATION_FEEDBACK_LINK = "https://www.smartsurvey.co.uk/s/closing-a-company-confirmation";
 export const COMPANY_PROFILE = "companyProfile";
 export const INVALID_COMPANY_NUMBER = "You must enter a valid company number";
+export const INVALID_COMPANY_REASON = "invalidCompanyReason";

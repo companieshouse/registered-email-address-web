@@ -45,5 +45,11 @@ export const VIEW_COMPANY_INFORMATION_URI = `${HOME_URL}/${VIEW_COMPANY_INFORMAT
 export const CONFIRM_COMPANY_URL = `${HOME_URL}/${CONFIRM_COMPANY_PAGE}`;
 export const INVALID_COMPANY_URL = `${COMPANY_BASE_URL}/${COMPANY_INVALID_PAGE}`;
 
-// APP CONSTANTS
-export const VALID_COMPANY_TYPES = ["private-unlimited", "ltd", "plc", "private-limited-guarant-nsc-limited-exemption", "private-limited-guarant-nsc", "private-unlimited-nsc", "private-limited-shares-section-30-exemption"];
+
+
+
+
+
+
+
+

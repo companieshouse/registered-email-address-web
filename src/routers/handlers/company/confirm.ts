@@ -6,6 +6,7 @@ import { getCompanyProfile } from "../../../services/company/company.profile.ser
 import { buildAddress, formatForDisplay } from "../../../services/company/confirm.company.service";
 import logger from "../../../lib/Logger";
 import * as constants from "../../../constants/app.const";
+import * as validationConstants from "../../../constants/validation.const";
 import * as config from "../../../config/index";
 
 
@@ -13,7 +14,6 @@ export class ConfirmCompanyHandler extends GenericHandler {
 
   constructor () {
     super();
-    this.viewData.title = "Update a registered email address";
   }
 
   async get (req: Request, response: Response): Promise<Object> {
@@ -39,14 +39,17 @@ export class ConfirmCompanyHandler extends GenericHandler {
     return Promise.resolve(this.viewData);
   }
 
-  async post (req: Request, response: Response): Promise<Object> {
+  async post (req: Request, response: Response): Promise<any> {
     logger.info(`POST request to serve company confirm page`);
     const session: Session = req.session as Session;
-    const validCompanyType = config.VALID_COMPANY_TYPES;
-    const companyType = session.data.extra_data.companyProfile.type;
-    if (!validCompanyType.includes(companyType)) {
-      this.viewData.invalidCompany = "invalidCompanyType";
+    const companyProfile : CompanyProfile = session.data.extra_data.companyProfile;
+    if (!validationConstants.VALID_COMPANY_TYPES.includes(companyProfile.type)) {
+      this.viewData.invalidCompanyReason = "invalidCompanyType";
     }
+    else if (!validationConstants.VALID_COMPANY_STATUS.includes(companyProfile.companyStatus)) {
+      this.viewData.invalidCompanyReason = "invalidCompanyStatus";
+    }
+
     return Promise.resolve(this.viewData);
   }
 }
