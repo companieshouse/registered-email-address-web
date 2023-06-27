@@ -2,14 +2,12 @@ import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import { inject } from "inversify";
 import logger from "../../../lib/Logger";
-
 import * as config from "../../../config/index";
 import Optional from "../../../models/optional";
 import FormValidator from "../../../utils/formValidator.util";
 import formSchema from "../../../schemas/companySearch.schema";
 import ValidationErrors from "../../../models/view/validationErrors.model";
 import CompanyNumberSanitizer from "../../../utils/companyNumberSanitizer";
-
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getCompanyProfile } from "../../../services/company/company.profile.service";
 
