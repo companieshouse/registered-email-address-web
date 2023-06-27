@@ -31,8 +31,8 @@ export const formatForDisplay = (companyProfile: CompanyProfile) => {
     locality : formatTitleCase(companyProfile.registeredOfficeAddress.locality),
     region : formatTitleCase(companyProfile.registeredOfficeAddress.region),
     country : formatTitleCase(companyProfile.registeredOfficeAddress.country),
-    postalCode : companyProfile.registeredOfficeAddress.postalCode !== null ? companyProfile.registeredOfficeAddress.postalCode.toUpperCase() : null,
-    poBox  : companyProfile.registeredOfficeAddress.poBox !== undefined ? companyProfile.registeredOfficeAddress.poBox.toUpperCase() : null
+    postalCode : companyProfile.registeredOfficeAddress.postalCode ? companyProfile.registeredOfficeAddress.postalCode.toUpperCase() : null,
+    poBox  : companyProfile.registeredOfficeAddress.poBox ? companyProfile.registeredOfficeAddress.poBox.toUpperCase() : null
   };
 
   const formattedCompanyProfile = {
