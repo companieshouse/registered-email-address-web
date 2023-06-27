@@ -8,7 +8,7 @@ export const CHS_URL = getEnvironmentValue("CHS_URL", "http://chs.local");
 export const CDN_HOST = getEnvironmentValue("CDN_HOST", "cdn.chs.local");
 export const CDN_URL_CSS = getEnvironmentValue("CDN_URL_CSS", "/css");
 export const CDN_URL_JS = getEnvironmentValue("CDN_URL_JS", "/js");
-export const CACHE_SERVER = getEnvironmentValue("CACHE_SERVER", "redis");
+export const CACHE_SERVER = getEnvironmentValue("CACHE_SERVER", "localhost:6379");
 export const COOKIE_SECRET = getEnvironmentValue("COOKIE_SECRET", "ChGovUk-XQrbf3sLj2abFxIY2TlapsJ");
 export const COOKIE_DOMAIN = getEnvironmentValue("COOKIE_DOMAIN", "chs.local");
 export const CHS_API_KEY = getEnvironmentValue("CHS_API_KEY", "chs.api.key");
@@ -27,18 +27,23 @@ export const COMPANY_SEARCH_PAGE = "company-search";
 export const COMPANY_NUMBER_PAGE = "company/number";
 export const COMPANY_CONFIRM_PAGE = "company/confirm";
 export const VIEW_COMPANY_INFORMATION_PAGE = "view-company-information";
+export const CONFIRM_COMPANY_PAGE = "confirm-company";
+export const COMPANY_INVALID_PAGE = "invalid";
 
 // ROUTING PATHS
 export const HOME_URL = `${REA_HOME_PAGE}`;
 export const REGISTER_AN_EMAIL_ADDRESS_URL = `${HOME_URL}/`;
 
-// Company routes
-export const COMPANY_LOOKUP = "/company-lookup/search?forward=" + REA_HOME_PAGE + "/company/confirm?companyNumber={companyNumber}";
-
 export const COMPANY_BASE_URL = `${REA_HOME_PAGE}/company`;
 export const NUMBER_URL = "/number";
 export const CONFIRM_URL = "/confirm";
+export const INVALID_URL = "/invalid";
 
 export const COMPANY_NUMBER_URL = `${HOME_URL}/${COMPANY_NUMBER_PAGE}`;
 export const COMPANY_CONFIRM_URL = `${HOME_URL}/${COMPANY_CONFIRM_PAGE}`;
 export const VIEW_COMPANY_INFORMATION_URI = `${HOME_URL}/${VIEW_COMPANY_INFORMATION_PAGE}`;
+export const CONFIRM_COMPANY_URL = `${HOME_URL}/${CONFIRM_COMPANY_PAGE}`;
+export const INVALID_COMPANY_URL = `${COMPANY_BASE_URL}/${COMPANY_INVALID_PAGE}`;
+
+// APP CONSTANTS
+export const VALID_COMPANY_TYPES = ["private-unlimited", "ltd", "plc", "private-limited-guarant-nsc-limited-exemption", "private-limited-guarant-nsc", "private-unlimited-nsc", "private-limited-shares-section-30-exemption"];

@@ -1,0 +1,12 @@
+  <div class="govuk-section-break--visible">
+    <div class="sign-out-user-banner" style="display: flex; justify-content: flex-end">
+    {% if userEmail %}
+      <span id="signed_in_user_email" class="sign-out-user-banner__email">
+        {{ userEmail }}
+      </span>
+      <a id="sign_out" class="sign-out-user-banner__sign-out-link" style="margin-left: 15px; "href="/signout" rel="noreferrer" {% if piwik %}data-event-id="sign-out-link"{% endif %}>
+        Sign out
+      </a>
+    </div>
+    {% endif %}
+  </div>
