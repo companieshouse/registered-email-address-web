@@ -61,9 +61,9 @@ router.post(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFu
 
 router.get(config.INVALID_URL, async (req: Request, res: Response, next: NextFunction) => {
   const handler = new InvalidCompanyHandler();
-   await handler.get(req, res).then((data) => {
+  await handler.get(req, res).then((data) => {
     res.render(`${routeViews}` + config.COMPANY_INVALID_PAGE, data);
-   });
+  });
 });
 
 export default router;

@@ -4,8 +4,8 @@ import * as config from "../config/index";
 // APP CONSTANTS
 export const VALID_COMPANY_TYPES = ["private-unlimited", "ltd", "plc", "private-limited-guarant-nsc-limited-exemption", "private-limited-guarant-nsc", "private-unlimited-nsc", "private-limited-shares-section-30-exemption"];
 export const VALID_COMPANY_STATUS = ["active", "liquidation", "receivership", "voluntary-agreement", "insolvency-proceedings", "administration"];
-export const INVALID_COMPANY_TYPE_REASON = "invalidCompanyType"
-export const INVALID_COMPANY_STATUS_REASON= "invalidCompanyStatus"
+export const INVALID_COMPANY_TYPE_REASON = "invalidCompanyType";
+export const INVALID_COMPANY_STATUS_REASON= "invalidCompanyStatus";
 
 export const COMPANY_NAME_PLACEHOLDER = "COMPANY_NAME_PLACEHOLDER";
 
