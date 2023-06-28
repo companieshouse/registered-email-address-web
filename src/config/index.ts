@@ -32,6 +32,8 @@ export const VIEW_COMPANY_INFORMATION_PAGE = "view-company-information";
 export const HOME_URL = `${REA_HOME_PAGE}`;
 export const REGISTER_AN_EMAIL_ADDRESS_URL = `${HOME_URL}/`;
 
+export const COMPANY_AUTH_PROTECTED = `/email/`;
+
 // Company routes
 export const COMPANY_LOOKUP = "/company-lookup/search?forward=" + REA_HOME_PAGE + "/company/confirm?companyNumber={companyNumber}";
 

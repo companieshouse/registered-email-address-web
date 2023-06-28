@@ -6,6 +6,7 @@ import logger from "./lib/Logger";
 import routerDispatch from "./router.dispatch";
 import * as config from "./config";
 import { authenticationMiddleware } from "./middleware/authentication.middleware";
+import { companyAuthenticationMiddleware } from "./middleware/company.authentication.middleware";
 import cookieParser from "cookie-parser";
 import { sessionMiddleware } from "./middleware/session.middleware";
 
@@ -71,6 +72,9 @@ app.use(`${config.HOME_URL}*`, sessionMiddleware);
 app.use(cookieParser());
 const userAuthRegex = new RegExp(`^${config.HOME_URL}/.+`);
 app.use(userAuthRegex, authenticationMiddleware);
+
+// Company Auth redirect
+app.use(`${config.HOME_URL}${config.COMPANY_AUTH_PROTECTED}`, companyAuthenticationMiddleware );
 
 // Channel all requests through router dispatch
 routerDispatch(app);

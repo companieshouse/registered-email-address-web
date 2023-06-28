@@ -50,7 +50,10 @@ router.get(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFun
 router.post(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFunction) => {
   const handler = new ConfirmCompanyHandler();
   const viewData = await handler.post(req, res);
-  res.redirect(config.VIEW_COMPANY_INFORMATION_URI);
+
+  // This is temporary. Replace with actual next page when ready.
+  const nextPageUrl = config.REA_HOME_PAGE + config.COMPANY_AUTH_PROTECTED + "temp";
+  res.redirect(nextPageUrl);
 });
 
 export default router;
