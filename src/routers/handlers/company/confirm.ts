@@ -4,6 +4,7 @@ import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/compa
 import { Session } from "@companieshouse/node-session-handler";
 import { getCompanyProfile } from "../../../services/company/company.profile.service";
 import { buildAddress, formatForDisplay } from "../../../services/company/confirm.company.service";
+import { getCompanyEmail } from "../../../services/company/company.email.service";
 import logger from "../../../lib/Logger";
 import * as constants from "../../../constants/app.const";
 import * as validationConstants from "../../../constants/validation.const";
@@ -44,9 +45,18 @@ export class ConfirmCompanyHandler extends GenericHandler {
     const session: Session = req.session as Session;
     const companyProfile: CompanyProfile = session.data.extra_data.companyProfile;
     if (!validationConstants.VALID_COMPANY_TYPES.includes(companyProfile.type)) {
-      this.viewData.invalidCompanyReason = "invalidCompanyType";
+      this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_TYPE_REASON;
     } else if (!validationConstants.VALID_COMPANY_STATUS.includes(companyProfile.companyStatus)) {
-      this.viewData.invalidCompanyReason = "invalidCompanyStatus";
+      this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_STATUS_REASON;
+    } else {
+      const companyEmail = await getCompanyEmail(companyProfile.companyNumber);
+
+      if (companyEmail.resource?.companyEmail === undefined) {
+        this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_NO_EMAIL_REASON;
+      } else {
+        session?.setExtraData(constants.REGISTERED_EMAIL_ADDRESS, companyEmail);
+      }
+      return this.viewData;      
     }
 
     return Promise.resolve(this.viewData);
