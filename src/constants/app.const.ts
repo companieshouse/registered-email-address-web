@@ -9,3 +9,4 @@ export const CONFIRMATION_FEEDBACK_LINK = "https://www.smartsurvey.co.uk/s/closi
 export const COMPANY_PROFILE = "companyProfile";
 export const INVALID_COMPANY_NUMBER = "You must enter a valid company number";
 export const NO_EMAIL_ADDRESS_FOUND = "No email address for for company number";
+export const INVALID_COMPANY_REASON = "invalidCompanyReason";
