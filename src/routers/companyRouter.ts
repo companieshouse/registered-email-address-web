@@ -3,6 +3,7 @@ import { CompanySearchHandlerPost } from "./handlers/company/companySearch";
 import { ConfirmCompanyHandler } from "./handlers/company/confirm";
 import { InvalidCompanyHandler } from "./handlers/company/invalidCompany";
 import { ChangeEmailAddressHandler } from "./handlers/company/changeEmailAddress";
+import { ConfirmChangeEmailAddressHandler } from "./handlers/company/confirmEmailChange";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import * as config from "../config/index";
 import logger from "../lib/Logger";
@@ -25,9 +26,9 @@ router.get(config.NUMBER_URL, (req: Request, res: Response, next: NextFunction) 
 router.post(config.NUMBER_URL, async (req: Request, res: Response, next: NextFunction) => {
   const formValidator = new FormValidator();
   const companyNumberSanitizer = new CompanyNumberSanitizer();
-  const data = await new CompanySearchHandlerPost(formValidator, companyNumberSanitizer).post(req, res).then((data) => {
+  await new CompanySearchHandlerPost(formValidator, companyNumberSanitizer).post(req, res).then((data) => {
     // eslint-disable-next-line no-prototype-builtins
-    if (data.hasOwnProperty(errorsConst) === true) {
+    if (Object.prototype.hasOwnProperty.call(data, errorsConst) === true) {
       res.render(`${routeViews}` + config.COMPANY_SEARCH_PAGE, data);
     } else {
       // eslint-disable-next-line no-unused-expressions
@@ -41,7 +42,7 @@ router.get(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFun
   const handler = new ConfirmCompanyHandler();
   const viewData = await handler.get(req, res);
   // eslint-disable-next-line no-prototype-builtins
-  if (viewData.hasOwnProperty(errorsConst) === true) {
+  if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) === true) {
     res.render(`${routeViews}` + config.COMPANY_SEARCH_PAGE, viewData);
   } else {
     res.render(`${routeViews}` + config.CONFIRM_URL, viewData);
@@ -51,7 +52,7 @@ router.get(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFun
 router.post(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFunction) => {
   const companyProfile: CompanyProfile | undefined = req.session?.getExtraData("companyProfile");
   if (companyProfile !== undefined) {
-      req.session?.setExtraData("companyNumber", companyProfile.companyNumber);
+    req.session?.setExtraData("companyNumber", companyProfile.companyNumber);
   }
   const handler = new ConfirmCompanyHandler();
   const viewData = await handler.post(req, res).then((data) => {
@@ -62,8 +63,7 @@ router.post(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFu
       res.redirect(config.COMPANY_CHANGE_EMAIL_ADDRESS_URL);
     }
   });
-}
-);
+});
 
 router.get(config.INVALID_URL, async (req: Request, res: Response, next: NextFunction) => {
   const handler = new InvalidCompanyHandler();
@@ -74,17 +74,32 @@ router.get(config.INVALID_URL, async (req: Request, res: Response, next: NextFun
 
 // GET: /change-email-address
 router.get(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
-  const handler = new ChangeEmailAddressHandler();
+  const formValidator = new FormValidator();
+  const handler = new ChangeEmailAddressHandler(formValidator);
   await handler.get(req, res).then((viewData) => {
-      res.render(`${routeViews}` + config.CHANGE_EMAIL_ADDRESS_URL, viewData);
+    res.render(`${routeViews}` + config.CHANGE_EMAIL_ADDRESS_URL, viewData);
   });
 });
 
 // POST: /change-email-address
 router.post(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
-  const handler = new ChangeEmailAddressHandler();
-  const viewData = await handler.post(req, res);
-  res.render(`${routeViews}` + config.CHANGE_EMAIL_ADDRESS_URL, viewData);
+  const formValidator = new FormValidator();
+  const handler = new ChangeEmailAddressHandler(formValidator);
+  await handler.post(req, res).then((viewData) => {
+    if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) === true) {
+      res.render(`${routeViews}` + config.CHANGE_EMAIL_ADDRESS_URL, viewData);
+    } else {
+      req.session?.setExtraData(constants.COMPANY_EMAIL, req.body.changeEmailAddress);
+      res.redirect(config.COMPANY_COMPANY_CHECK_ANSWER_URL);
+    }
+  });
+});
+
+// GET: /check-your-answers
+router.get(config.CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunction) => {
+  const handler = new ConfirmChangeEmailAddressHandler();
+  const viewData = await handler.get(req, res);
+  res.render(`${routeViews}` + config.CHECK_ANSWER_URL, viewData);
 });
 
 export default router;

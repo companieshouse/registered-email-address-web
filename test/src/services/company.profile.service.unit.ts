@@ -1,6 +1,3 @@
-// jest.mock("../../../src/utils/date");
-// jest.mock("../../../src/utils/api.enumerations");
-
 import { getCompanyProfile } from "../../../src/services/company/company.profile.service";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { createApiClient, Resource } from "@companieshouse/api-sdk-node";

@@ -17,42 +17,12 @@
       href: backUri
     })
   }}
-  <ul id="navigation" class="mobile-hidden">
-    <li class="user" id="signed-in-user">
-      
-    </li>
-    <li>
-      <a href="javascript:void(0)" id="user-signout">Sign out</a>
-    </li>
-  </ul>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
        <label class="govuk-label" for="change-email-address">
         <h1 class="govuk-heading-xl">check your answer before sending your application</h1>
        </label>
-      <form method="post">
-        {{ govukSummaryList({
-            rows: [
-            {
-              key: {
-                text: "Company name"
-              },
-              value: {
-                text: company.companyName
-              }
-            }]
-          })
-          <a href="javascript:void(0)">Change</a>
-        }}
-        {{ 
-          govukButton({
-            text: 'Continue',
-            attributes: {
-              id: 'submit'
-            }
-          }) 
-        }}
-      </form>
+       <p>New email address: <b>{{companyEmailAddress}}</b></p>
     </div>
   </div>
 {% endblock %}
