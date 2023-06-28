@@ -23,8 +23,6 @@ export class CompanySearchHandlerPost extends GenericHandler {
         @inject(CompanyNumberSanitizer) private companyNumberSanitizer: CompanyNumberSanitizer
   ) {
     super();
-    this.viewData.title = pageTitleConst;
-    this.viewData.backUri = config.REA_HOME_PAGE;
   }
 
   async post (req: Request, res: Response): Promise<Object> {

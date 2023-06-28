@@ -28,8 +28,10 @@
 
     <div class="govuk-width-container ">
 
+      {% block backLink %}{% endblock %}
+      {% include "./signout-banner.njk" %}
+
       <main class="govuk-main-wrapper govuk-main-wrapper govuk-body" id="main-content">
-        {% include "./signout-banner.njk" %}
         <div class="govuk-grid-row">
           {% include "partials/error_summary.njk" %}
           <div id="main-page-content">

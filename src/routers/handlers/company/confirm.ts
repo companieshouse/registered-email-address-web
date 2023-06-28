@@ -60,6 +60,7 @@ const buildPageOptions = async (session: Session, companyProfile: CompanyProfile
     companyProfile :  companyProfile,
     company: formattedCompanyProfile,
     address: address,
-    userEmail : session.data.signin_info?.user_profile?.email
+    userEmail : session.data.signin_info?.user_profile?.email,
+    backUri: config.COMPANY_NUMBER_URL
   };
 };
