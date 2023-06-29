@@ -53,6 +53,7 @@ router.post(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFu
       req.session?.setExtraData(constants.INVALID_COMPANY_REASON, data.invalidCompanyReason);
       res.redirect(config.INVALID_COMPANY_URL);
     } else {
+      // TODO: should redirect to company authentication?
       res.redirect(config.VIEW_COMPANY_INFORMATION_URI);
     }
   });
