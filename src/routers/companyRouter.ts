@@ -52,9 +52,10 @@ router.post(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFu
     if (Object.prototype.hasOwnProperty.call(data, invalidCompanyReason)) {
       req.session?.setExtraData(constants.INVALID_COMPANY_REASON, data.invalidCompanyReason);
       res.redirect(config.INVALID_COMPANY_URL);
-    } else {
-      // TODO: should redirect to company authentication?
-      res.redirect(config.VIEW_COMPANY_INFORMATION_URI);
+    } else {      
+      // This is temporary. Replace with actual next page when ready.
+      const nextPageUrl = config.REA_HOME_PAGE + config.COMPANY_AUTH_PROTECTED + "temp";
+      res.redirect(nextPageUrl);
     }
   });
 }

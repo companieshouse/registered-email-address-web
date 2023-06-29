@@ -34,6 +34,8 @@ export const COMPANY_INVALID_PAGE = "invalid";
 export const HOME_URL = `${REA_HOME_PAGE}`;
 export const REGISTER_AN_EMAIL_ADDRESS_URL = `${HOME_URL}/`;
 
+export const COMPANY_AUTH_PROTECTED = `/email/`;
+
 export const COMPANY_BASE_URL = `${REA_HOME_PAGE}/company`;
 export const NUMBER_URL = "/number";
 export const CONFIRM_URL = "/confirm";
