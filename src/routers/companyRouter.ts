@@ -18,7 +18,7 @@ const invalidCompanyReason: string = "invalidCompanyReason";
 
 router.get(config.NUMBER_URL, (req: Request, res: Response, next: NextFunction) => {
   logger.info(`GET request to enter company number`);
-  res.render(`${routeViews}` + config.COMPANY_SEARCH_PAGE);
+  res.render(`${routeViews}` + config.COMPANY_SEARCH_PAGE, { backUri: config.REA_HOME_PAGE });
   // alternatively use this to call the Company lookup service:
   // return res.redirect(config.COMPANY_LOOKUP);
 });

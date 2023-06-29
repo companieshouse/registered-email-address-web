@@ -14,3 +14,4 @@ export const NO_EMAIL_ADDRESS_FOUND = "No email address for for company number";
 export const EMAIL_ADDRESS_INVALID = "Enter an email address in the correct format, like name@example.com";
 export const NO_EMAIL_ADDRESS_SUPPLIED = "Enter the registered email address";
 export const INVALID_COMPANY_REASON = "invalidCompanyReason";
+export const REGISTERED_EMAIL_ADDRESS = "registeredEmailAddress";

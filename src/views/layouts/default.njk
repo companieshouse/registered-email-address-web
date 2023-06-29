@@ -29,7 +29,9 @@
     <div class="govuk-width-container ">
 
       <main class="govuk-main-wrapper govuk-main-wrapper govuk-body" id="main-content">
-        {% include "./signout-banner.njk" %}
+      {% include "./signout-banner.njk" %}
+      {% block backLink %}{% endblock %}
+
         <div class="govuk-grid-row">
           {% include "partials/error_summary.njk" %}
           <div id="main-page-content">
