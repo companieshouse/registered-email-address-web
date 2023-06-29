@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { GenericHandler } from "./../generic";
+import { GenericHandler } from "../generic";
 import { inject } from "inversify";
 import logger from "../../../lib/Logger";
 import { validateEmailString } from "../../../utils/validateEmailString";
@@ -14,10 +14,13 @@ import formSchema from "../../../schemas/changeEmailAddress.schema";
 
 export class ChangeEmailAddressHandler extends GenericHandler {
 
-  constructor (@inject(FormValidator) private validator: FormValidator) {
+  constructor (@inject(FormValidator) private validator: FormValidator, userEmail: string | undefined) {
     super();
     this.viewData.title = "Update a registered email address";
     this.viewData.backUri = COMPANY_BASE_URL+CONFIRM_URL;
+    if (userEmail !== undefined) {
+      this.viewData.userEmail = userEmail;
+    }
   }
 
   async get (req: Request, response: Response): Promise<Object> {
@@ -47,9 +50,6 @@ export class ChangeEmailAddressHandler extends GenericHandler {
 
   async post (req: Request, response: Response): Promise<Object> {
     logger.info(`POST request to serve change registered email address page`);
-
-    // set back link
-    this.viewData.backUri = COMPANY_BASE_URL+CONFIRM_URL;
 
     const companyEmailAddressGiven: string = req.body.changeEmailAddress;
 

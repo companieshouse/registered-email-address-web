@@ -1,17 +1,20 @@
 import { Request, Response } from "express";
-import { GenericHandler } from "./../generic";
+import { GenericHandler } from "../generic";
 import logger from "../../../lib/Logger";
 import { validateEmailString } from "../../../utils/validateEmailString";
 import { getCompanyEmail } from "../../../services/company/company.email.service";
 import { COMPANY_EMAIL, NO_EMAIL_ADDRESS_FOUND } from "../../../constants/app.const";
-import { COMPANY_CHANGE_EMAIL_ADDRESS_URL } from "../../../config/index";
+import { EMAIL_CHANGE_EMAIL_ADDRESS_URL } from "../../../config/index";
 
 export class ConfirmChangeEmailAddressHandler extends GenericHandler {
 
-  constructor () {
+  constructor (userEmail: string | undefined) {
     super();
     this.viewData.title = "Update a registered email address";
-    this.viewData.backUri = COMPANY_CHANGE_EMAIL_ADDRESS_URL;
+    this.viewData.backUri = EMAIL_CHANGE_EMAIL_ADDRESS_URL;
+    if (userEmail !== undefined) {
+      this.viewData.userEmail = userEmail;
+    }
   }
   
   async get (req: Request, response: Response): Promise<Object> {

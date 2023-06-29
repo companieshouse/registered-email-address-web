@@ -2,8 +2,8 @@ import { Request, Response, Router, NextFunction } from "express";
 import { CompanySearchHandlerPost } from "./handlers/company/companySearch";
 import { ConfirmCompanyHandler } from "./handlers/company/confirm";
 import { InvalidCompanyHandler } from "./handlers/company/invalidCompany";
-import { ChangeEmailAddressHandler } from "./handlers/company/changeEmailAddress";
-import { ConfirmChangeEmailAddressHandler } from "./handlers/company/confirmEmailChange";
+import { ChangeEmailAddressHandler } from "./handlers/email/changeEmailAddress";
+import { ConfirmChangeEmailAddressHandler } from "./handlers/email/confirmEmailChange";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import * as config from "../config/index";
 import logger from "../lib/Logger";
@@ -18,9 +18,7 @@ const invalidCompanyReason: string = "invalidCompanyReason";
 
 router.get(config.NUMBER_URL, (req: Request, res: Response, next: NextFunction) => {
   logger.info(`GET request to enter company number`);
-  res.render(`${routeViews}` + config.COMPANY_SEARCH_PAGE, { backUri: config.REA_HOME_PAGE });
-  // alternatively use this to call the Company lookup service:
-  // return res.redirect(config.COMPANY_LOOKUP);
+  res.render(`${routeViews}` + config.COMPANY_SEARCH_PAGE, { backUri: config.REA_HOME_PAGE, userEmail: req.session?.data.signin_info?.user_profile?.email });
 });
 
 router.post(config.NUMBER_URL, async (req: Request, res: Response, next: NextFunction) => {
@@ -60,7 +58,7 @@ router.post(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFu
       req.session?.setExtraData(constants.INVALID_COMPANY_REASON, data.invalidCompanyReason);
       res.redirect(config.INVALID_COMPANY_URL);
     } else {
-      res.redirect(config.COMPANY_CHANGE_EMAIL_ADDRESS_URL);
+      res.redirect(config.EMAIL_CHANGE_EMAIL_ADDRESS_URL);
     }
   });
 });
@@ -70,37 +68,6 @@ router.get(config.INVALID_URL, async (req: Request, res: Response, next: NextFun
   await handler.get(req, res).then((data) => {
     res.render(`${routeViews}` + config.COMPANY_INVALID_PAGE, data);
   });
-});
-
-// GET: /change-email-address
-router.get(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
-  const formValidator = new FormValidator();
-  const handler = new ChangeEmailAddressHandler(formValidator);
-  await handler.get(req, res).then((viewData) => {
-    console.log("router.get(config.CHANGE_EMAIL_ADDRESS_URL => viewData: ", viewData);
-    res.render(`router_views/company/${config.CHANGE_EMAIL_ADDRESS_URL}`, viewData);
-  });
-});
-
-// POST: /change-email-address
-router.post(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
-  const formValidator = new FormValidator();
-  const handler = new ChangeEmailAddressHandler(formValidator);
-  await handler.post(req, res).then((viewData) => {
-    if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) === true) {
-      res.render(`${routeViews}` + config.CHANGE_EMAIL_ADDRESS_URL, viewData);
-    } else {
-      req.session?.setExtraData(constants.COMPANY_EMAIL, req.body.changeEmailAddress);
-      res.redirect(config.COMPANY_COMPANY_CHECK_ANSWER_URL);
-    }
-  });
-});
-
-// GET: /check-your-answers
-router.get(config.CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunction) => {
-  const handler = new ConfirmChangeEmailAddressHandler();
-  const viewData = await handler.get(req, res);
-  res.render(`${routeViews}` + config.CHECK_ANSWER_URL, viewData);
 });
 
 export default router;
