@@ -13,12 +13,19 @@ export class InvalidCompanyHandler extends GenericHandler {
   async get (req: Request, res: Response): Promise<Object> {
     logger.info(`GET request to serve company Invalid Company`);
     const session: Session = req.session as Session;
-    if(session.data.extra_data?.invalidCompanyReason === validationConfig.INVALID_COMPANY_TYPE_REASON){
-      this.buildPage(validationConfig.invalidCompanyTypePage, session.data.extra_data.companyProfile.companyName );
+    let invalidPageType: any;
+    switch(session.data.extra_data?.invalidCompanyReason) {
+        case validationConfig.INVALID_COMPANY_TYPE_REASON:
+          invalidPageType = validationConfig.invalidCompanyTypePage;
+          break;
+        case validationConfig.INVALID_COMPANY_STATUS_REASON:
+          invalidPageType = validationConfig.invalidCompanyStatusPage;
+          break;
+        case validationConfig.INVALID_COMPANY_NO_EMAIL_REASON:
+          invalidPageType = validationConfig.invalidCompanyNoEmailPage;
+          break;
     }
-    if(session.data.extra_data?.invalidCompanyReason === validationConfig.INVALID_COMPANY_STATUS_REASON){
-      this.buildPage(validationConfig.invalidCompanyStatusPage, session.data.extra_data.companyProfile.companyName);
-    }
+    this.buildPage(invalidPageType, session.data.extra_data.companyProfile.companyName);
     this.viewData.userEmail = session.data.signin_info?.user_profile?.email;
     return Promise.resolve(this.viewData);
   }
