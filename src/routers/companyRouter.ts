@@ -77,7 +77,8 @@ router.get(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, 
   const formValidator = new FormValidator();
   const handler = new ChangeEmailAddressHandler(formValidator);
   await handler.get(req, res).then((viewData) => {
-    res.render(`${routeViews}` + config.CHANGE_EMAIL_ADDRESS_URL, viewData);
+    console.log("router.get(config.CHANGE_EMAIL_ADDRESS_URL => viewData: ", viewData);
+    res.render(`router_views/company/${config.CHANGE_EMAIL_ADDRESS_URL}`, viewData);
   });
 });
 
