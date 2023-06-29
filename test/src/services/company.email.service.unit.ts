@@ -27,7 +27,8 @@ const clone = (objectToClone: any): any => {
 
 describe("Company email address service test", () => {
   const COMPANY_NUMBER = "1234567";
-  const OK_RESPONSE_BODY = {"registered_email_address": "test@test.co.biz"};
+  const TEST_EMAIL = "test@test.co.biz";
+  const OK_RESPONSE_BODY = {"registered_email_address": `${TEST_EMAIL}`};
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -45,6 +46,7 @@ describe("Company email address service test", () => {
       Object.getOwnPropertyNames(emailResource.resource).forEach(property => {
         expect(returnedEmail.httpStatusCode).toEqual(StatusCodes.OK);
         expect(returnedEmail.resource).toHaveProperty(property);
+        expect(returnedEmail.resource?.companyEmail).toEqual(TEST_EMAIL);
       });
     });
 
