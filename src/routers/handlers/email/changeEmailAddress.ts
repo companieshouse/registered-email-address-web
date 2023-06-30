@@ -23,7 +23,7 @@ export class ChangeEmailAddressHandler extends GenericHandler {
     }
   }
 
-  async get (req: Request, response: Response): Promise<any> {
+  async get (req: Request, response: Response): Promise<Object> {
     logger.info(`GET request to serve change registered email address page`);
 
     const companyNumber: string | undefined= req.session?.getExtraData(COMPANY_NUMBER);
@@ -43,11 +43,11 @@ export class ChangeEmailAddressHandler extends GenericHandler {
             return Promise.resolve(this.viewData);
           } else {
             this.viewData.companyEmailAddress = companyEmail.resource?.companyEmail;
-            return Promise.resolve(this.viewData);
           }
         });
       }
     }
+    return Promise.resolve(this.viewData);
   }
 
   async post (req: Request, response: Response): Promise<Object> {

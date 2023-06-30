@@ -53,7 +53,7 @@ router.post(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFu
     req.session?.setExtraData("companyNumber", companyProfile.companyNumber);
   }
   const handler = new ConfirmCompanyHandler();
-  const viewData = await handler.post(req, res).then((data) => {
+  await handler.post(req, res).then((data) => {
     if (Object.prototype.hasOwnProperty.call(data, invalidCompanyReason)) {
       req.session?.setExtraData(constants.INVALID_COMPANY_REASON, data.invalidCompanyReason);
       res.redirect(config.INVALID_COMPANY_URL);

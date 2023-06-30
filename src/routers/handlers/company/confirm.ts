@@ -45,20 +45,28 @@ export class ConfirmCompanyHandler extends GenericHandler {
     const session: Session = req.session as Session;
     const companyProfile: CompanyProfile = session.data.extra_data.companyProfile;
     if (!validationConstants.VALID_COMPANY_TYPES.includes(companyProfile.type)) {
+      logger.info(`company confirm - invalid company type`);
       this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_TYPE_REASON;
     } else if (!validationConstants.VALID_COMPANY_STATUS.includes(companyProfile.companyStatus)) {
+      logger.info(`company confirm - invalid company status`);
       this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_STATUS_REASON;
     } else {
       await getCompanyEmail(companyProfile.companyNumber).then((companyEmail) => {
+        logger.info(`company confirm - checking company email`);
+        logger.info(`company confirm - status returned: ${companyEmail.httpStatusCode}`);
+        if (companyEmail.resource?.companyEmail !== undefined ) {
+          logger.info(`company confirm - company email check returned: ${companyEmail.resource?.companyEmail}`);
+        }
         if (companyEmail.resource?.companyEmail === undefined) {
+          logger.info(`company confirm - company email not found`);
           this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_NO_EMAIL_REASON;
+          return Promise.resolve(this.viewData);
         } else {
+          logger.info(`company confirm - company email found: ${companyEmail}`);
           session?.setExtraData(constants.REGISTERED_EMAIL_ADDRESS, companyEmail);
         }
-        return this.viewData;
       });
     }
-
     return Promise.resolve(this.viewData);
   }
 }
