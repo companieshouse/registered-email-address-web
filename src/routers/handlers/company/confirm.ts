@@ -49,14 +49,14 @@ export class ConfirmCompanyHandler extends GenericHandler {
     } else if (!validationConstants.VALID_COMPANY_STATUS.includes(companyProfile.companyStatus)) {
       this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_STATUS_REASON;
     } else {
-      const companyEmail = await getCompanyEmail(companyProfile.companyNumber);
-
-      if (companyEmail.resource?.companyEmail === undefined) {
-        this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_NO_EMAIL_REASON;
-      } else {
-        session?.setExtraData(constants.REGISTERED_EMAIL_ADDRESS, companyEmail);
-      }
-      return this.viewData;      
+      await getCompanyEmail(companyProfile.companyNumber).then((companyEmail) => {
+        if (companyEmail.resource?.companyEmail === undefined) {
+          this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_NO_EMAIL_REASON;
+        } else {
+          session?.setExtraData(constants.REGISTERED_EMAIL_ADDRESS, companyEmail);
+        }
+        return this.viewData;
+      });
     }
 
     return Promise.resolve(this.viewData);
