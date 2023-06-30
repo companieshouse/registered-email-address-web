@@ -8,8 +8,8 @@ interface ApiEnumerationsConstants {
 const apiConstantsFile = fs.readFileSync("api-enumerations/constants.yml", "utf8");
 const apiConstants: ApiEnumerationsConstants = yaml.load(apiConstantsFile) as ApiEnumerationsConstants;
 
-const officerFilingFile = fs.readFileSync("api-enumerations/officer_filing.yml", "utf8");
-const officerFilingMessages: ApiEnumerationsConstants = yaml.load(officerFilingFile) as ApiEnumerationsConstants;
+const registeredEmailAddressFile = fs.readFileSync("api-enumerations/officer_filing.yml", "utf8");
+const officerFilingMessages: ApiEnumerationsConstants = yaml.load(registeredEmailAddressFile) as ApiEnumerationsConstants;
 
 export const lookupCompanyType = (companyTypeKey: string): string => {
   return apiConstants.company_type[companyTypeKey] || companyTypeKey;

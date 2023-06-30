@@ -74,7 +74,8 @@ const userAuthRegex = new RegExp(`^${config.HOME_URL}/.+`);
 app.use(userAuthRegex, authenticationMiddleware);
 
 // Company Auth redirect
-app.use(`${config.HOME_URL}${config.COMPANY_AUTH_PROTECTED}`, companyAuthenticationMiddleware );
+const companyAuthRegex = new RegExp(`^${config.EMAIL_BASE_URL}/.+`);
+app.use(companyAuthRegex, companyAuthenticationMiddleware );
 
 // Channel all requests through router dispatch
 routerDispatch(app);
