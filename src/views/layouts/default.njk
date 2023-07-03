@@ -18,33 +18,22 @@
   {% from "govuk/components/date-input/macro.njk"          import govukDateInput %}
   {% from "govuk/components/panel/macro.njk"               import govukPanel %}
   {% from "govuk/components/pagination/macro.njk"          import govukPagination %}
-
-
   <body class="govuk-template__body" >
-
     <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
-    <a href="#main-page-content" class="govuk-skip-link">Skip to main content</a>
     {% include "partials/__header.njk" %}
-
-    <div class="govuk-width-container ">
-
-      <main class="govuk-main-wrapper govuk-main-wrapper govuk-body" id="main-content">
-      {% include "./signout-banner.njk" %}
-      {% block backLink %}{% endblock %}
-
+    <div class="govuk-width-container">
+      <main class="govuk-main-wrapper" id="main-content" role="main">
+        {% include "./links-banner.njk" %}
         <div class="govuk-grid-row">
           {% include "partials/error_summary.njk" %}
-          <div id="main-page-content">
+          <div id="main-page-content" class="govuk-grid-column-two-thirds">
             {% block main_content %}
             {% endblock %}
           </div>
         </div>
-
       </main>
     </div>
-
     {% include "partials/__footer.njk" %}
-
   </body>
 </html>
 
