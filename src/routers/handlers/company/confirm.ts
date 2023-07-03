@@ -60,7 +60,6 @@ export class ConfirmCompanyHandler extends GenericHandler {
         if (companyEmail.resource?.companyEmail === undefined) {
           logger.info(`company confirm - company email not found`);
           this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_NO_EMAIL_REASON;
-          return Promise.resolve(this.viewData);
         } else {
           logger.info(`company confirm - company email found: ${companyEmail}`);
           session?.setExtraData(constants.REGISTERED_EMAIL_ADDRESS, companyEmail);

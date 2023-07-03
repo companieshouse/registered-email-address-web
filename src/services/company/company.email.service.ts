@@ -1,7 +1,8 @@
 import { companyEmailResource, companyEmail } from "./resources/resources";
 import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
-import { CHS_API_KEY } from "../../config/index";
+import { CHS_API_KEY, ORACLE_QUERY_API_URL } from "../../config/index";
 import { StatusCodes } from 'http-status-codes';
+import logger from "../../lib/Logger";
 
 /**
 * Get the registered email address for a company.
@@ -9,7 +10,13 @@ import { StatusCodes } from 'http-status-codes';
 * @param companyNumber the company number to look up
 */
 export const getCompanyEmail = async (companyNumber: string): Promise<Resource<companyEmail>> => {
-  const client = createApiClient(CHS_API_KEY);
+  // build client object
+  const client = createApiClient(
+    CHS_API_KEY,
+    undefined,
+    ORACLE_QUERY_API_URL
+  );
+
   const resp = await client.apiClient.httpGet(`/company/${companyNumber}/registered-email-address`);
 
   const emailResource: Resource<companyEmail> = {
