@@ -8,7 +8,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 
-{% set title = "change-email-address" %}
+{% set title = "What is the new registered email address?" %}
 
 {% block main_content %}
   {{
@@ -32,7 +32,7 @@
             errorMessage: {
               text: errors.changeEmailAddress
             } if errors.changeEmailAddress,
-            classes: "govuk-input--width-10",
+            classes: "govuk-input",
             id: "change-email-address",
             name: "changeEmailAddress",
             value: data.changeEmailAddress
