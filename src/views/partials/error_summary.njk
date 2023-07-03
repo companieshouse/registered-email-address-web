@@ -3,20 +3,5 @@
     <h2 class="govuk-error-summary__title" id="error-summary-title">
       There is a problem with the details you gave us
     </h2>
-    <div class="govuk-error-summary__body">
-      <ul class="govuk-list govuk-error-summary__list">
-        {% if errors.genericError is not undefined %}
-          <li>
-            {{ errors.genericError.summary }}
-          </li>
-        {% else %}
-          {% for key,err in errors %}
-            <li>
-              <a href="#err-id-{{ key }}">{{ err.summary }}</a>
-            </li>
-          {% endfor %}
-        {% endif %}
-      </ul>
-    </div>
   </div>
 {% endif %}
