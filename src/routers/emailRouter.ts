@@ -16,7 +16,6 @@ router.get(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, 
     formValidator, 
     req.session?.data.signin_info?.user_profile?.email  
   );
-  console.log("GET: /change-email-address: handler => ", handler);
   await handler.get(req, res).then((viewData) => {
     res.render(`router_views/email/${config.CHANGE_EMAIL_ADDRESS_URL}`, viewData);
   });
