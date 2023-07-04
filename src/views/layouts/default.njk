@@ -28,15 +28,17 @@
 
     <div class="govuk-width-container ">
 
-      <main class="govuk-main-wrapper govuk-main-wrapper govuk-body" id="main-content">
+      <main class="govuk-body" id="main-content">
       {% include "./signout-banner.njk" %}
       {% block backLink %}{% endblock %}
 
-        <div class="govuk-grid-row">
+        <div>
           {% include "partials/error_summary.njk" %}
           <div id="main-page-content">
+          <div class="govuk-grid-row govuk-!-margin-top-7">
             {% block main_content %}
             {% endblock %}
+            </div>
           </div>
         </div>
 

@@ -15,3 +15,5 @@ export const EMAIL_ADDRESS_INVALID = "Enter an email address in the correct form
 export const NO_EMAIL_ADDRESS_SUPPLIED = "Enter the registered email address";
 export const INVALID_COMPANY_REASON = "invalidCompanyReason";
 export const REGISTERED_EMAIL_ADDRESS = "registeredEmailAddress";
+export const RETURN_URL = 'returnToUrl';
+

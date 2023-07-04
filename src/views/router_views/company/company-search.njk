@@ -10,18 +10,8 @@
 
 {% set title = "Search company" %}
 
-{% block backLink %}
-  {{
-    govukBackLink({
-      text: "Back",
-      href: backUri
-    })
-  }}
-{% endblock %}
-
 {% block main_content %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-full">
        <label class="govuk-label" for="company-number">
         <h1 class="govuk-heading-xl">What is the company number?</h1>
        </label>
@@ -59,6 +49,5 @@
           }) 
         }}
       </form>
-    </div>
   </div>
 {% endblock %}
