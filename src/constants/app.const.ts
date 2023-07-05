@@ -9,6 +9,8 @@ export const CONFIRMATION_FEEDBACK_LINK = "https://www.smartsurvey.co.uk/s/closi
 export const COMPANY_PROFILE = "companyProfile";
 export const COMPANY_EMAIL = "companyEmail";
 export const COMPANY_NUMBER = "companyNumber";
+export const USER_EMAIL = "userEmail";
+
 export const SUBMISSION_ID = "submissionID";
 export const INVALID_COMPANY_NUMBER = "You must enter a valid company number";
 export const NO_EMAIL_ADDRESS_FOUND = "No email address for company number";
