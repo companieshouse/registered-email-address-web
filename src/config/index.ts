@@ -54,6 +54,7 @@ export const COMPANY_NUMBER_PAGE = "company/number";
 export const COMPANY_CONFIRM_PAGE = "company/confirm";
 export const EMAIL_CHANGE_EMAIL_ADDRESS = "email/change-email-address";
 export const EMAIL_CHECK_ANSWER = "email/check-your-answer";
+export const EMAIL_UPDATE_SUBMITTED = "email/update-submitted";
 export const VIEW_COMPANY_INFORMATION_PAGE = "view-company-information";
 export const CONFIRM_COMPANY_PAGE = "confirm-company";
 export const COMPANY_INVALID_PAGE = "invalid";
@@ -73,6 +74,7 @@ export const CONFIRM_URL = "/confirm";
 export const INVALID_URL = "/invalid";
 export const CHANGE_EMAIL_ADDRESS_URL = "/change-email-address";
 export const CHECK_ANSWER_URL = "/check-your-answer";
+export const UPDATE_SUBMITTED = "/update-submitted";
 
 // FULL URLS
 export const SIGN_OUT_URL = `${HOME_URL}/${SIGN_OUT_PAGE}`;
@@ -85,3 +87,4 @@ export const INVALID_COMPANY_URL = `${COMPANY_BASE_URL}/${COMPANY_INVALID_PAGE}`
 export const EMAIL_CHANGE_EMAIL_ADDRESS_URL = `${HOME_URL}/${EMAIL_CHANGE_EMAIL_ADDRESS}`;
 export const EMAIL_CHECK_ANSWER_URL = `${HOME_URL}/${EMAIL_CHECK_ANSWER}`;
 export const ACCESSIBILITY_STATEMENT_URL = `${HOME_URL}/${ACCESSIBILITY_STATEMENT_PAGE}`;
+export const EMAIL_UPDATE_SUBMITTED_URL = `${HOME_URL}/${EMAIL_UPDATE_SUBMITTED}`;
