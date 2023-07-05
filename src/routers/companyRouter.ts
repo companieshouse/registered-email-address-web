@@ -16,7 +16,7 @@ const invalidCompanyReason: string = "invalidCompanyReason";
 
 router.get(config.NUMBER_URL, (req: Request, res: Response, next: NextFunction) => {
   logger.info(`GET request to enter company number`);
-  res.render(`${routeViews}` + config.COMPANY_SEARCH_PAGE, { backUri: config.REA_HOME_PAGE, userEmail: req.session?.data.signin_info?.user_profile?.email });
+  res.render(`${routeViews}` + config.COMPANY_SEARCH_PAGE, { backUri: config.REA_HOME_PAGE, userEmail: req.session?.data.signin_info?.user_profile?.email, signoutBanner: true });
 });
 
 router.post(config.NUMBER_URL, async (req: Request, res: Response, next: NextFunction) => {
