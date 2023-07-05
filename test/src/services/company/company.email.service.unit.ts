@@ -1,13 +1,13 @@
-import { getCompanyEmail } from "../../../src/services/company/company.email.service";
+import { getCompanyEmail } from "../../../../src/services/company/company.email.service";
 import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
-import { createAndLogError } from "../../../src/utils/logger";
-import { emailResource } from "../../mocks/company.email.mock";
-import { companyEmail } from "../../../src/services/company/resources/resources";
+import { createAndLogError } from "../../../../src/lib/Logger";
+import { validEmailSDKResource } from "../../../mocks/company.email.mock";
+import { companyEmail } from "../../../../src/services/company/resources/resources";
 import { HttpResponse } from "@companieshouse/api-sdk-node/dist/http/http-client";
 import { StatusCodes } from 'http-status-codes';
 
 jest.mock("@companieshouse/api-sdk-node");
-jest.mock("../../../src/utils/logger");
+jest.mock("../../../../src/lib/Logger");
 
 const mockCreateApiClient = createApiClient as jest.Mock;
 const mockGetCompanyEmail = jest.fn();
@@ -43,7 +43,7 @@ describe("Company email address service test", () => {
       mockGetCompanyEmail.mockResolvedValueOnce(clone(queryReponse));
       const returnedEmail: Resource<companyEmail> = await getCompanyEmail(COMPANY_NUMBER);
 
-      Object.getOwnPropertyNames(emailResource.resource).forEach(property => {
+      Object.getOwnPropertyNames(validEmailSDKResource.resource).forEach(property => {
         expect(returnedEmail.httpStatusCode).toEqual(StatusCodes.OK);
         expect(returnedEmail.resource).toHaveProperty(property);
         expect(returnedEmail.resource?.companyEmail).toEqual(TEST_EMAIL);
@@ -58,7 +58,7 @@ describe("Company email address service test", () => {
 
       const returnedEmail: Resource<companyEmail> = await getCompanyEmail(COMPANY_NUMBER);
 
-      Object.getOwnPropertyNames(emailResource.resource).forEach(property => {
+      Object.getOwnPropertyNames(validEmailSDKResource.resource).forEach(property => {
         expect(returnedEmail.httpStatusCode).toEqual(StatusCodes.BAD_REQUEST);
         expect(returnedEmail.resource).toBeNull;
       });
