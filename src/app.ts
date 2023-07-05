@@ -9,6 +9,7 @@ import { authenticationMiddleware } from "./middleware/authentication.middleware
 import { companyAuthenticationMiddleware } from "./middleware/company.authentication.middleware";
 import cookieParser from "cookie-parser";
 import { sessionMiddleware } from "./middleware/session.middleware";
+import { pageNotFound } from "./utils/error";
 
 const app = express();
 
@@ -79,5 +80,8 @@ app.use(companyAuthRegex, companyAuthenticationMiddleware );
 
 // Channel all requests through router dispatch
 routerDispatch(app);
+
+
+app.use(pageNotFound);
 
 export default app;
