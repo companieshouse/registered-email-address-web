@@ -38,6 +38,8 @@ export const PIWIK_START_GOAL_ID = getEnvironmentValue("PIWIK_START_GOAL_ID", "3
 export const PIWIK_UPDATE_START_GOAL_ID = getEnvironmentValue("PIWIK_UPDATE_START_GOAL_ID", "10");
 export const LOG_LEVEL = getEnvironmentValue("LOG_LEVEL", "DEBUG");
 export const API_URL = getEnvironmentValue("API_URL", "http://api.chs.local:4001");
+export const ACCOUNT_URL = getEnvironmentValue("ACCOUNT_URL", "http://account.chs.local");
+
 export const DESCRIPTION = "Update Registered Email Address Transaction";
 export const REFERENCE = "UpdateRegisteredEmailAddressReference";
 export const STATIC_SUBMISSION_ID = "72hw92jw992km90mw9002m22";
@@ -56,13 +58,13 @@ export const VIEW_COMPANY_INFORMATION_PAGE = "view-company-information";
 export const CONFIRM_COMPANY_PAGE = "confirm-company";
 export const COMPANY_INVALID_PAGE = "invalid";
 export const CHANGE_EMAIL_ADDRESS_PAGE = "change-email-address";
+export const SIGN_OUT_PAGE = `signout`;
+
 
 // ROUTING PATHS
 export const HOME_URL = `${REA_HOME_PAGE}`;
 export const REGISTER_AN_EMAIL_ADDRESS_URL = `${HOME_URL}/`;
-
 export const COMPANY_AUTH_PROTECTED = `/email/`;
-
 export const COMPANY_BASE_URL = `${REA_HOME_PAGE}/company`;
 export const EMAIL_BASE_URL = `${REA_HOME_PAGE}/email`;
 export const NUMBER_URL = "/number";
@@ -71,7 +73,9 @@ export const INVALID_URL = "/invalid";
 export const CHANGE_EMAIL_ADDRESS_URL = "/change-email-address";
 export const CHECK_ANSWER_URL = "/check-your-answer";
 
-
+// FULL URLS
+export const SIGN_OUT_URL = `${HOME_URL}/${SIGN_OUT_PAGE}`;
+export const ACCOUNTS_SIGNOUT_PATH = `${ACCOUNT_URL}/signout`;
 export const COMPANY_NUMBER_URL = `${HOME_URL}/${COMPANY_NUMBER_PAGE}`;
 export const COMPANY_CONFIRM_URL = `${HOME_URL}/${COMPANY_CONFIRM_PAGE}`;
 export const VIEW_COMPANY_INFORMATION_URI = `${HOME_URL}/${VIEW_COMPANY_INFORMATION_PAGE}`;

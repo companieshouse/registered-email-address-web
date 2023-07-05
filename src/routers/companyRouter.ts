@@ -2,8 +2,6 @@ import { Request, Response, Router, NextFunction } from "express";
 import { CompanySearchHandlerPost } from "./handlers/company/companySearch";
 import { ConfirmCompanyHandler } from "./handlers/company/confirm";
 import { InvalidCompanyHandler } from "./handlers/company/invalidCompany";
-import { ChangeEmailAddressHandler } from "./handlers/email/changeEmailAddress";
-import { ConfirmChangeEmailAddressHandler } from "./handlers/email/confirmEmailChange";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import * as config from "../config/index";
 import logger from "../lib/Logger";
