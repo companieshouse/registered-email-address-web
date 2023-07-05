@@ -19,7 +19,6 @@ router.post(config.HOME_URL, (req: Request, res: Response, next: NextFunction) =
 });
 
 router.get(config.SIGN_OUT_URL, async (req: Request, res: Response, next: NextFunction) => {
-  req.session?.setExtraData(RETURN_URL, req.get("Referrer"));
   const handler = new SignOutHandler();
   const viewData = await handler.get(req, res);
   res.render(`${routeViews}` + config.SIGN_OUT_PAGE, viewData);

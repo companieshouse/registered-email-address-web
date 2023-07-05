@@ -11,18 +11,8 @@
 {% set title = "change-email-address" %}
 
 {% block main_content %}
-  {{
-    govukBackLink({
-      text: "Back",
-      href: backUri
-    })
-  }}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
        <label class="govuk-label" for="change-email-address">
         <h1 class="govuk-heading-xl">check your answer before sending your application</h1>
        </label>
        <p>New email address: <b>{{companyEmailAddress}}</b></p>
-    </div>
-  </div>
 {% endblock %}

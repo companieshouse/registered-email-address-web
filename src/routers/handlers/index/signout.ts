@@ -10,6 +10,8 @@ export class SignOutHandler extends GenericHandler {
   }
 
   get (req: Request, response: Response): Promise<Object> {
+    req.session?.setExtraData(RETURN_URL, req.get("Referrer"));
+    this.viewData.backUri = req.get("Referrer");
     logger.info(`GET request to serve signout page`);
     return Promise.resolve(this.viewData);
   }
