@@ -9,6 +9,7 @@ export class InvalidCompanyHandler extends GenericHandler {
 
   constructor () {
     super();
+    this.viewData.signoutBanner = false;
   }
   async get (req: Request, res: Response): Promise<Object> {
     logger.info(`GET request to serve company Invalid Company`);

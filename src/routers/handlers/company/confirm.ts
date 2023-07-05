@@ -23,14 +23,14 @@ export class ConfirmCompanyHandler extends GenericHandler {
     let companyProfile: CompanyProfile;
     if (req.query.companyNumber === undefined) {
       companyProfile = session.data.extra_data.companyProfile;
-      this.viewData = buildPageOptions(session, companyProfile);
+      this.buildPageOptions(session, companyProfile);
     } else {
       try {
         const companyNumber: string = req.query.companyNumber?.toString() ?? "";
         companyProfile = await getCompanyProfile(companyNumber);
         // eslint-disable-next-line no-unused-expressions
         session?.setExtraData(constants.COMPANY_PROFILE, companyProfile);
-        this.viewData = buildPageOptions(session, companyProfile);
+        this.buildPageOptions(session, companyProfile);
       } catch (e) {
         this.viewData.errors = {
           companyNumber: constants.INVALID_COMPANY_NUMBER
@@ -68,16 +68,16 @@ export class ConfirmCompanyHandler extends GenericHandler {
     }
     return Promise.resolve(this.viewData);
   }
-}
 
-const buildPageOptions = async (session: Session, companyProfile: CompanyProfile): Promise<Object> => {
-  const formattedCompanyProfile = formatForDisplay(companyProfile);
-  const address = buildAddress(formattedCompanyProfile);
-  return {
-    companyProfile :  companyProfile,
-    company: formattedCompanyProfile,
-    address: address,
-    userEmail : session.data.signin_info?.user_profile?.email,
-    backUri: config.COMPANY_NUMBER_URL
-  };
-};
+  buildPageOptions (session: Session, companyProfile: CompanyProfile){
+    const formattedCompanyProfile = formatForDisplay(companyProfile);
+    const address = buildAddress(formattedCompanyProfile);
+    this.viewData.companyProfile = companyProfile;
+    this.viewData.company = formattedCompanyProfile;
+    this.viewData.address = address;
+    this.viewData.userEmail = session.data.signin_info?.user_profile?.email;
+    this.viewData.backUri = config.COMPANY_NUMBER_URL;
+  }
+
+
+}
