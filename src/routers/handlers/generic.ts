@@ -14,6 +14,7 @@ export abstract class GenericHandler extends BaseHttpController {
     super();
     this.errorManifest = errorManifest;
     this.viewData = {};
+    this.viewData.signoutBanner = true;
   }
 
   processHandlerException (err: any): Object {
