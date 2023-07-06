@@ -3,54 +3,38 @@
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 
-{% set title = "Update a registered email address" %}
-
-{% block pageTitle %}
-    {% include "includes/page-title.html" %}
-{% endblock %}
-
-{% block backLink %}
-    {{
-    govukBackLink({
-        text: "Back",
-        href: backUri
-    })
-    }}
-{% endblock %}
-
 {% block main_content %}
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-l">Check your answer before submitting your application</h1>
-            <form action="" method="post">
-
-                {{ updatedCompanyEmail }}
-
-                {{ govukCheckboxes({
-                    name: "emailConfirmation",
-                    items: [
-                        {
-                            value: "confirm",
-                            text: "I confirm that emails sent by the registrar to the new registered email address would, in the ordinary course of events, be expected to come to the attention of a person acting on behalf of the company."
-                        }
-                    ],
-                    errorMessage: {
-                        text: errors.emailConfirmation
-                    } if errors.emailConfirmation,
-                    classes: "govuk-input",
-                    id: "email-confirmation",
-                    value: data.emailConfirmation
-                }) }}
-
-                {{
-                govukButton({
-                    text: 'Continue',
-                    attributes: {
-                        id: 'submit'
-                    }
-                })
-                }}
-            </form>
-        </div>
+    <label class="govuk-label" for="check-email-address">
+        <h1 class="govuk-heading-xl">Check your answer before sending your application</h1>
+    </label>
+    <div id="check-email-address-hint" class="govuk-hint">
+        New registered email address is <b>{{updatedCompanyEmail}}</b>
     </div>
+
+    <form action="" method="post">
+        {{ govukCheckboxes({
+            name: "emailConfirmation",
+            items: [
+                {
+                    value: "confirm",
+                    text: "I confirm that emails sent by the registrar to the new registered email address would, in the ordinary course of events, be expected to come to the attention of a person acting on behalf of the company."
+                }
+            ],
+            errorMessage: {
+                text: errors.emailConfirmation
+            } if errors.emailConfirmation,
+            classes: "govuk-input",
+            id: "email-confirmation",
+            value: data.emailConfirmation
+        }) }}
+
+        {{
+        govukButton({
+            text: 'Continue',
+            attributes: {
+                id: 'submit'
+            }
+        })
+        }}
+    </form>
 {% endblock %}
