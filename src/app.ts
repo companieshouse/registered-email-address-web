@@ -15,18 +15,18 @@ import {pageNotFound} from "./utils/error";
 const app = express();
 
 app.set("views", [
-    path.join(__dirname, "/views"),
-    path.join(__dirname, NODE_MODULES_BASE_PATH + "/node_modules/govuk-frontend")
+  path.join(__dirname, "/views"),
+  path.join(__dirname, NODE_MODULES_BASE_PATH + "/node_modules/govuk-frontend")
 ]);
 
 const nunjucksLoaderOpts = {
-    watch: process.env.NUNJUCKS_LOADER_WATCH !== "false",
-    noCache: process.env.NUNJUCKS_LOADER_NO_CACHE !== "true"
+  watch: process.env.NUNJUCKS_LOADER_WATCH !== "false",
+  noCache: process.env.NUNJUCKS_LOADER_NO_CACHE !== "true"
 };
 
 const njk = new nunjucks.Environment(
-    new nunjucks.FileSystemLoader(app.get("views"),
-        nunjucksLoaderOpts)
+  new nunjucks.FileSystemLoader(app.get("views"),
+                                nunjucksLoaderOpts)
 );
 
 njk.express(app);
@@ -50,20 +50,20 @@ app.use(express.urlencoded({extended: false}));
 
 // Unhandled errors
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-    logger.error(`${err.name} - appError: ${err.message} - ${err.stack}`);
-    res.render("partials/error_500");
+  logger.error(`${err.name} - appError: ${err.message} - ${err.stack}`);
+  res.render("partials/error_500");
 });
 
 // Unhandled exceptions
 process.on("uncaughtException", (err: any) => {
-    logger.error(`${err.name} - uncaughtException: ${err.message} - ${err.stack}`);
-    process.exit(1);
+  logger.error(`${err.name} - uncaughtException: ${err.message} - ${err.stack}`);
+  process.exit(1);
 });
 
 // Unhandled promise rejections
 process.on("unhandledRejection", (err: any) => {
-    logger.error(`${err.name} - unhandledRejection: ${err.message} - ${err.stack}`);
-    process.exit(1);
+  logger.error(`${err.name} - unhandledRejection: ${err.message} - ${err.stack}`);
+  process.exit(1);
 });
 // Apply middleware
 app.use(cookieParser());

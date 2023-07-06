@@ -9,7 +9,7 @@ import {processGetCheckRequest, processPostCheckRequest} from "../services/compa
 
 const router: Router = Router();
 const routeViews: string = "router_views/email/";
-const errorsConst: string = "errors";
+const errorsConst: string = "statementError";
 
 // GET: /change-email-address
 router.get(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
@@ -47,9 +47,11 @@ router.get(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunct
 });
 
 router.post(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunction) => {
+
+  
   const viewData = await processPostCheckRequest(req);
 
-  if (viewData.hasOwnProperty(errorsConst) === true) {
+  if (Object.prototype.hasOwnProperty.call(viewData, errorsConst)=== true) {
     res.render(`${routeViews}` + CHECK_ANSWER_URL, viewData);
   } else {
     res.render(`${routeViews}` + SUBMITTED_URL, viewData);
