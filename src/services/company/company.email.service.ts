@@ -54,7 +54,9 @@ export const processGetCheckRequest = async (req: Request): Promise<object> => {
 
     return {
         "updatedCompanyEmail": updatedCompanyEmail,
-        backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL
+        backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
+        signoutBanner: true,
+        userEmail: req.session?.data.signin_info?.user_profile?.email
     };
 };
 
@@ -67,7 +69,9 @@ export const processPostCheckRequest = async (req: Request) => {
         return {
             errors: "You need to accept the registered email address statement",
             updatedCompanyEmail: req.session?.getExtraData(UPDATED_COMPANY_EMAIL),
-            backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL
+            backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
+            signoutBanner: true,
+            userEmail: req.session?.data.signin_info?.user_profile?.email
         };
     }
 
