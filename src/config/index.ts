@@ -58,6 +58,7 @@ export const VIEW_COMPANY_INFORMATION_PAGE = "view-company-information";
 export const CONFIRM_COMPANY_PAGE = "confirm-company";
 export const COMPANY_INVALID_PAGE = "invalid";
 export const CHANGE_EMAIL_ADDRESS_PAGE = "change-email-address";
+export const CHECK_YOUR_ANSWERS_PAGE = "email/check-your-answer";
 export const SIGN_OUT_PAGE = `signout`;
 
 
@@ -83,3 +84,7 @@ export const CONFIRM_COMPANY_URL = `${HOME_URL}/${CONFIRM_COMPANY_PAGE}`;
 export const INVALID_COMPANY_URL = `${COMPANY_BASE_URL}/${COMPANY_INVALID_PAGE}`;
 export const EMAIL_CHANGE_EMAIL_ADDRESS_URL = `${HOME_URL}/${EMAIL_CHANGE_EMAIL_ADDRESS}`;
 export const EMAIL_CHECK_ANSWER_URL = `${HOME_URL}/${EMAIL_CHECK_ANSWER}`;
+export const CHECK_YOUR_ANSWERS_URL = `${HOME_URL}/${CHECK_YOUR_ANSWERS_PAGE}`;
+export const SUBMITTED_URL = "/submitted"; //todo temp for unit testing
+
+export const NODE_MODULES_BASE_PATH = getEnvironmentValue("NODE_MODULES_BASE_PATH", "");

@@ -1,32 +1,32 @@
 import "reflect-metadata";
-import express, { Request, Response, NextFunction } from "express";
+import express, {NextFunction, Request, Response} from "express";
 import nunjucks from "nunjucks";
 import path from "path";
 import logger from "./lib/Logger";
 import routerDispatch from "./router.dispatch";
 import * as config from "./config";
-import { authenticationMiddleware } from "./middleware/authentication.middleware";
-import { companyAuthenticationMiddleware } from "./middleware/company.authentication.middleware";
+import {NODE_MODULES_BASE_PATH} from "./config";
+import {authenticationMiddleware} from "./middleware/authentication.middleware";
+import {companyAuthenticationMiddleware} from "./middleware/company.authentication.middleware";
 import cookieParser from "cookie-parser";
-import { sessionMiddleware } from "./middleware/session.middleware";
-import { pageNotFound } from "./utils/error";
+import {sessionMiddleware} from "./middleware/session.middleware";
+import {pageNotFound} from "./utils/error";
 
 const app = express();
 
 app.set("views", [
-  path.join(__dirname, "/views"),
-  path.join(__dirname, "/node_modules/govuk-frontend"),
-  path.join(__dirname, "/node_modules/govuk-frontend/components")
+    path.join(__dirname, "/views"),
+    path.join(__dirname, NODE_MODULES_BASE_PATH + "/node_modules/govuk-frontend")
 ]);
 
 const nunjucksLoaderOpts = {
-  watch: process.env.NUNJUCKS_LOADER_WATCH !== "false",
-  noCache: process.env.NUNJUCKS_LOADER_NO_CACHE !== "true"
+    watch: process.env.NUNJUCKS_LOADER_WATCH !== "false",
+    noCache: process.env.NUNJUCKS_LOADER_NO_CACHE !== "true"
 };
 
 const njk = new nunjucks.Environment(
-  new nunjucks.FileSystemLoader(app.get("views"),
-                                nunjucksLoaderOpts)
+    new nunjucks.FileSystemLoader(app.get("views"),
+        nunjucksLoaderOpts)
 );
 
 njk.express(app);
@@ -46,24 +46,24 @@ app.enable("trust proxy");
 
 // parse body into req.body
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 
 // Unhandled errors
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  logger.error(`${err.name} - appError: ${err.message} - ${err.stack}`);
-  res.render("partials/error_500");
+    logger.error(`${err.name} - appError: ${err.message} - ${err.stack}`);
+    res.render("partials/error_500");
 });
 
 // Unhandled exceptions
 process.on("uncaughtException", (err: any) => {
-  logger.error(`${err.name} - uncaughtException: ${err.message} - ${err.stack}`);
-  process.exit(1);
+    logger.error(`${err.name} - uncaughtException: ${err.message} - ${err.stack}`);
+    process.exit(1);
 });
 
 // Unhandled promise rejections
 process.on("unhandledRejection", (err: any) => {
-  logger.error(`${err.name} - unhandledRejection: ${err.message} - ${err.stack}`);
-  process.exit(1);
+    logger.error(`${err.name} - unhandledRejection: ${err.message} - ${err.stack}`);
+    process.exit(1);
 });
 // Apply middleware
 app.use(cookieParser());
@@ -76,7 +76,7 @@ app.use(userAuthRegex, authenticationMiddleware);
 
 // Company Auth redirect
 const companyAuthRegex = new RegExp(`^${config.EMAIL_BASE_URL}/.+`);
-app.use(companyAuthRegex, companyAuthenticationMiddleware );
+app.use(companyAuthRegex, companyAuthenticationMiddleware);
 
 // Channel all requests through router dispatch
 routerDispatch(app);
