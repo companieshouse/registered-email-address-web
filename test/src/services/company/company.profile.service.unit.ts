@@ -1,10 +1,11 @@
-import { getCompanyProfile } from "../../../src/services/company/company.profile.service";
+import { getCompanyProfile } from "../../../../src/services/company/company.profile.service";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
-import { createAndLogError } from "../../../src/utils/logger";
-import { validSDKResource } from "../../mocks/company.profile.mock";
+import { createAndLogError } from "../../../../src/lib/Logger";
+import { validSDKResource } from "../../../mocks/company.profile.mock";
+import { StatusCodes } from "http-status-codes";
 jest.mock("@companieshouse/api-sdk-node");
-jest.mock("../../../src/utils/logger");
+jest.mock("../../../../src/lib/Logger");
 
 const mockCreateApiClient = createApiClient as jest.Mock;
 const mockGetCompanyProfile = jest.fn();
@@ -39,8 +40,8 @@ describe("Company profile service test", () => {
       });
     });
 
-    it("Should throw an error if status code >= 400", async () => {
-      const HTTP_STATUS_CODE = 400;
+    it(`Should throw an error if status code >= ${StatusCodes.BAD_REQUEST}`, async () => {
+      const HTTP_STATUS_CODE = StatusCodes.BAD_REQUEST;
       mockGetCompanyProfile.mockResolvedValueOnce({
         httpStatusCode: HTTP_STATUS_CODE
       } as Resource<CompanyProfile>);
