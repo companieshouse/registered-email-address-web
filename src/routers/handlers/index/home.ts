@@ -6,7 +6,7 @@ export class HomeHandler extends GenericHandler {
 
   constructor () {
     super();
-    this.viewData.title = "Update a registered company email address";
+    this.viewData.title = "Update a registered email address";
     this.viewData.signoutBanner = false;
   }
 
