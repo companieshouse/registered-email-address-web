@@ -18,5 +18,5 @@ export const NO_EMAIL_ADDRESS_SUPPLIED = "Enter the registered email address";
 export const INVALID_COMPANY_REASON = "invalidCompanyReason";
 export const REGISTERED_EMAIL_ADDRESS = "registeredEmailAddress";
 export const RETURN_URL = 'returnToUrl';
-export const TRANSACTION_CREATE_ERROR = "unable to create a transaction record for company ";
-
+export const TRANSACTION_CREATE_ERROR = "Unable to create a transaction record for company ";
+export const TRANSACTION_CLOSE_ERROR = "Unable to close a transaction record for company ";

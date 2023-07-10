@@ -1,16 +1,28 @@
 import {companyEmail, companyEmailResource} from "./resources/resources";
 import {createApiClient, Resource} from "@companieshouse/api-sdk-node";
 import {
-  CHS_API_KEY,
+  CHS_API_KEY, DESCRIPTION,
   EMAIL_CHANGE_EMAIL_ADDRESS_URL,
   EMAIL_CHECK_ANSWER_URL,
-  ORACLE_QUERY_API_URL
+  ORACLE_QUERY_API_URL, REFERENCE, transactionStatuses, urlParams
 } from "../../config/index";
 import {StatusCodes} from 'http-status-codes';
 import {Request} from "express";
 import {Session} from "@companieshouse/node-session-handler";
-import {UPDATED_COMPANY_EMAIL} from "../../constants/app.const";
-import {logger} from "../../lib/Logger";
+import {
+  COMPANY_EMAIL,
+  COMPANY_NUMBER,
+  SUBMISSION_ID, TRANSACTION_CLOSE_ERROR,
+  TRANSACTION_CREATE_ERROR,
+  UPDATED_COMPANY_EMAIL
+} from "../../constants/app.const";
+import {createAndLogError, logger} from "../../lib/Logger";
+import {ApiErrorResponse, ApiResponse} from "@companieshouse/api-sdk-node/dist/services/resource";
+import {Transaction} from "@companieshouse/api-sdk-node/dist/services/transaction/types";
+import ApiClient from "@companieshouse/api-sdk-node/dist/client";
+import {createPublicApiKeyClient, createPublicOAuthApiClient} from "../api/api.service";
+import {createTransaction} from "../../routers/handlers/email/changeEmailAddress";
+import {closeTransaction, putTransaction} from "../transaction/transaction.service";
 
 
 /**
@@ -62,11 +74,12 @@ export const processGetCheckRequest = async (req: Request): Promise<object> => {
 export const processPostCheckRequest = async (req: Request) => {
   logger.info(`Return if new email address was confirmed`);
 
+  const session: Session = req.session as Session;
   const emailConfirmation: string | undefined = req.body.emailConfirmation;
-
   if (emailConfirmation === undefined) {
+
     return {
-      statementError:  "You need to accept the registered email address statement",
+      statementError: "You need to accept the registered email address statement",
       updatedCompanyEmail: req.session?.getExtraData(UPDATED_COMPANY_EMAIL),
       backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
       signoutBanner: true,
@@ -74,5 +87,16 @@ export const processPostCheckRequest = async (req: Request) => {
     };
   }
 
-  return {emailConfirmation: emailConfirmation};
+  const companyNumber: string | undefined = session.getExtraData(COMPANY_NUMBER);
+  const transactionId: string | undefined = session.getExtraData(SUBMISSION_ID);
+
+  try {
+    await closeTransaction(session, companyNumber, transactionId).then((transactionId) => {
+      return {status: "success"};
+    });
+  } catch (e) {
+    return {
+      statementError: TRANSACTION_CLOSE_ERROR + companyNumber
+    };
+  }
 };
