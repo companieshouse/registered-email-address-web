@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
-import logger from "../../../lib/Logger";
+import { logger } from "../../../lib/Logger";
 import { validateEmailString } from "../../../utils/validateEmailString";
 import { getCompanyEmail } from "../../../services/company/company.email.service";
 import { COMPANY_EMAIL, NO_EMAIL_ADDRESS_FOUND } from "../../../constants/app.const";
