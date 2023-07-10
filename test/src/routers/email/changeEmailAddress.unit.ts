@@ -65,7 +65,7 @@ describe("Registered email address update - test GET method", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     changeEmailAddressHandler = new ChangeEmailAddressHandler(
-      formValidator, 
+      formValidator,
       TEST_EMAIL_EXISTING
     );
     // session instance
@@ -76,7 +76,7 @@ describe("Registered email address update - test GET method", () => {
     });
     response = createResponse();
   });
-  
+
   it("Handle error returned from creating transaction record", async () => {
     // build required transaction response for test
     mockPostTransactionResponse.mockResolvedValueOnce(clone(errorReponse));
@@ -131,7 +131,7 @@ describe("Registered email address update - test POST method", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     changeEmailAddressHandler = new ChangeEmailAddressHandler(
-      formValidator, 
+      formValidator,
       TEST_EMAIL_EXISTING
     );
     // session instance
@@ -142,7 +142,7 @@ describe("Registered email address update - test POST method", () => {
     });
     response = createResponse();
   });
-  
+
   it("No email in POST request body - return view data error", async () => {
     //set email address in request body to empty
     request.body.changeEmailAddress = "";
@@ -152,7 +152,7 @@ describe("Registered email address update - test POST method", () => {
 
       expect(changeEmailAddressResponseJson.errors).toBeTruthy;
       expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
-      expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(NO_EMAIL_ADDRESS_SUPPLIED);
+      expect(changeEmailAddressResponseJson.statementError.changeEmailAddress).toEqual(NO_EMAIL_ADDRESS_SUPPLIED);
     });
   });
 

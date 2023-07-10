@@ -87,11 +87,11 @@ export const processPostCheckRequest = async (req: Request) => {
     };
   }
 
-  const companyNumber: string | undefined = session.getExtraData(COMPANY_NUMBER);
-  const transactionId: string | undefined = session.getExtraData(SUBMISSION_ID);
+  const companyNumber = session.getExtraData(COMPANY_NUMBER);
+  const transactionId = session.getExtraData(SUBMISSION_ID);
 
   try {
-    await closeTransaction(session, companyNumber, transactionId).then((transactionId) => {
+    await closeTransaction(session, <string>companyNumber, <string>transactionId).then((transactionId) => {
       return {status: "success"};
     });
   } catch (e) {
