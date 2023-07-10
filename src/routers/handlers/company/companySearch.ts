@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import { inject } from "inversify";
-import logger from "../../../lib/Logger";
+import { logger } from "../../../lib/Logger";
 import { REA_HOME_PAGE } from "../../../config/index";
 import Optional from "../../../models/optional";
 import FormValidator from "../../../utils/formValidator.util";
