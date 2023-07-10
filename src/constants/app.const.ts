@@ -10,6 +10,7 @@ export const COMPANY_PROFILE = "companyProfile";
 export const COMPANY_EMAIL = "companyEmail";
 export const UPDATED_COMPANY_EMAIL = "updatedCompanyEmail";
 export const COMPANY_NUMBER = "companyNumber";
+export const SUBMISSION_ID = "submissionID";
 export const INVALID_COMPANY_NUMBER = "You must enter a valid company number";
 export const NO_EMAIL_ADDRESS_FOUND = "No email address for company number";
 export const EMAIL_ADDRESS_INVALID = "Enter an email address in the correct format, like name@example.com";
@@ -17,4 +18,5 @@ export const NO_EMAIL_ADDRESS_SUPPLIED = "Enter the registered email address";
 export const INVALID_COMPANY_REASON = "invalidCompanyReason";
 export const REGISTERED_EMAIL_ADDRESS = "registeredEmailAddress";
 export const RETURN_URL = 'returnToUrl';
+export const TRANSACTION_CREATE_ERROR = "unable to create a transaction record for company ";
 

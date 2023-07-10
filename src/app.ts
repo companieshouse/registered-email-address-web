@@ -2,7 +2,7 @@ import "reflect-metadata";
 import express, {NextFunction, Request, Response} from "express";
 import nunjucks from "nunjucks";
 import path from "path";
-import logger from "./lib/Logger";
+import { logger } from "./lib/Logger";
 import routerDispatch from "./router.dispatch";
 import * as config from "./config";
 import {NODE_MODULES_BASE_PATH} from "./config";

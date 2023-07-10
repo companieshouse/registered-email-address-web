@@ -4,7 +4,7 @@ import { ConfirmCompanyHandler } from "./handlers/company/confirm";
 import { InvalidCompanyHandler } from "./handlers/company/invalidCompany";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import * as config from "../config/index";
-import logger from "../lib/Logger";
+import { logger } from "../lib/Logger";
 import FormValidator from "../utils/formValidator.util";
 import CompanyNumberSanitizer from "../utils/companyNumberSanitizer";
 import * as constants from "../constants/app.const";

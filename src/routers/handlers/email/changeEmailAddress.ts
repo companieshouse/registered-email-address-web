@@ -1,13 +1,31 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import { inject } from "inversify";
-import logger from "../../../lib/Logger";
+import { Session } from "@companieshouse/node-session-handler";
+import { logger, createAndLogError } from "../../../lib/Logger";
 import { validateEmailString } from "../../../utils/validateEmailString";
 import { getCompanyEmail } from "../../../services/company/company.email.service";
-import { COMPANY_EMAIL, COMPANY_NUMBER, NO_EMAIL_ADDRESS_FOUND, EMAIL_ADDRESS_INVALID, NO_EMAIL_ADDRESS_SUPPLIED } from "../../../constants/app.const";
-import { COMPANY_BASE_URL, CONFIRM_URL } from "../../../config/index";
+import { postTransaction } from "../../../services/transaction/transaction.service";
+
+import { 
+  COMPANY_EMAIL,
+  COMPANY_NUMBER,
+  SUBMISSION_ID,
+  NO_EMAIL_ADDRESS_FOUND,
+  EMAIL_ADDRESS_INVALID,
+  TRANSACTION_CREATE_ERROR 
+} from "../../../constants/app.const";
+
+import { 
+  COMPANY_BASE_URL,
+  CONFIRM_URL,
+  DESCRIPTION,
+  REFERENCE 
+} from "../../../config/index";
+
 import ValidationErrors from "../../../models/view/validationErrors.model";
 
+import { StatusCodes } from 'http-status-codes';
 import Optional from "../../../models/optional";
 import FormValidator from "../../../utils/formValidator.util";
 import formSchema from "../../../schemas/changeEmailAddress.schema";
@@ -26,7 +44,8 @@ export class ChangeEmailAddressHandler extends GenericHandler {
   async get (req: Request, response: Response): Promise<Object> {
     logger.info(`GET request to serve change registered email address page`);
 
-    const companyNumber: string | undefined= req.session?.getExtraData(COMPANY_NUMBER);
+    const session: Session = req.session as Session;
+    const companyNumber: string | undefined = req.session?.getExtraData(COMPANY_NUMBER);
     const companyEmailAddress: string | undefined = req.session?.getExtraData(COMPANY_EMAIL);
 
     // check session state - if not found, we'll need a call to oracle api
@@ -35,6 +54,18 @@ export class ChangeEmailAddressHandler extends GenericHandler {
       return Promise.resolve(this.viewData);
     } else {
       if (companyNumber !== undefined) {
+        // create transaction record
+        try {
+          // get transaction record data
+          await createTransaction(session, companyNumber).then((transactionId) => {
+            req.session?.setExtraData(SUBMISSION_ID, transactionId);
+          });
+        } catch (e) {
+          this.viewData.errors = {
+            companyNumber: TRANSACTION_CREATE_ERROR+companyNumber
+          };
+          return this.viewData;
+        }
         await getCompanyEmail(companyNumber).then((companyEmail) => {
           if (companyEmail.resource?.companyEmail === undefined) {
             this.viewData.statementError = {
@@ -73,3 +104,16 @@ export class ChangeEmailAddressHandler extends GenericHandler {
     return Promise.resolve(this.viewData);
   }
 }
+
+// create transaction record
+export const createTransaction = async (session: Session, companyNumber: string): Promise<string> => {
+  let transactionId: string = "";
+  try {
+    await postTransaction(session, companyNumber, DESCRIPTION, REFERENCE).then((transaction) => {
+      transactionId = transaction.id as string;
+    });
+    return Promise.resolve(transactionId);
+  } catch (e) {
+    throw createAndLogError(`update registered email address: ${StatusCodes.INTERNAL_SERVER_ERROR} - error while create transaction record for ${companyNumber}`);
+  }
+};

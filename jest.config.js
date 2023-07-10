@@ -6,14 +6,10 @@ module.exports = {
     '/node_modules/',
     '/dist/'
   ],
-  collectCoverageFrom: [
-    './src/**/*.ts'
-  ],
   coveragePathIgnorePatterns: [
     '/src/bin/',
   ],
   preset: 'ts-jest',
-  verbose: true,
   testMatch: [
     '**/test/src/**/*.unit.ts',
   ],

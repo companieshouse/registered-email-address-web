@@ -7,10 +7,10 @@ import {
   ORACLE_QUERY_API_URL
 } from "../../config/index";
 import {StatusCodes} from 'http-status-codes';
-import logger from "../../lib/Logger";
 import {Request} from "express";
 import {Session} from "@companieshouse/node-session-handler";
 import {UPDATED_COMPANY_EMAIL} from "../../constants/app.const";
+import {logger} from "../../lib/Logger";
 
 
 /**
@@ -25,7 +25,6 @@ export const getCompanyEmail = async (companyNumber: string): Promise<Resource<c
     undefined,
     ORACLE_QUERY_API_URL
   );
-
   const resp = await client.apiClient.httpGet(`/company/${companyNumber}/registered-email-address`);
 
   const emailResource: Resource<companyEmail> = {
