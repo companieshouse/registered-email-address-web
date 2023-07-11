@@ -55,12 +55,6 @@ export const closeTransaction = async (session: Session, companyNumber: string, 
   return Promise.resolve(apiResponse);
 };
 
-export const createRegisteredEmailAddressResource = async (session: Session, transactionId: string, updatedCompanyEmail: string): Promise<Awaited<HttpResponse>> => {
-  const apiClient: ApiClient = createPublicOAuthApiClient(session);
-  const apiResponse: HttpResponse = await apiClient.apiClient.httpPost(`/transactions/${transactionId}/registered-email-address`, {registered_email_address: updatedCompanyEmail});
-  return Promise.resolve(apiResponse);
-};
-
 /**
  * PUT transaction
  */

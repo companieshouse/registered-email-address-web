@@ -6,7 +6,10 @@ import {Request} from "express";
 import {Session} from "@companieshouse/node-session-handler";
 import {COMPANY_NUMBER, SUBMISSION_ID, TRANSACTION_CLOSE_ERROR, UPDATED_COMPANY_EMAIL} from "../../constants/app.const";
 import {logger} from "../../lib/Logger";
-import {closeTransaction, createRegisteredEmailAddressResource} from "../transaction/transaction.service";
+import {closeTransaction} from "../transaction/transaction.service";
+import {HttpResponse} from "@companieshouse/api-sdk-node/dist/http/http-client";
+import ApiClient from "@companieshouse/api-sdk-node/dist/client";
+import {createPublicOAuthApiClient} from "../api/api.service";
 
 
 /**
@@ -73,24 +76,31 @@ export const processPostCheckRequest = async (req: Request) => {
     }
 
     const transactionId = session.getExtraData(SUBMISSION_ID);
+    const companyNumber = session.getExtraData(COMPANY_NUMBER);
 
     const response = await createRegisteredEmailAddressResource(session, <string>transactionId, <string>updatedCompanyEmail)
-        .then((resp) => {
-            return resp;
+        .then(() => {
+            try {
+                closeTransaction(session, <string>companyNumber, <string>transactionId).then((transactionId) => {
+                    return true;
+                });
+            } catch (e) {
+                return {
+                    statementError: TRANSACTION_CLOSE_ERROR + companyNumber
+                };
+            }
         })
         .catch((err) => {
             return err;
         });
+};
 
-    const companyNumber = session.getExtraData(COMPANY_NUMBER);
-
-    try {
-        await closeTransaction(session, <string>companyNumber, <string>transactionId).then((transactionId) => {
-            return {status: "success"};
-        });
-    } catch (e) {
-        return {
-            statementError: TRANSACTION_CLOSE_ERROR + companyNumber
-        };
+export const createRegisteredEmailAddressResource = async (session: Session, transactionId: string, updatedCompanyEmail: string): Promise<Awaited<HttpResponse>> => {
+    const apiClient: ApiClient = createPublicOAuthApiClient(session);
+    const apiResponse: HttpResponse = await apiClient.apiClient.httpPost(`/transactions/${transactionId}/registered-email-address`, {registered_email_address: updatedCompanyEmail});
+    if(apiResponse.status === 201) {
+        return Promise.resolve(apiResponse);
+    }else {
+        return Promise.reject("Failed to create Registered Email Address Resource");
     }
 };
