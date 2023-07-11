@@ -1,11 +1,14 @@
 {% extends "layouts/default.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
+{% set title = "Update a registered company email address - GOV.UK" %}
+
+
 {% block main_content %}
       <h1 class="govuk-heading-xl">{{ "Update a registered company email address - NOT FINAL" }}</h1>
       <p class="govuk-body-l">Use this service to update a registered company email address.</p>
       <p class="govuk-body">You cannot use this service to register a company email address.</p>
-      <p class="govuk-body">Instructions about doing that via a <a href="https://www.gov.uk/government/publications/etc/etc/etc" target="_blank" class="govuk-link">confirmation statement</a> here.</p>
+      <p class="govuk-body">Instructions about doing that via a <a href="https://www.gov.uk/government/publications/etc/etc/etc" data-event-id="link-to-confirmation-statement" target="_blank" class="govuk-link">confirmation statement</a> here.</p>
       <form method="post">
         {{
          govukButton({
@@ -19,7 +22,7 @@
         }}
       </form>
       <h2 class="govuk-heading-m">Before you start</h2>
-      <p class="govuk-body-s">Read the guidance on <a href="https://www.gov.uk/government/publications/etc/etc/etc" target="_blank" class="govuk-link">registered company email addresses</a>.</p>
+      <p class="govuk-body-s">Read the guidance on <a href="https://www.gov.uk/government/publications/etc/etc/etc" data-event-id="read-guidance-on-registered-email-address-link" target="_blank" class="govuk-link">registered company email addresses</a>.</p>
       <p class="govuk-body-s">You'll need a Companies House password and authentication code to use this servce - you'll be able to register for these if you do not have them.</p>
-      <p class="govuk-body-s"><a href="https://www.gov.uk/government/publications/etc/etc/etc" target="_blank" class="govuk-link">Contact Compnaies House</a> to get help updating your registered company email address</p>
+      <p class="govuk-body-s"><a href="https://www.gov.uk/government/publications/etc/etc/etc" data-event-id="contact-compnaies-house-link" target="_blank" class="govuk-link">Contact Compnaies House</a> to get help updating your registered company email address</p>
 {% endblock %}
