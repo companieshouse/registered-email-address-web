@@ -129,7 +129,7 @@ describe("transaction service tests", () => {
 
   describe("closeTransaction tests", () => {
     it("Expected data should exist in close transaction response", async () => {
-      const apiResponse = `"httpStatusCode": ${StatusCodes.OK}, "resource": {"companyNumber": "12345678", "description": "desc", "reference": "${REFERENCE}", "status": "closed"}}`;
+      const apiResponse = `"httpStatusCode": ${StatusCodes.OK}, "resource": {"companyNumber": "12345678", "description": "desc", "reference": "UpdateRegisteredEmailAddressReference", "status": "closed"}}`;
       mockPutTransaction.mockResolvedValueOnce({
         httpStatusCode: StatusCodes.OK,
         resource: {
