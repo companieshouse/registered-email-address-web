@@ -51,7 +51,7 @@ export class ChangeEmailAddressHandler extends GenericHandler {
     // check session state - if not found, we'll need a call to oracle api
     if (companyEmailAddress !== undefined) {
       this.viewData.companyEmailAddress = companyEmailAddress;
-      return Promise.resolve(this.viewData); 
+      return Promise.resolve(this.viewData);
     } else {
       if (companyNumber !== undefined) {
         // create transaction record
@@ -68,7 +68,7 @@ export class ChangeEmailAddressHandler extends GenericHandler {
         }
         await getCompanyEmail(companyNumber).then((companyEmail) => {
           if (companyEmail.resource?.companyEmail === undefined) {
-            this.viewData.errors = {
+            this.viewData.statementError = {
               changeEmailAddress: NO_EMAIL_ADDRESS_FOUND
             };
             return Promise.resolve(this.viewData);
@@ -90,7 +90,7 @@ export class ChangeEmailAddressHandler extends GenericHandler {
 
     //check: no email supplied
     if (errors) {
-      this.viewData.errors = errors;
+      this.viewData.statementError = errors;
       return this.viewData;
     }
 

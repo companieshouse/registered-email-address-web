@@ -8,6 +8,7 @@ export const BANNER_FEEDBACK_LINK = "https://www.smartsurvey.co.uk/s/closing-a-c
 export const CONFIRMATION_FEEDBACK_LINK = "https://www.smartsurvey.co.uk/s/closing-a-company-confirmation";
 export const COMPANY_PROFILE = "companyProfile";
 export const COMPANY_EMAIL = "companyEmail";
+export const UPDATED_COMPANY_EMAIL = "updatedCompanyEmail";
 export const COMPANY_NUMBER = "companyNumber";
 export const SUBMISSION_ID = "submissionID";
 export const INVALID_COMPANY_NUMBER = "You must enter a valid company number";
@@ -17,5 +18,5 @@ export const NO_EMAIL_ADDRESS_SUPPLIED = "Enter the registered email address";
 export const INVALID_COMPANY_REASON = "invalidCompanyReason";
 export const REGISTERED_EMAIL_ADDRESS = "registeredEmailAddress";
 export const RETURN_URL = 'returnToUrl';
-export const TRANSACTION_CREATE_ERROR = "unable to create a transaction record for company ";
-
+export const TRANSACTION_CREATE_ERROR = "Unable to create a transaction record for company ";
+export const TRANSACTION_CLOSE_ERROR = "Unable to close a transaction record for company ";
