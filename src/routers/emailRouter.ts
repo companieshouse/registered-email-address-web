@@ -48,13 +48,15 @@ router.get(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunct
 
 // POST: /check-your-answers
 router.post(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunction) => {
-    const viewData = await processPostCheckRequest(req);
+    const viewData = await processPostCheckRequest(req)
+        .then((viewData) => {
 
-    if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) === true) {
-        res.render(`${routeViews}` + CHECK_ANSWER_URL, viewData);
-    } else {
-        res.render(`${routeViews}` + SUBMITTED_URL, viewData);
-    }
+            if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) === true) {
+                res.render(`${routeViews}` + CHECK_ANSWER_URL, viewData);
+            } else {
+                res.render(`${routeViews}` + SUBMITTED_URL, viewData);
+            }
+        });
 });
 
 export default router;
