@@ -110,7 +110,7 @@ describe("Company email address service test", () => {
           return result;
         });
 
-      expect(result).toMatchObject({statementError: "Unable to close a transaction record for company " + COMPANY_NUMBER});
+      expect(result).toMatchObject({errors: "Unable to close a transaction record for company " + COMPANY_NUMBER});
     });
 
     test("Should reject when updated email address is not confirmed", async () => {
