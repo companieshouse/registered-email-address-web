@@ -59,6 +59,7 @@ export const CONFIRM_COMPANY_PAGE = "confirm-company";
 export const COMPANY_INVALID_PAGE = "invalid";
 export const CHANGE_EMAIL_ADDRESS_PAGE = "change-email-address";
 export const SIGN_OUT_PAGE = `signout`;
+export const ACCESSIBILITY_STATEMENT_PAGE = "accessibility-statement";
 
 
 // ROUTING PATHS
@@ -83,3 +84,4 @@ export const CONFIRM_COMPANY_URL = `${HOME_URL}/${CONFIRM_COMPANY_PAGE}`;
 export const INVALID_COMPANY_URL = `${COMPANY_BASE_URL}/${COMPANY_INVALID_PAGE}`;
 export const EMAIL_CHANGE_EMAIL_ADDRESS_URL = `${HOME_URL}/${EMAIL_CHANGE_EMAIL_ADDRESS}`;
 export const EMAIL_CHECK_ANSWER_URL = `${HOME_URL}/${EMAIL_CHECK_ANSWER}`;
+export const ACCESSIBILITY_STATEMENT_URL = `${HOME_URL}/${ACCESSIBILITY_STATEMENT_PAGE}`;
