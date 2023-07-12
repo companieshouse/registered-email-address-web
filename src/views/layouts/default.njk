@@ -18,7 +18,14 @@
   {% from "govuk/components/date-input/macro.njk"          import govukDateInput %}
   {% from "govuk/components/panel/macro.njk"               import govukPanel %}
   {% from "govuk/components/pagination/macro.njk"          import govukPagination %}
+  {% from 'govuk/components/cookie-banner/macro.njk'       import govukCookieBanner %}
 
+
+  <script nonce={{ nonce | dump | safe }} type="application/javascript">
+    window.SERVICE_NAME = '{{ SERVICE_NAME }}'
+    window.PIWIK_URL = '{{ PIWIK_URL }}'
+    window.PIWIK_SITE_ID = '{{ PIWIK_SITE_ID }}'
+  </script>
 
   <body class="govuk-template__body" >
 
@@ -27,11 +34,16 @@
     {% include "partials/__header.njk" %}
 
     <div class="govuk-width-container ">
-
       <main class="govuk-body" id="main-content">
-      {% include "./signout-banner.njk" %}
-      {% block backLink %}{% endblock %}
 
+      {% block beforeContent %}
+        <div id="templateName" data-id="{{ title }}" hidden></div>
+        {% include "partials/cookie_consent_banner.njk" %}
+        {% include "../partials/signout-banner.njk" %}
+        {% block backLink %}
+      {% endblock %}
+
+    {% endblock %}
         <div>
           {% include "partials/error_summary.njk" %}
           <div id="main-page-content">
@@ -51,4 +63,3 @@
 
   </body>
 </html>
-

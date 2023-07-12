@@ -1,7 +1,7 @@
 {% extends "layouts/default.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
-{% set title = " Are you sure you want to sign out?" %}
+{% set title = " Are you sure you want to sign out? - Update a registered email address – GOV.UK " %}
 
 {% block main_content %}
 {% if noInputSelectedError %}
@@ -42,14 +42,14 @@
             value: "yes",
             text: "Yes",
             attributes: {
-                "data-event-id": "signout-yes"
+                'data-event-id': 'signout-yes'
             }
         },
         {
             value: "no",
             text: "No",
             attributes: {
-                "data-event-id": "signout-no"
+                'data-event-id' : 'signout-no'
             }
         }
     ]
@@ -57,8 +57,8 @@
 }} 
 {{ govukButton({
     attributes: {
-      id: "submit",
-      "data-event-id": "confirm-and-continue-button"
+     'id' : 'submit',
+      'data-event-id': 'signout-out-confirm-and-continue-button'
     },
     text: "Confirm and continue"
   }) }}

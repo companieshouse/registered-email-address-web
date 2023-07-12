@@ -1,12 +1,14 @@
 {% extends "layouts/default.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
+{% set title = "Start – Update a registered email address – GOV.UK" %}
+
 {% block main_content %}
       <h1 class="govuk-heading-xl">{{ "Update a registered email address" }}</h1>
       <p class="govuk-body-l">Use this service to update a company's registered email address.</p>
-      <p class="govuk-body">You cannot use this service if you are providing a registered email address for the first time for a company. 
-        You can only do that by filing a 
-        <a href="https://www.gov.uk/file-your-confirmation-statement-with-companies-house" target="_blank" class="govuk-link">confirmation statement</a>.
+      <p class="govuk-body">You cannot use this service if you are providing a registered email address for the first time for a company.
+        You can only do that by filing a
+        <a href="https://www.gov.uk/file-your-confirmation-statement-with-companies-house" data-event-id="link-to-confirmation-statement" target="_blank" class="govuk-link">confirmation statement</a>.
       </p>
       <h2 class="govuk-heading-m">Before you start</h2>
       <p class="govuk-body">You will need:</p>
@@ -20,12 +22,12 @@
       <form method="post">
         {{
          govukButton({
-            text: 'Start now',
-            isStartButton: true,
             attributes: {
-              id: 'start-now',
-              'data-event-id': 'start-now-button' if piwik
-            }
+              'id' : 'start-now',
+              'data-event-id' : 'start-now-button'
+            },
+            text: 'Start now',
+            isStartButton: true
           })
         }}
       </form>
