@@ -18,7 +18,11 @@ router.get(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, 
     req.session?.data.signin_info?.user_profile?.email  
   );
   await handler.get(req, res).then((viewData) => {
-    res.render(`router_views/email/${config.CHANGE_EMAIL_ADDRESS_URL}`, viewData);
+    if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) === true) {
+      res.render(`${routeViews}` + config.COMPANY_SEARCH_PAGE, viewData);
+    } else {
+      res.render(`router_views/email/${config.CHANGE_EMAIL_ADDRESS_URL}`, viewData);
+    }
   });
 });
 

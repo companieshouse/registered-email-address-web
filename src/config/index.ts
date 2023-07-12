@@ -61,6 +61,7 @@ export const COMPANY_INVALID_PAGE = "invalid";
 export const CHANGE_EMAIL_ADDRESS_PAGE = "change-email-address";
 export const SIGN_OUT_PAGE = `signout`;
 export const ACCESSIBILITY_STATEMENT_PAGE = "accessibility-statement";
+export const SERVICE_UNAVAILABLE_PAGE = "service-unavailable";
 
 
 // ROUTING PATHS
@@ -88,3 +89,4 @@ export const EMAIL_CHANGE_EMAIL_ADDRESS_URL = `${HOME_URL}/${EMAIL_CHANGE_EMAIL_
 export const EMAIL_CHECK_ANSWER_URL = `${HOME_URL}/${EMAIL_CHECK_ANSWER}`;
 export const ACCESSIBILITY_STATEMENT_URL = `${HOME_URL}/${ACCESSIBILITY_STATEMENT_PAGE}`;
 export const EMAIL_UPDATE_SUBMITTED_URL = `${HOME_URL}/${EMAIL_UPDATE_SUBMITTED}`;
+export const SERVICE_UNAVAILABLE_URL = `${HOME_URL}/${SERVICE_UNAVAILABLE_PAGE}`;

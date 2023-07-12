@@ -12,3 +12,9 @@ export const createAndLogError = (description: string): Error => {
   return error;
 };
 
+export const createAndLogServiceUnavailable = (description: string): Error => {
+  const error = new Error(description + " - Service Unavailable");
+  logger.error(`${error.stack}`);
+  return error;
+};
+

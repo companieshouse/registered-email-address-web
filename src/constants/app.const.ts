@@ -13,6 +13,7 @@ export const USER_EMAIL = "userEmail";
 
 export const SUBMISSION_ID = "submissionID";
 export const INVALID_COMPANY_NUMBER = "You must enter a valid company number";
+export const SERVICE_UNAVAILABLE = "Service unavailable";
 export const NO_EMAIL_ADDRESS_FOUND = "No email address for company number";
 export const EMAIL_ADDRESS_INVALID = "Enter an email address in the correct format, like name@example.com";
 export const NO_EMAIL_ADDRESS_SUPPLIED = "Enter the registered email address";
