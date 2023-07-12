@@ -1,15 +1,13 @@
 import {companyEmail, companyEmailResource} from "./resources/resources";
 import {createApiClient, Resource} from "@companieshouse/api-sdk-node";
-import {CHS_API_KEY, EMAIL_CHANGE_EMAIL_ADDRESS_URL, ORACLE_QUERY_API_URL} from "../../config/index";
+import {CHS_API_KEY, EMAIL_CHANGE_EMAIL_ADDRESS_URL, ORACLE_QUERY_API_URL} from "../../config";
 import {StatusCodes} from 'http-status-codes';
 import {Request} from "express";
 import {Session} from "@companieshouse/node-session-handler";
 import {COMPANY_NUMBER, SUBMISSION_ID, TRANSACTION_CLOSE_ERROR, UPDATED_COMPANY_EMAIL} from "../../constants/app.const";
 import {logger} from "../../lib/Logger";
 import {closeTransaction} from "../transaction/transaction.service";
-import {HttpResponse} from "@companieshouse/api-sdk-node/dist/http/http-client";
-import ApiClient from "@companieshouse/api-sdk-node/dist/client";
-import {createPublicOAuthApiClient} from "../api/api.service";
+import {createRegisteredEmailAddressResource} from "./createRegisteredEmailAddressResource";
 
 
 /**
@@ -65,7 +63,6 @@ export const processPostCheckRequest = async (req: Request) => {
   const updatedCompanyEmail = req.session?.getExtraData(UPDATED_COMPANY_EMAIL);
   const emailConfirmation: string | undefined = req.body.emailConfirmation;
   if (emailConfirmation === undefined) {
-
     return {
       statementError: "You need to accept the registered email address statement",
       updatedCompanyEmail: updatedCompanyEmail,
@@ -78,11 +75,10 @@ export const processPostCheckRequest = async (req: Request) => {
   const transactionId = session.getExtraData(SUBMISSION_ID);
   const companyNumber = session.getExtraData(COMPANY_NUMBER);
 
-  const response = await createRegisteredEmailAddressResource(session, <string>transactionId, <string>updatedCompanyEmail)
+  return await createRegisteredEmailAddressResource(session, <string>transactionId, <string>updatedCompanyEmail)
     .then(async () => {
-      return closeTransaction(session, <string>companyNumber, <string>transactionId).then((res) => {
+      return await closeTransaction(session, <string>companyNumber, <string>transactionId).then(() => {
         return {
-          updatedCompanyEmail: updatedCompanyEmail,
           backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
           signoutBanner: true,
           userEmail: req.session?.data.signin_info?.user_profile?.email
@@ -96,31 +92,6 @@ export const processPostCheckRequest = async (req: Request) => {
         signoutBanner: true,
         userEmail: req.session?.data.signin_info?.user_profile?.email
       };
-    }); 
-
-  return response;
-  // .then(() => {
-  //     try {
-  //          => {
-  //             return true;
-  //         });
-  //     } catch (e) {
-  //         return {
-  //             statementError: TRANSACTION_CLOSE_ERROR + companyNumber
-  //         };
-  //     }
-  // })
-  // .catch((err) => {
-  //     return err;
-  // });
+    });
 };
 
-export const createRegisteredEmailAddressResource = async (session: Session, transactionId: string, updatedCompanyEmail: string): Promise<Awaited<HttpResponse>> => {
-  const apiClient: ApiClient = createPublicOAuthApiClient(session);
-  const apiResponse: HttpResponse = await apiClient.apiClient.httpPost(`/transactions/${transactionId}/registered-email-address`, {registered_email_address: updatedCompanyEmail});
-  if(apiResponse.status === 201) {
-    return Promise.resolve(apiResponse);
-  }else {
-    return Promise.reject("Failed to create Registered Email Address Resource");
-  }
-};
