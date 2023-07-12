@@ -1,28 +1,34 @@
 {% extends "layouts/default.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set title = "Update a registered company email address - GOV.UK" %}
-
+{% set title = "Start Now" %}
 
 {% block main_content %}
-      <h1 class="govuk-heading-xl">{{ "Update a registered company email address - NOT FINAL" }}</h1>
-      <p class="govuk-body-l">Use this service to update a registered company email address.</p>
-      <p class="govuk-body">You cannot use this service to register a company email address.</p>
-      <p class="govuk-body">Instructions about doing that via a <a href="https://www.gov.uk/government/publications/etc/etc/etc" data-event-id="link-to-confirmation-statement" target="_blank" class="govuk-link">confirmation statement</a> here.</p>
+      <h1 class="govuk-heading-xl">{{ "Update a registered email address" }}</h1>
+      <p class="govuk-body-l">Use this service to update a company's registered email address.</p>
+      <p class="govuk-body">You cannot use this service if you are providing a registered email address for the first time for a company.
+        You can only do that by filing a
+        <a href="https://www.gov.uk/file-your-confirmation-statement-with-companies-house" data-event-id="link-to-confirmation-statement" target="_blank" class="govuk-link">confirmation statement</a>.
+      </p>
+      <h2 class="govuk-heading-m">Before you start</h2>
+      <p class="govuk-body">You will need:</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>to sign in to or create a Companies House account</li>
+        <li>the company number</li>
+        <li>the company authentication code</li>
+        <li>the new registered email address</li>
+      </ul>
+      <p class="govuk-body">It takes 5 minutes to update a registered email address.</p>
       <form method="post">
         {{
          govukButton({
-            text: 'Start now',
-            isStartButton: true,
             attributes: {
-              id: 'start-now',
-              'data-event-id': 'start-now-button' if piwik
-            }
+              'id' : 'start-now',
+              'data-event-id' : 'start-now-button'
+            },
+            text: 'Start now',
+            isStartButton: true
           })
         }}
       </form>
-      <h2 class="govuk-heading-m">Before you start</h2>
-      <p class="govuk-body-s">Read the guidance on <a href="https://www.gov.uk/government/publications/etc/etc/etc" data-event-id="read-guidance-on-registered-email-address-link" target="_blank" class="govuk-link">registered company email addresses</a>.</p>
-      <p class="govuk-body-s">You'll need a Companies House password and authentication code to use this servce - you'll be able to register for these if you do not have them.</p>
-      <p class="govuk-body-s"><a href="https://www.gov.uk/government/publications/etc/etc/etc" data-event-id="contact-compnaies-house-link" target="_blank" class="govuk-link">Contact Compnaies House</a> to get help updating your registered company email address</p>
 {% endblock %}

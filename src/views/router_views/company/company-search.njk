@@ -8,7 +8,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 
-{% set title = "Search company" %}
+{% set title = "Company Search" %}
 
 {% block main_content %}
        <label class="govuk-label" for="company-number">
@@ -43,7 +43,8 @@
           govukButton({
             text: 'Continue',
             attributes: {
-              id: 'submit'
+              'id' : 'submit',
+              'data-event-id' : 'company-search-continue-button'
             }
           }) 
         }}

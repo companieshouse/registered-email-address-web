@@ -39,7 +39,7 @@
       {% block beforeContent %}
         <div id="templateName" data-id="{{ title }}" hidden></div>
         {% include "partials/cookie_consent_banner.njk" %}
-        {% include "./signout-banner.njk" %}
+        {% include "../partials/signout-banner.njk" %}
         {% block backLink %}
       {% endblock %}
 
