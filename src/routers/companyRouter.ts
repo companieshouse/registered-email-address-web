@@ -8,6 +8,7 @@ import { logger } from "../lib/Logger";
 import FormValidator from "../utils/formValidator.util";
 import CompanyNumberSanitizer from "../utils/companyNumberSanitizer";
 import * as constants from "../constants/app.const";
+import * as validationConstants from "../constants/validation.const";
 
 const router: Router = Router();
 const routeViews: string = "router_views/company/";
@@ -53,8 +54,12 @@ router.post(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFu
   const handler = new ConfirmCompanyHandler();
   await handler.post(req, res).then((data) => {
     if (Object.prototype.hasOwnProperty.call(data, invalidCompanyReason)) {
-      req.session?.setExtraData(constants.INVALID_COMPANY_REASON, data.invalidCompanyReason);
-      res.redirect(config.INVALID_COMPANY_URL);
+      if (data.invalidCompanyReason === validationConstants.INVALID_COMPANY_SERVICE_UNAVAILABLE) {
+        res.redirect(config.SERVICE_UNAVAILABLE_URL);
+      } else {
+        req.session?.setExtraData(constants.INVALID_COMPANY_REASON, data.invalidCompanyReason);
+        res.redirect(config.INVALID_COMPANY_URL);
+      }
     } else {
       res.redirect(config.EMAIL_CHANGE_EMAIL_ADDRESS_URL);
     }

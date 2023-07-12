@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "./../generic";
-import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
+import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile";
 import { Session } from "@companieshouse/node-session-handler";
 import { getCompanyProfile } from "../../../services/company/company.profile.service";
 import { buildAddress, formatForDisplay } from "../../../services/company/confirm.company.service";
 import { getCompanyEmail } from "../../../services/company/company.email.service";
-import { logger } from "../../../lib/Logger";
+import { logger, createAndLogServiceUnavailable } from "../../../lib/Logger";
 import * as constants from "../../../constants/app.const";
 import * as validationConstants from "../../../constants/validation.const";
 import * as config from "../../../config/index";
@@ -32,9 +32,17 @@ export class ConfirmCompanyHandler extends GenericHandler {
         session?.setExtraData(constants.COMPANY_PROFILE, companyProfile);
         this.buildPageOptions(session, companyProfile);
       } catch (e) {
-        this.viewData.errors = {
-          companyNumber: constants.INVALID_COMPANY_NUMBER
-        };
+        if (e instanceof createAndLogServiceUnavailable) {
+          logger.info(`company confirm - oracle query service unavailable`);
+          this.viewData.errors = {
+            companyNumber: constants.SERVICE_UNAVAILABLE
+          };
+        } else {
+          logger.info(`company confirm - company profile not found`);
+          this.viewData.errors = {
+            companyNumber: constants.INVALID_COMPANY_NUMBER
+          };
+        }
       }
     }
     return Promise.resolve(this.viewData);
@@ -51,20 +59,20 @@ export class ConfirmCompanyHandler extends GenericHandler {
       logger.info(`company confirm - invalid company status`);
       this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_STATUS_REASON;
     } else {
-      await getCompanyEmail(companyProfile.companyNumber).then((companyEmail) => {
+      try {
         logger.info(`company confirm - checking company email`);
-        logger.info(`company confirm - status returned: ${companyEmail.httpStatusCode}`);
-        if (companyEmail.resource?.companyEmail !== undefined ) {
-          logger.info(`company confirm - company email check returned: ${companyEmail.resource?.companyEmail}`);
-        }
-        if (companyEmail.resource?.companyEmail === undefined) {
+        const companyEmail = await getCompanyEmail(companyProfile.companyNumber);
+        logger.info(`company confirm - company email found: ${companyEmail}`);
+        session?.setExtraData(constants.REGISTERED_EMAIL_ADDRESS, companyEmail);
+      } catch (e: any) {
+        if (e instanceof createAndLogServiceUnavailable) {
+          logger.info(`company confirm - oracle query service unavailable`);
+          this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_SERVICE_UNAVAILABLE;
+        } else {
           logger.info(`company confirm - company email not found`);
           this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_NO_EMAIL_REASON;
-        } else {
-          logger.info(`company confirm - company email found: ${companyEmail}`);
-          session?.setExtraData(constants.REGISTERED_EMAIL_ADDRESS, companyEmail);
         }
-      });
+      }      
     }
     return Promise.resolve(this.viewData);
   }
@@ -78,6 +86,4 @@ export class ConfirmCompanyHandler extends GenericHandler {
     this.viewData.userEmail = session.data.signin_info?.user_profile?.email;
     this.viewData.backUri = config.COMPANY_NUMBER_URL;
   }
-
-
 }

@@ -1,36 +1,35 @@
-import { companyEmailResource, companyEmail } from "./resources/resources";
-import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
-import { CHS_API_KEY, ORACLE_QUERY_API_URL } from "../../config/index";
+import { Resource } from "@companieshouse/api-sdk-node";
+import { createPrivateApiClient, RegisteredEmailAddress } from "../api/private-get-rea";
+import { CHS_API_KEY, ORACLE_QUERY_API_URL } from "../../config";
+import { logger, createAndLogError, createAndLogServiceUnavailable } from "../../lib/Logger";
 import { StatusCodes } from 'http-status-codes';
 
 /**
-* Get the registered email address for a company.
+* Get the registered email address for a company - private API
 *
 * @param companyNumber the company number to look up
 */
-export const getCompanyEmail = async (companyNumber: string): Promise<Resource<companyEmail>> => {
-  // build client object
-  const client = createApiClient(
-    CHS_API_KEY,
-    undefined,
-    ORACLE_QUERY_API_URL
-  );
-  const resp = await client.apiClient.httpGet(`/company/${companyNumber}/registered-email-address`);
+export const getCompanyEmail = async (companyNumber: string): Promise<RegisteredEmailAddress> => {
+  const privateApiClient = createPrivateApiClient(CHS_API_KEY, undefined, ORACLE_QUERY_API_URL );
 
-  const emailResource: Resource<companyEmail> = {
-    httpStatusCode: resp.status
-  };
+  logger.debug(`Looking for registered email address with company number ${companyNumber}`);
+  const sdkResponse: Resource<RegisteredEmailAddress> = await privateApiClient.registeredEmailAddress.getRegisteredEmailAddress(companyNumber);
 
-  // return error response code if one received
-  if (resp.status >= StatusCodes.BAD_REQUEST) {
-    return emailResource;
+  if (!sdkResponse) {
+    throw createAndLogServiceUnavailable(`Registered email address API for company number ${companyNumber}`);
   }
 
-  // cast response body to expected companyEmailResource type
-  const body = resp.body as companyEmailResource;
+  if (sdkResponse.httpStatusCode === StatusCodes.SERVICE_UNAVAILABLE) {
+    throw createAndLogServiceUnavailable(`Registered email address API for company number ${companyNumber}`);
+  } else if (sdkResponse.httpStatusCode >= StatusCodes.BAD_REQUEST) {
+    throw createAndLogError(`Http status code ${sdkResponse.httpStatusCode} - Failed to get registered email address for company number ${companyNumber}`);
+  }
 
-  emailResource.resource = {
-    companyEmail: body.registered_email_address
-  };
-  return emailResource;
+  if (!sdkResponse.resource) {
+    throw createAndLogError(`Registered email address API returned no resource for company number ${companyNumber}`);
+  }
+
+  logger.debug(`Received registered email address ${JSON.stringify(sdkResponse)}`);
+
+  return sdkResponse.resource;
 };
