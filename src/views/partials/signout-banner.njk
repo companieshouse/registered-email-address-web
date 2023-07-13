@@ -3,17 +3,19 @@
     <div class="sign-out-user-banner" style="display: flex; justify-content: space-between">
     <div>
     <span id="signed_in_user_email" class="sign-out-user-banner__email">
-    {% block backLink %}
-      {{
-        govukBackLink({
-          text: "Back",
-          href: backUri,
-          attributes: {
-            'data-event-id' : 'back-link'
-          }
-        })
-      }}
-    {% endblock %}
+    {% if backUri %}
+      {% block backLink %}
+        {{
+          govukBackLink({
+            text: "Back",
+            href: backUri,
+            attributes: {
+              'data-event-id' : 'back-link'
+            }
+          })
+        }}
+      {% endblock %}
+    {% endif %}
     </span>
     </div>
     {% if userEmail %}

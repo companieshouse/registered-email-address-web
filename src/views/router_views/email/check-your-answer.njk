@@ -3,11 +3,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 
-{% set title = "Update a registered email address" %}
-
-{% block pageTitle %}
-    {% include "includes/page-title.html" %}
-{% endblock %}
+{% set title = "Check your answer – Update a registered email address – GOV.UK " %}
 
 {% block main_content %}
     <div class="govuk-grid-row">
@@ -20,7 +16,7 @@
                     </dt>
 
                     <dd class="govuk-summary-list__value">
-                    {{ updatedCompanyEmail }}
+                    {{ companyEmail }}
                     </dd>
 
                     <dd class="govuk-summary-list__actions">
