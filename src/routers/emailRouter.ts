@@ -64,7 +64,7 @@ router.get(config.CHECK_ANSWER_URL, async (req: Request, res: Response, next: Ne
 router.get(config.UPDATE_SUBMITTED, async (req: Request, res: Response, next: NextFunction) => {
   const handler = new UpdateSubmittedHandler();
   await handler.get(req, res).then((viewData) => {
-    res.render(`${routeViews}` + config.UPDATE_SUBMITTED, viewData);
+    res.render(`${emailRouterViews}` + config.UPDATE_SUBMITTED, viewData);
   });
 });
 
