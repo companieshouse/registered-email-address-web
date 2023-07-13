@@ -4,7 +4,8 @@ import * as config from "../config/index";
 import {CHECK_ANSWER_URL, SUBMITTED_URL} from "../config/index";
 import FormValidator from "../utils/formValidator.util";
 import * as constants from "../constants/app.const";
-import {processGetCheckRequest, processPostCheckRequest} from "../services/company/company.email.service";
+
+import {handleGetCheckRequest, handlePostCheckRequest} from "./handlers/email/confirmEmailChange";
 
 const router: Router = Router();
 const routeViews: string = "router_views/email/";
@@ -43,17 +44,17 @@ router.post(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response,
 
 // GET: /check-your-answers
 router.get(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunction) => {
-  const viewData = await processGetCheckRequest(req);
+  const viewData = await handleGetCheckRequest(req);
 
   return res.render(`${routeViews}` + CHECK_ANSWER_URL, viewData);
 });
 
 // POST: /check-your-answers
 router.post(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunction) => {
-  const viewData = await processPostCheckRequest(req)
+  const viewData = await handlePostCheckRequest(req)
     .then((viewData) => {
 
-      if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) === true || 
+      if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) === true ||
             Object.prototype.hasOwnProperty.call(viewData, statementErrorsConst) === true ) {
         res.render(`${routeViews}` + CHECK_ANSWER_URL, viewData);
       } else {

@@ -1,7 +1,5 @@
 import {
-    getCompanyEmail,
-    processGetCheckRequest,
-    processPostCheckRequest
+    getCompanyEmail
 } from "../../../../src/services/company/company.email.service";
 import {createApiClient, Resource} from "@companieshouse/api-sdk-node";
 import {createAndLogError} from "../../../../src/lib/Logger";
@@ -16,6 +14,10 @@ import {Session} from "@companieshouse/node-session-handler";
 import * as rea from '../../../../src/services/company/createRegisteredEmailAddressResource';
 import * as transactions from '../../../../src/services/transaction/transaction.service';
 import {closeTransaction} from '../../../../src/services/transaction/transaction.service';
+import {
+    handleGetCheckRequest,
+    handlePostCheckRequest
+} from "../../../../src/routers/handlers/email/confirmEmailChange";
 
 jest.mock("../../../../src/services/company/createRegisteredEmailAddressResource");
 jest.mock("../../../../src/services/transaction/transaction.service");
@@ -85,7 +87,7 @@ describe("Company email address service test", () => {
             mockRequest.session = session;
             session.setExtraData(UPDATED_COMPANY_EMAIL, "test@test.com");
 
-            const result = await processGetCheckRequest(mockRequest)
+            const result = await handleGetCheckRequest(mockRequest)
                 .then(function (result) {
                     return result;
                 });
@@ -117,7 +119,7 @@ describe("Company email address service test", () => {
             jest.spyOn(rea, 'createRegisteredEmailAddressResource').mockResolvedValue(clone(createREAResourceResponse));
             jest.spyOn(transactions, 'closeTransaction').mockResolvedValue(clone(closeTransResponse));
 
-            const result = await processPostCheckRequest(mockRequest)
+            const result = await handlePostCheckRequest(mockRequest)
                 .then(function (result) {
                     return result;
                 });
@@ -135,7 +137,7 @@ describe("Company email address service test", () => {
             mockRequest.session = session;
             session.setExtraData(UPDATED_COMPANY_EMAIL, "test@test.com");
 
-            const result = await processPostCheckRequest(mockRequest)
+            const result = await handlePostCheckRequest(mockRequest)
                 .then(function (result) {
                     return result;
                 });
@@ -161,7 +163,7 @@ describe("Company email address service test", () => {
 
             jest.spyOn(rea, 'createRegisteredEmailAddressResource').mockRejectedValue((clone(createREAResourceResponse)));
 
-            const result = await processPostCheckRequest(mockRequest)
+            const result = await handlePostCheckRequest(mockRequest)
                 .then(function (result) {
                     return result;
                 });
@@ -195,7 +197,7 @@ describe("Company email address service test", () => {
             jest.spyOn(rea, 'createRegisteredEmailAddressResource').mockResolvedValue((clone(createREAResourceResponse)));
             jest.spyOn(transactions, 'closeTransaction').mockRejectedValue(new Error("anything"));
 
-            const result = await processPostCheckRequest(mockRequest)
+            const result = await handlePostCheckRequest(mockRequest)
                 .then(function (result) {
                     return result;
                 });
