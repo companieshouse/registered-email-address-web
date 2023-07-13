@@ -60,6 +60,7 @@ export const COMPANY_INVALID_PAGE = "invalid";
 export const CHANGE_EMAIL_ADDRESS_PAGE = "change-email-address";
 export const CHECK_YOUR_ANSWERS_PAGE = "email/check-your-answer";
 export const SIGN_OUT_PAGE = `signout`;
+export const ACCESSIBILITY_STATEMENT_PAGE = "accessibility-statement";
 
 
 // ROUTING PATHS
@@ -86,5 +87,6 @@ export const EMAIL_CHANGE_EMAIL_ADDRESS_URL = `${HOME_URL}/${EMAIL_CHANGE_EMAIL_
 export const EMAIL_CHECK_ANSWER_URL = `${HOME_URL}/${EMAIL_CHECK_ANSWER}`;
 export const CHECK_YOUR_ANSWERS_URL = `${HOME_URL}/${CHECK_YOUR_ANSWERS_PAGE}`;
 export const SUBMITTED_URL = "/submitted"; //todo temp for unit testing
+export const ACCESSIBILITY_STATEMENT_URL = `${HOME_URL}/${ACCESSIBILITY_STATEMENT_PAGE}`;
 
 export const NODE_MODULES_BASE_PATH = getEnvironmentValue("NODE_MODULES_BASE_PATH", "");

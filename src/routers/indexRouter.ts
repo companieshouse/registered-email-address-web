@@ -40,4 +40,8 @@ router.post(config.SIGN_OUT_URL, async (req: Request, res: Response, next: NextF
   }
 });
 
+router.get(config.ACCESSIBILITY_STATEMENT_URL, async (req: Request, res: Response, next: NextFunction) => {
+  res.render(`${routeViews}` + config.ACCESSIBILITY_STATEMENT_PAGE);
+});
+
 export default router;
