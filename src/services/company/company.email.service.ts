@@ -83,10 +83,18 @@ export const processPostCheckRequest = async (req: Request) => {
           signoutBanner: true,
           userEmail: req.session?.data.signin_info?.user_profile?.email
         };
+      }).catch((err) =>{
+        return {
+          statementError: err.message,
+          updatedCompanyEmail: updatedCompanyEmail,
+          backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
+          signoutBanner: true,
+          userEmail: req.session?.data.signin_info?.user_profile?.email
+        };
       });
     }).catch((e) => {
       return {
-        errors: TRANSACTION_CLOSE_ERROR + companyNumber,
+        statementError: TRANSACTION_CLOSE_ERROR + companyNumber,
         updatedCompanyEmail: updatedCompanyEmail,
         backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
         signoutBanner: true,
