@@ -1,6 +1,7 @@
 import { Request, Response, Router, NextFunction } from "express";
 import { ChangeEmailAddressHandler } from "./handlers/email/changeEmailAddress";
 import { ConfirmChangeEmailAddressHandler } from "./handlers/email/confirmEmailChange";
+import { UpdateSubmittedHandler } from "./handlers/email/updateSubmitted";
 import * as config from "../config/index";
 import FormValidator from "../utils/formValidator.util";
 import * as constants from "../constants/app.const";
@@ -45,6 +46,14 @@ router.get(config.CHECK_ANSWER_URL, async (req: Request, res: Response, next: Ne
   );
   const viewData = await handler.get(req, res);
   res.render(`${routeViews}` + config.CHECK_ANSWER_URL, viewData);
+});
+
+// GET: /update-submitted
+router.get(config.UPDATE_SUBMITTED, async (req: Request, res: Response, next: NextFunction) => {
+  const handler = new UpdateSubmittedHandler();
+  await handler.get(req, res).then((viewData) => {
+    res.render(`${routeViews}` + config.UPDATE_SUBMITTED, viewData);
+  });
 });
 
 export default router;
