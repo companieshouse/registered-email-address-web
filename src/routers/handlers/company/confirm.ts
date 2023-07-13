@@ -9,6 +9,15 @@ import { logger } from "../../../lib/Logger";
 import * as constants from "../../../constants/app.const";
 import * as validationConstants from "../../../constants/validation.const";
 import * as config from "../../../config/index";
+import {
+  COMPANY_NUMBER,
+  SUBMISSION_ID,
+  TRANSACTION_CLOSE_ERROR,
+  UPDATED_COMPANY_EMAIL
+} from "../../../constants/app.const";
+import {EMAIL_CHANGE_EMAIL_ADDRESS_URL} from "../../../config/index";
+import {createRegisteredEmailAddressResource} from "../../../services/company/createRegisteredEmailAddressResource";
+import {closeTransaction} from "../../../services/transaction/transaction.service";
 
 
 export class ConfirmCompanyHandler extends GenericHandler {
@@ -19,54 +28,107 @@ export class ConfirmCompanyHandler extends GenericHandler {
 
   async get (req: Request, response: Response): Promise<Object> {
     logger.info(`GET request to serve company confirm page`);
+
     const session: Session = req.session as Session;
-    let companyProfile: CompanyProfile;
-    if (req.query.companyNumber === undefined) {
-      companyProfile = session.data.extra_data.companyProfile;
-      this.buildPageOptions(session, companyProfile);
-    } else {
-      try {
-        const companyNumber: string = req.query.companyNumber?.toString() ?? "";
-        companyProfile = await getCompanyProfile(companyNumber);
-        // eslint-disable-next-line no-unused-expressions
-        session?.setExtraData(constants.COMPANY_PROFILE, companyProfile);
-        this.buildPageOptions(session, companyProfile);
-      } catch (e) {
-        this.viewData.errors = {
-          companyNumber: constants.INVALID_COMPANY_NUMBER
-        };
-      }
-    }
-    return Promise.resolve(this.viewData);
+    const updatedCompanyEmail: string | undefined = session.getExtraData(UPDATED_COMPANY_EMAIL);
+
+    return {
+      "updatedCompanyEmail": updatedCompanyEmail,
+      backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
+      signoutBanner: true,
+      userEmail: req.session?.data.signin_info?.user_profile?.email
+    };
   }
 
   async post (req: Request, response: Response): Promise<any> {
     logger.info(`POST request to serve company confirm page`);
+
     const session: Session = req.session as Session;
-    const companyProfile: CompanyProfile = session.data.extra_data.companyProfile;
-    if (!validationConstants.VALID_COMPANY_TYPES.includes(companyProfile.type)) {
-      logger.info(`company confirm - invalid company type`);
-      this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_TYPE_REASON;
-    } else if (!validationConstants.VALID_COMPANY_STATUS.includes(companyProfile.companyStatus)) {
-      logger.info(`company confirm - invalid company status`);
-      this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_STATUS_REASON;
-    } else {
-      await getCompanyEmail(companyProfile.companyNumber).then((companyEmail) => {
-        logger.info(`company confirm - checking company email`);
-        logger.info(`company confirm - status returned: ${companyEmail.httpStatusCode}`);
-        if (companyEmail.resource?.companyEmail !== undefined ) {
-          logger.info(`company confirm - company email check returned: ${companyEmail.resource?.companyEmail}`);
-        }
-        if (companyEmail.resource?.companyEmail === undefined) {
-          logger.info(`company confirm - company email not found`);
-          this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_NO_EMAIL_REASON;
-        } else {
-          logger.info(`company confirm - company email found: ${companyEmail}`);
-          session?.setExtraData(constants.REGISTERED_EMAIL_ADDRESS, companyEmail);
-        }
-      });
+    const updatedCompanyEmail = req.session?.getExtraData(UPDATED_COMPANY_EMAIL);
+    const emailConfirmation: string | undefined = req.body.emailConfirmation;
+
+    if (emailConfirmation === undefined) {
+      return {
+        statementError: "You need to accept the registered email address statement",
+        updatedCompanyEmail: updatedCompanyEmail,
+        backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
+        signoutBanner: true,
+        userEmail: req.session?.data.signin_info?.user_profile?.email
+      };
     }
-    return Promise.resolve(this.viewData);
+
+    const transactionId = session.getExtraData(SUBMISSION_ID);
+    const companyNumber = session.getExtraData(COMPANY_NUMBER);
+
+    return await createRegisteredEmailAddressResource(session, <string>transactionId, <string>updatedCompanyEmail)
+        .then(async (res) => {
+          return await closeTransaction(session, <string>companyNumber, <string>transactionId)
+              .then((res) => {
+                return {
+                  backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
+                  signoutBanner: true,
+                  userEmail: req.session?.data.signin_info?.user_profile?.email
+                };
+              }).catch((err) => {
+                return {
+                  statementError: err.message,
+                  updatedCompanyEmail: updatedCompanyEmail,
+                  backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
+                  signoutBanner: true,
+                  userEmail: req.session?.data.signin_info?.user_profile?.email
+                };
+              });
+        }).catch((e) => {
+          return {
+            statementError: TRANSACTION_CLOSE_ERROR + companyNumber,
+            updatedCompanyEmail: updatedCompanyEmail,
+            backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
+            signoutBanner: true,
+            userEmail: req.session?.data.signin_info?.user_profile?.email
+          };
+        });
+//     const session: Session = req.session as Session;
+//     const updatedCompanyEmail = req.session?.getExtraData(UPDATED_COMPANY_EMAIL);
+//     const emailConfirmation: string | undefined = req.body.emailConfirmation;
+//     if (emailConfirmation === undefined) {
+//         return {
+//             statementError: "You need to accept the registered email address statement",
+//             updatedCompanyEmail: updatedCompanyEmail,
+//             backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
+//             signoutBanner: true,
+//             userEmail: req.session?.data.signin_info?.user_profile?.email
+//         };
+//     }
+//
+//     const transactionId = session.getExtraData(SUBMISSION_ID);
+//     const companyNumber = session.getExtraData(COMPANY_NUMBER);
+//
+//     return await createRegisteredEmailAddressResource(session, <string>transactionId, <string>updatedCompanyEmail)
+//         .then(async () => {
+//             return await closeTransaction(session, <string>companyNumber, <string>transactionId).then(() => {
+//                 return {
+//                     backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
+//                     signoutBanner: true,
+//                     userEmail: req.session?.data.signin_info?.user_profile?.email
+//                 };
+//             }).catch((err) => {
+//                 return {
+//                     statementError: err.message,
+//                     updatedCompanyEmail: updatedCompanyEmail,
+//                     backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
+//                     signoutBanner: true,
+//                     userEmail: req.session?.data.signin_info?.user_profile?.email
+//                 };
+//             });
+//         }).catch((e) => {
+//             return {
+//                 statementError: TRANSACTION_CLOSE_ERROR + companyNumber,
+//                 updatedCompanyEmail: updatedCompanyEmail,
+//                 backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
+//                 signoutBanner: true,
+//                 userEmail: req.session?.data.signin_info?.user_profile?.email
+//             };
+//         });
   }
 
   buildPageOptions (session: Session, companyProfile: CompanyProfile){

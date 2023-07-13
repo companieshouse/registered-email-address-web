@@ -6,6 +6,7 @@ import FormValidator from "../utils/formValidator.util";
 import * as constants from "../constants/app.const";
 
 import {handleGetCheckRequest, handlePostCheckRequest} from "./handlers/email/confirmEmailChange";
+import {ConfirmCompanyHandler} from "./handlers/company/confirm";
 
 const router: Router = Router();
 const routeViews: string = "router_views/email/";
@@ -44,23 +45,37 @@ router.post(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response,
 
 // GET: /check-your-answers
 router.get(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunction) => {
-  const viewData = await handleGetCheckRequest(req);
-
-  return res.render(`${routeViews}` + CHECK_ANSWER_URL, viewData);
+    const handler = new ConfirmCompanyHandler();
+    await handler.get(req, res)
+        .then((viewData) => {
+            res.render(`${routeViews}` + CHECK_ANSWER_URL, viewData);
+        });
 });
 
 // POST: /check-your-answers
 router.post(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunction) => {
-  const viewData = await handlePostCheckRequest(req)
-    .then((viewData) => {
+    const handler = new ConfirmCompanyHandler();
 
-      if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) === true ||
-            Object.prototype.hasOwnProperty.call(viewData, statementErrorsConst) === true ) {
-        res.render(`${routeViews}` + CHECK_ANSWER_URL, viewData);
-      } else {
-        res.render(`${routeViews}` + SUBMITTED_URL, viewData);
-      }
-    });
+    await handler.post(req, res)
+        .then((viewData) => {
+            if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) === true ||
+                Object.prototype.hasOwnProperty.call(viewData, statementErrorsConst) === true) {
+                res.render(`${routeViews}` + CHECK_ANSWER_URL, viewData);
+            } else {
+                res.render(`${routeViews}` + SUBMITTED_URL, viewData);
+            }
+        });
+
+    // const viewData = await handlePostCheckRequest(req)
+    //   .then((viewData) => {
+    //
+    //     if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) === true ||
+    //           Object.prototype.hasOwnProperty.call(viewData, statementErrorsConst) === true ) {
+    //       res.render(`${routeViews}` + CHECK_ANSWER_URL, viewData);
+    //     } else {
+    //       res.render(`${routeViews}` + SUBMITTED_URL, viewData);
+    //     }
+    //   });
 });
 
 export default router;
