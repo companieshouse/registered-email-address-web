@@ -5,7 +5,7 @@ import { Session } from "@companieshouse/node-session-handler";
 import { getCompanyProfile } from "../../../services/company/company.profile.service";
 import { buildAddress, formatForDisplay } from "../../../services/company/confirm.company.service";
 import { getCompanyEmail } from "../../../services/company/company.email.service";
-import { logger, createAndLogServiceUnavailable } from "../../../lib/Logger";
+import { logger } from "../../../lib/Logger";
 import * as constants from "../../../constants/app.const";
 import * as validationConstants from "../../../constants/validation.const";
 import * as config from "../../../config/index";
@@ -32,7 +32,8 @@ export class ConfirmCompanyHandler extends GenericHandler {
         session?.setExtraData(constants.COMPANY_PROFILE, companyProfile);
         this.buildPageOptions(session, companyProfile);
       } catch (e) {
-        if (e instanceof createAndLogServiceUnavailable) {
+        const error = e as Error;
+        if (error?.name === constants.SERVICE_UNAVAILABLE) {
           logger.info(`company confirm - oracle query service unavailable`);
           this.viewData.errors = {
             companyNumber: constants.SERVICE_UNAVAILABLE
@@ -63,9 +64,10 @@ export class ConfirmCompanyHandler extends GenericHandler {
         logger.info(`company confirm - checking company email`);
         const companyEmail = await getCompanyEmail(companyProfile.companyNumber);
         logger.info(`company confirm - company email found: ${companyEmail}`);
-        session?.setExtraData(constants.REGISTERED_EMAIL_ADDRESS, companyEmail);
-      } catch (e: any) {
-        if (e instanceof createAndLogServiceUnavailable) {
+        session?.setExtraData(constants.REGISTERED_EMAIL_ADDRESS, companyEmail.registeredEmailAddress);
+      } catch (e) {
+        const error = e as Error;
+        if (error?.name === constants.SERVICE_UNAVAILABLE) {
           logger.info(`company confirm - oracle query service unavailable`);
           this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_SERVICE_UNAVAILABLE;
         } else {

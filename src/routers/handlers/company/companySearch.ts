@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import { inject } from "inversify";
-import { logger, createAndLogServiceUnavailable } from "../../../lib/Logger";
+import { logger } from "../../../lib/Logger";
 import { REA_HOME_PAGE } from "../../../config/index";
 import Optional from "../../../models/optional";
 import FormValidator from "../../../utils/formValidator.util";
@@ -38,7 +38,8 @@ export class CompanySearchHandlerPost extends GenericHandler {
       const companyProfile: CompanyProfile = await getCompanyProfile(companyNumber);
       return companyProfile;
     } catch (e: any) {
-      if (e instanceof createAndLogServiceUnavailable) {
+      const error = e as Error;
+      if (error?.name === SERVICE_UNAVAILABLE) {
         logger.info(`company confirm - oracle query service unavailable`);
         this.viewData.errors = {
           companyNumber: SERVICE_UNAVAILABLE

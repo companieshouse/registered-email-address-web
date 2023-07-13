@@ -9,8 +9,7 @@ import { createRequest, createResponse, MockRequest, MockResponse } from 'node-m
 import { ChangeEmailAddressHandler } from "../../../../src/routers/handlers/email/changeEmailAddress";
 import FormValidator from "../../../../src/utils/formValidator.util";
 import { Session } from "@companieshouse/node-session-handler";
-import { COMPANY_EMAIL, NO_EMAIL_ADDRESS_FOUND, NO_EMAIL_ADDRESS_SUPPLIED, EMAIL_ADDRESS_INVALID } from "../../../../src/constants/app.const";
-import { createAndLogError, createAndLogServiceUnavailable } from "../../../../src/lib/Logger";
+import { NO_EMAIL_ADDRESS_FOUND, NO_EMAIL_ADDRESS_SUPPLIED, EMAIL_ADDRESS_INVALID, REGISTERED_EMAIL_ADDRESS } from "../../../../src/constants/app.const";
 
 const COMPANY_NO: string = "1234567";
 const TEST_EMAIL_EXISTING: string = "test@test.co.biz";
@@ -48,7 +47,7 @@ describe("Registered email address update - test GET method", () => {
   
   it("Registered email address update - company email in session", async () => {
     //set email in session
-    request.session?.setExtraData(COMPANY_EMAIL, TEST_EMAIL_EXISTING);
+    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
 
     await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));

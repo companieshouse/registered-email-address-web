@@ -1,7 +1,8 @@
 import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { CHS_API_KEY } from "../../config/index";
-import { logger, createAndLogError, createAndLogServiceUnavailable } from "../../lib/Logger";
+import { logger, createAndLogError } from "../../lib/Logger";
+import { SOMETHING_HAS_GONE_WRONG, SERVICE_UNAVAILABLE } from "../../constants/app.const";
 import { StatusCodes } from 'http-status-codes';
 
 /**
@@ -16,17 +17,17 @@ export const getCompanyProfile = async (companyNumber: string): Promise<CompanyP
   const sdkResponse: Resource<CompanyProfile> = await apiClient.companyProfile.getCompanyProfile(companyNumber);
 
   if (!sdkResponse) {
-    throw createAndLogServiceUnavailable(`Company profile API for company number ${companyNumber}`);
+    throw createAndLogError( SERVICE_UNAVAILABLE, `Company profile API for company number ${companyNumber}`);
   }
 
-  if (sdkResponse.httpStatusCode === StatusCodes.SERVICE_UNAVAILABLE) {
-    throw createAndLogServiceUnavailable(`Company profile API for company number ${companyNumber}`);
+  if (sdkResponse.httpStatusCode === StatusCodes.SERVICE_UNAVAILABLE || sdkResponse.httpStatusCode === StatusCodes.INTERNAL_SERVER_ERROR) {
+    throw createAndLogError( SERVICE_UNAVAILABLE, `Company profile API for company number ${companyNumber}`);
   } else if (sdkResponse.httpStatusCode >= StatusCodes.BAD_REQUEST) {
-    throw createAndLogError(`Http status code ${sdkResponse.httpStatusCode} - Failed to get company profile for company number ${companyNumber}`);
+    throw createAndLogError( SOMETHING_HAS_GONE_WRONG, `Http status code ${sdkResponse.httpStatusCode} - Failed to get company profile for company number ${companyNumber}`);
   }
 
   if (!sdkResponse.resource) {
-    throw createAndLogError(`Company profile API returned no resource for company number ${companyNumber}`);
+    throw createAndLogError( SOMETHING_HAS_GONE_WRONG, `Company profile API returned no resource for company number ${companyNumber}`);
   }
 
   logger.debug(`Received company profile ${JSON.stringify(sdkResponse)}`);

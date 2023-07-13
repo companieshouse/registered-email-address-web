@@ -5,23 +5,19 @@ jest.mock("../../../../src/lib/Logger");
 import { getCompanyEmail } from "../../../../src/services/company/company.email.service";
 import { RegisteredEmailAddress, createPrivateApiClient } from "../../../../src/services/api/private-get-rea";
 import { Resource } from "@companieshouse/api-sdk-node";
-import { createAndLogError, createAndLogServiceUnavailable } from "../../../../src/lib/Logger";
+import { createAndLogError  } from "../../../../src/lib/Logger";
 import { validEmailSDKResource } from "../../../mocks/company.email.mock";
 import { StatusCodes } from 'http-status-codes';
+import { SERVICE_UNAVAILABLE, SOMETHING_HAS_GONE_WRONG } from "../../../../src/constants/app.const";
 
 const mockCreatePrivateApiClient = createPrivateApiClient as jest.Mock;
 const mockGetRegisteredEmailAddress = jest.fn();
-const mockCreateAndLogError = createAndLogError as jest.Mock;
-const mockCreateAndLogServiceUnavailable = createAndLogServiceUnavailable as jest.Mock;
 
 mockCreatePrivateApiClient.mockReturnValue({
   registeredEmailAddress: {
     getRegisteredEmailAddress: mockGetRegisteredEmailAddress
   }
 });
-
-mockCreateAndLogError.mockReturnValue(new Error());
-mockCreateAndLogServiceUnavailable.mockReturnValue(new Error());
 
 const clone = (objectToClone: any): any => {
   return JSON.parse(JSON.stringify(objectToClone));
@@ -48,13 +44,12 @@ describe("Company email address service test", () => {
     it("Should throw an error if no response returned from SDK", async () => {
       mockGetRegisteredEmailAddress.mockResolvedValueOnce(undefined);
 
-      await getCompanyEmail(COMPANY_NUMBER)
-        .then(() => {
-          fail("Was expecting an error to be thrown.");
-        })
+      await expect(getCompanyEmail(COMPANY_NUMBER))
+        .rejects.toBe(undefined)
         .catch(() => {
-          expect(createAndLogServiceUnavailable).toHaveBeenCalledWith(expect.stringContaining("Registered email address API"));
-          expect(createAndLogServiceUnavailable).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(SERVICE_UNAVAILABLE));
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining("Registered email address API"));
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
         });
     });
 
@@ -64,13 +59,12 @@ describe("Company email address service test", () => {
         httpStatusCode: HTTP_STATUS_CODE
       } as Resource<RegisteredEmailAddress>);
 
-      await getCompanyEmail(COMPANY_NUMBER)
-        .then(() => {
-          fail("Was expecting an error to be thrown.");
-        })
+      await expect(getCompanyEmail(COMPANY_NUMBER))
+        .rejects.toBe(undefined)
         .catch(() => {
-          expect(createAndLogServiceUnavailable).toHaveBeenCalledWith(expect.stringContaining("Registered email address API"));
-          expect(createAndLogServiceUnavailable).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
+          expect(createAndLogError).toHaveBeenCalledWith(SERVICE_UNAVAILABLE);
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining("Registered email address API"));
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
         });
     });
 
@@ -80,28 +74,26 @@ describe("Company email address service test", () => {
         httpStatusCode: HTTP_STATUS_CODE
       } as Resource<RegisteredEmailAddress>);
 
-      await getCompanyEmail(COMPANY_NUMBER)
-        .then(() => {
-          fail("Was expecting an error to be thrown.");
-        })
+      await expect(getCompanyEmail(COMPANY_NUMBER))
+        .rejects.toBe(undefined)
         .catch(() => {
+          expect(createAndLogError).toHaveBeenCalledWith(SOMETHING_HAS_GONE_WRONG);
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${StatusCodes.BAD_REQUEST}`));
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
         });
     });
 
     it("Should throw an error if no response resource returned from SDK", async () => {
+      console.log("Should throw an error if no response resource returned from SDK");
       mockGetRegisteredEmailAddress.mockResolvedValueOnce({} as Resource<RegisteredEmailAddress>);
 
-      await getCompanyEmail(COMPANY_NUMBER)
-        .then(() => {
-          fail("Was expecting an error to be thrown.");
-        })
+      await expect(getCompanyEmail(COMPANY_NUMBER))
+        .rejects.toBe(undefined)
         .catch(() => {
+          expect(createAndLogError).toHaveBeenCalledWith(SOMETHING_HAS_GONE_WRONG);
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining("no resource"));
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
         });
     });
   });
 });
-

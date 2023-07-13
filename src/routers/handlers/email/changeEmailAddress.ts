@@ -6,9 +6,8 @@ import { logger } from "../../../lib/Logger";
 import { validateEmailString } from "../../../utils/validateEmailString";
 
 import { 
-  COMPANY_EMAIL,
-  COMPANY_NUMBER,
   NO_EMAIL_ADDRESS_FOUND,
+  REGISTERED_EMAIL_ADDRESS,
   EMAIL_ADDRESS_INVALID
 } from "../../../constants/app.const";
 
@@ -19,6 +18,7 @@ import ValidationErrors from "../../../models/view/validationErrors.model";
 import Optional from "../../../models/optional";
 import FormValidator from "../../../utils/formValidator.util";
 import formSchema from "../../../schemas/changeEmailAddress.schema";
+import { RegisteredEmailAddress } from "services/api/private-get-rea";
 
 export class ChangeEmailAddressHandler extends GenericHandler {
 
@@ -34,7 +34,7 @@ export class ChangeEmailAddressHandler extends GenericHandler {
   async get (req: Request, response: Response): Promise<Object> {
     logger.info(`GET request to serve change registered email address page`);
 
-    const companyEmailAddress: string | undefined = req.session?.getExtraData(COMPANY_EMAIL);
+    const companyEmailAddress: RegisteredEmailAddress | undefined = req.session?.getExtraData(REGISTERED_EMAIL_ADDRESS);
 
     if (companyEmailAddress !== undefined) {
       this.viewData.companyEmailAddress = companyEmailAddress;

@@ -7,7 +7,8 @@ import FormValidator from "../utils/formValidator.util";
 import * as constants from "../constants/app.const";
 
 const router: Router = Router();
-const routeViews: string = "router_views/email/";
+const companyRouterViews: string = "router_views/company/";
+const emailRouterViews: string = "router_views/email/";
 const errorsConst: string = "errors";
 
 // GET: /change-email-address
@@ -19,9 +20,10 @@ router.get(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, 
   );
   await handler.get(req, res).then((viewData) => {
     if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) === true) {
-      res.render(`${routeViews}` + config.COMPANY_SEARCH_PAGE, viewData);
+      // TODO: go to "something has gone" wrong page
+      res.render(`${companyRouterViews}` + config.COMPANY_SEARCH_PAGE, viewData);
     } else {
-      res.render(`router_views/email/${config.CHANGE_EMAIL_ADDRESS_URL}`, viewData);
+      res.render(`${emailRouterViews}` + config.CHANGE_EMAIL_ADDRESS_URL, viewData);
     }
   });
 });
@@ -35,9 +37,9 @@ router.post(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response,
   );
   await handler.post(req, res).then((viewData) => {
     if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) === true) {
-      res.render(`${routeViews}` + config.CHANGE_EMAIL_ADDRESS_URL, viewData);
+      res.render(`${emailRouterViews}` + config.CHANGE_EMAIL_ADDRESS_URL, viewData);
     } else {
-      req.session?.setExtraData(constants.COMPANY_EMAIL, req.body.changeEmailAddress);
+      req.session?.setExtraData(constants.REGISTERED_EMAIL_ADDRESS, req.body.changeEmailAddress);
       res.redirect(config.EMAIL_CHECK_ANSWER_URL);
     }
   });
@@ -48,8 +50,14 @@ router.get(config.CHECK_ANSWER_URL, async (req: Request, res: Response, next: Ne
   const handler = new ConfirmChangeEmailAddressHandler(
     req.session?.data.signin_info?.user_profile?.email
   );
-  const viewData = await handler.get(req, res);
-  res.render(`${routeViews}` + config.CHECK_ANSWER_URL, viewData);
+  await handler.get(req, res).then((viewData) => {
+    if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) === true) {
+      // TODO: go to "something has gone" wrong page
+      res.render(`${companyRouterViews}` + config.COMPANY_SEARCH_PAGE, viewData);
+    } else {
+      res.render(`${emailRouterViews}` + config.CHECK_ANSWER_URL, viewData);
+    }
+  });
 });
 
 // GET: /update-submitted
