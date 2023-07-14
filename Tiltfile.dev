@@ -1,6 +1,6 @@
 local_resource(
   name = 'dev:registered-email-address-web',
-  cmd = 'npm --silent install && npm run build',
+  cmd = 'npm install && npm run build',
   deps = ['src']
 )
 
