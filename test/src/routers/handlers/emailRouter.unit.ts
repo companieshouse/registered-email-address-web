@@ -3,7 +3,7 @@ import request from "supertest";
 import * as rea from '../../../../src/services/company/createRegisteredEmailAddressResource';
 import * as transactions from '../../../../src/services/transaction/transaction.service';
 import app from "../../../../src/app";
-import {CHECK_YOUR_ANSWERS_URL} from "../../../../src/config";
+import {EMAIL_CHECK_ANSWER_URL} from "../../../../src/config";
 import {HttpResponse} from "@companieshouse/api-sdk-node/dist/http/http-client";
 import {StatusCodes} from "http-status-codes";
 import {CheckAnswerHandler} from "../../../../src/routers/handlers/email/checkAnswer";
@@ -27,7 +27,7 @@ describe("Confirm email router tests", () => {
         const getSpy = jest.spyOn(CheckAnswerHandler.prototype, 'get').mockResolvedValue(okResponse);
 
         await request(app)
-            .get(CHECK_YOUR_ANSWERS_URL)
+            .get(EMAIL_CHECK_ANSWER_URL)
             .then((response) => {
                 expect(response.text).toContain(PAGE_HEADING);
                 expect(response.status).toBe(200);
@@ -38,7 +38,7 @@ describe("Confirm email router tests", () => {
 
     it("Should re-display check answer page when Email not confirmed", async () => {
         await request(app)
-            .post(CHECK_YOUR_ANSWERS_URL)
+            .post(EMAIL_CHECK_ANSWER_URL)
             .then((response) => {
                 expect(response.text).toContain("You need to accept the registered email address statement");
                 expect(response.status).toBe(200);
@@ -51,7 +51,7 @@ describe("Confirm email router tests", () => {
         const transSpy = jest.spyOn(transactions, 'closeTransaction').mockResolvedValue(clone(noContentResponse));
 
         await request(app)
-            .post(CHECK_YOUR_ANSWERS_URL)
+            .post(EMAIL_CHECK_ANSWER_URL)
             .send({emailConfirmation: 'anything'})
             .then((response) => {
                 expect(response.text).toContain("Registered email address update submitted");

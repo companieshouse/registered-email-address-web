@@ -10,8 +10,7 @@ import {
   DESCRIPTION,
   REFERENCE,
   transactionStatuses
-} from "../../config/index";
-import {HttpResponse} from "@companieshouse/api-sdk-node/dist/http/http-client";
+} from "../../config";
 
 /**
  * Post transaction

@@ -4,7 +4,7 @@ import {Session} from "@companieshouse/node-session-handler";
 import {logger} from "../../../lib/Logger";
 import {
     COMPANY_EMAIL,
-    COMPANY_NUMBER,
+    COMPANY_NUMBER, CONFIRM_EMAIL_CHANGE_ERROR,
     SUBMISSION_ID,
     TRANSACTION_CLOSE_ERROR
 } from "../../../constants/app.const";
@@ -41,7 +41,7 @@ export class CheckAnswerHandler extends GenericHandler {
 
         if (emailConfirmation === undefined) {
             return {
-                statementError: "You need to accept the registered email address statement",
+                statementError: CONFIRM_EMAIL_CHANGE_ERROR,
                 companyEmail: companyEmail,
                 backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
                 signoutBanner: true,

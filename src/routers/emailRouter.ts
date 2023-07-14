@@ -2,11 +2,13 @@ import {NextFunction, Request, Response, Router} from "express";
 import { ChangeEmailAddressHandler } from "./handlers/email/changeEmailAddress";
 import { UpdateSubmittedHandler } from "./handlers/email/updateSubmitted";
 import * as config from "../config/index";
-import {CHECK_ANSWER_URL, SUBMITTED_URL} from "../config";
+import {CHECK_ANSWER_URL} from "../config";
 import FormValidator from "../utils/formValidator.util";
 import * as constants from "../constants/app.const";
 
 import {CheckAnswerHandler} from "./handlers/email/checkAnswer";
+import {EMAIL_UPDATE_SUBMITTED_URL, UPDATE_SUBMITTED} from "../config";
+import {EMAIL_UPDATE_SUBMITTED} from "../config/index";
 
 const router: Router = Router();
 const routeViews: string = "router_views/email/";
@@ -33,7 +35,7 @@ router.post(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response,
     req.session?.data.signin_info?.user_profile?.email
   );
   await handler.post(req, res).then((viewData) => {
-    if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) === true) {
+    if (Object.prototype.hasOwnProperty.call(viewData, errorsConst)) {
       res.render(`${routeViews}` + config.CHANGE_EMAIL_ADDRESS_URL, viewData);
     } else {
       req.session?.setExtraData(constants.COMPANY_EMAIL, req.body.changeEmailAddress);
@@ -58,9 +60,17 @@ router.post(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunc
                 Object.prototype.hasOwnProperty.call(viewData, statementErrorsConst)) {
                 res.render(`${routeViews}` + CHECK_ANSWER_URL, viewData);
             } else {
-                res.render(`${routeViews}` + SUBMITTED_URL, viewData);
+                res.render(`${routeViews}` + UPDATE_SUBMITTED, viewData);
             }
         });
+});
+
+// GET: /update-submitted
+router.get(UPDATE_SUBMITTED, async (req: Request, res: Response, next: NextFunction) => {
+    const handler = new UpdateSubmittedHandler();
+    await handler.get(req, res).then((viewData) => {
+        res.render(`${routeViews}` + UPDATE_SUBMITTED, viewData);
+    });
 });
 
 export default router;
