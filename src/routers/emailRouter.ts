@@ -8,7 +8,7 @@ import * as constants from "../constants/app.const";
 
 import {CheckAnswerHandler} from "./handlers/email/checkAnswer";
 import {EMAIL_UPDATE_SUBMITTED_URL, UPDATE_SUBMITTED} from "../config";
-import {EMAIL_UPDATE_SUBMITTED} from "../config/index";
+import {CHANGE_EMAIL_ADDRESS_URL, EMAIL_CHECK_ANSWER_URL, EMAIL_UPDATE_SUBMITTED} from "../config/index";
 
 const router: Router = Router();
 const routeViews: string = "router_views/email/";
@@ -16,30 +16,30 @@ const statementErrorsConst: string = "statementError";
 const errorsConst: string = "errors";
 
 // GET: /change-email-address
-router.get(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
+router.get(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
   const formValidator = new FormValidator();
   const handler = new ChangeEmailAddressHandler(
     formValidator,
     req.session?.data.signin_info?.user_profile?.email
   );
   await handler.get(req, res).then((viewData) => {
-    res.render(`router_views/email/${config.CHANGE_EMAIL_ADDRESS_URL}`, viewData);
+    res.render(`router_views/email/${CHANGE_EMAIL_ADDRESS_URL}`, viewData);
   });
 });
 
 // POST: /change-email-address
-router.post(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
+router.post(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
   const formValidator = new FormValidator();
   const handler = new ChangeEmailAddressHandler(
     formValidator,
     req.session?.data.signin_info?.user_profile?.email
   );
   await handler.post(req, res).then((viewData) => {
-    if (Object.prototype.hasOwnProperty.call(viewData, errorsConst)) {
-      res.render(`${routeViews}` + config.CHANGE_EMAIL_ADDRESS_URL, viewData);
+    if (Object.prototype.hasOwnProperty.call(viewData, statementErrorsConst)) {
+      res.render(`${routeViews}` + CHANGE_EMAIL_ADDRESS_URL, viewData);
     } else {
       req.session?.setExtraData(constants.COMPANY_EMAIL, req.body.changeEmailAddress);
-      res.redirect(config.EMAIL_CHECK_ANSWER_URL);
+      res.redirect(EMAIL_CHECK_ANSWER_URL);
     }
   });
 });
@@ -60,7 +60,7 @@ router.post(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunc
                 Object.prototype.hasOwnProperty.call(viewData, statementErrorsConst)) {
                 res.render(`${routeViews}` + CHECK_ANSWER_URL, viewData);
             } else {
-                res.render(`${routeViews}` + UPDATE_SUBMITTED, viewData);
+                res.redirect(EMAIL_UPDATE_SUBMITTED_URL);
             }
         });
 });

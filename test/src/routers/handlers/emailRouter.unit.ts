@@ -30,7 +30,7 @@ describe("Confirm email router tests", () => {
             .get(EMAIL_CHECK_ANSWER_URL)
             .then((response) => {
                 expect(response.text).toContain(PAGE_HEADING);
-                expect(response.status).toBe(200);
+                expect(response.status).toBe(StatusCodes.OK);
                 expect(getSpy).toHaveBeenCalled();
                 expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
             });
@@ -41,7 +41,7 @@ describe("Confirm email router tests", () => {
             .post(EMAIL_CHECK_ANSWER_URL)
             .then((response) => {
                 expect(response.text).toContain("You need to accept the registered email address statement");
-                expect(response.status).toBe(200);
+                expect(response.status).toBe(StatusCodes.OK);
                 expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
             });
     });
@@ -54,8 +54,8 @@ describe("Confirm email router tests", () => {
             .post(EMAIL_CHECK_ANSWER_URL)
             .send({emailConfirmation: 'anything'})
             .then((response) => {
-                expect(response.text).toContain("Registered email address update submitted");
-                expect(response.status).toBe(200);
+                expect(response.text).toContain("Redirecting to /registered-email-address/email/update-submitted");
+                expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
                 expect(createSpy).toHaveBeenCalled();
                 expect(transSpy).toHaveBeenCalled();
             });
