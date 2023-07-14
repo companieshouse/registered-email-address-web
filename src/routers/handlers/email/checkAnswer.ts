@@ -4,12 +4,11 @@ import {Session} from "@companieshouse/node-session-handler";
 import {logger} from "../../../lib/Logger";
 import {
   REGISTERED_EMAIL_ADDRESS,
-  COMPANY_PROFILE, CONFIRM_EMAIL_CHANGE_ERROR,
+  COMPANY_NUMBER, CONFIRM_EMAIL_CHANGE_ERROR,
   SUBMISSION_ID,
   TRANSACTION_CLOSE_ERROR
 } from "../../../constants/app.const";
 import {EMAIL_CHANGE_EMAIL_ADDRESS_URL} from "../../../config";
-import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile";
 import {createRegisteredEmailAddressResource} from "../../../services/company/createRegisteredEmailAddressResource";
 import {closeTransaction} from "../../../services/transaction/transaction.service";
 
@@ -51,11 +50,11 @@ export class CheckAnswerHandler extends GenericHandler {
     }
 
     const transactionId = session.getExtraData(SUBMISSION_ID);
-    const companyProfile: CompanyProfile | undefined = session.getExtraData(COMPANY_PROFILE);
+    const companyNumber: string | undefined = session.getExtraData(COMPANY_NUMBER);
 
     return await createRegisteredEmailAddressResource(session, <string>transactionId, <string>companyEmail)
       .then(async () => {
-        return await closeTransaction(session, <string> companyProfile?.companyNumber, <string>transactionId)
+        return await closeTransaction(session, <string> companyNumber, <string>transactionId)
           .then(() => {
             return {
               backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
@@ -73,7 +72,7 @@ export class CheckAnswerHandler extends GenericHandler {
           });
       }).catch((e) => {
         return {
-          statementError: TRANSACTION_CLOSE_ERROR + companyProfile?.companyNumber,
+          statementError: TRANSACTION_CLOSE_ERROR + companyNumber,
           companyEmail: companyEmail,
           backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
           signoutBanner: true,

@@ -9,7 +9,7 @@ import { createRequest, createResponse, MockRequest, MockResponse } from 'node-m
 import { ChangeEmailAddressHandler } from "../../../../src/routers/handlers/email/changeEmailAddress";
 import FormValidator from "../../../../src/utils/formValidator.util";
 import { Session } from "@companieshouse/node-session-handler";
-import { REGISTERED_EMAIL_ADDRESS, COMPANY_PROFILE, SUBMISSION_ID, TRANSACTION_CREATE_ERROR, NO_EMAIL_ADDRESS_SUPPLIED, EMAIL_ADDRESS_INVALID } from "../../../../src/constants/app.const";
+import { REGISTERED_EMAIL_ADDRESS, COMPANY_NUMBER, SUBMISSION_ID, TRANSACTION_CREATE_ERROR, NO_EMAIL_ADDRESS_SUPPLIED, EMAIL_ADDRESS_INVALID } from "../../../../src/constants/app.const";
 import { validTransactionSDKResource, transactionId } from "../../../mocks/transaction.mock";
 import { queryReponse, errorReponse } from "../../../mocks/company.email.mock";
 import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
@@ -17,7 +17,6 @@ import { createPublicOAuthApiClient } from "../../../../src/services/api/api.ser
 import { createAndLogError } from "../../../../src/lib/Logger";
 
 const COMPANY_NO: string = "1234567";
-const TEST_COMPANY_PROFILE = { companyNumber: COMPANY_NO };
 const TEST_EMAIL_EXISTING: string = "test@test.co.biz";
 const TEST_EMAIL_UPDATE: string = "new_test@test.co.biz";
 const PAGE_TITLE: string = "Update a registered email address";
@@ -82,7 +81,7 @@ describe("Registered email address update - test GET method", () => {
     // build required transaction response for test
     mockPostTransactionResponse.mockResolvedValueOnce(clone(errorReponse));
     //set company number in session
-    request.session?.setExtraData(COMPANY_PROFILE, TEST_COMPANY_PROFILE);
+    request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
     request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
 
     await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {
@@ -98,7 +97,7 @@ describe("Registered email address update - test GET method", () => {
     mockPostTransactionResponse.mockResolvedValueOnce(clone(validTransactionSDKResource));
     //set email in session
     request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
-    request.session?.setExtraData(COMPANY_PROFILE, TEST_COMPANY_PROFILE);
+    request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
 
     await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
@@ -115,7 +114,7 @@ describe("Registered email address update - test GET method", () => {
     mockGetCompanyEmailResponse.mockResolvedValueOnce(clone(queryReponse));
     //set company number in session
     request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
-    request.session?.setExtraData(COMPANY_PROFILE, TEST_COMPANY_PROFILE);
+    request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
 
     await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));

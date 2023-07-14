@@ -4,11 +4,10 @@ import { inject } from "inversify";
 import { Session } from "@companieshouse/node-session-handler";
 import { logger, createAndLogError } from "../../../lib/Logger";
 import { validateEmailString } from "../../../utils/validateEmailString";
-import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile";
 import { postTransaction } from "../../../services/transaction/transaction.service";
 
 import {
-  COMPANY_PROFILE,
+  COMPANY_NUMBER,
   SUBMISSION_ID,
   NO_EMAIL_ADDRESS_FOUND,
   EMAIL_ADDRESS_INVALID,
@@ -47,8 +46,7 @@ export class ChangeEmailAddressHandler extends GenericHandler {
     logger.info(`GET request to serve change registered email address page`);
 
     const session: Session = req.session as Session;
-    const companyProfile: CompanyProfile | undefined = req.session?.getExtraData(COMPANY_PROFILE);
-    const companyNumber: string | undefined = companyProfile?.companyNumber;
+    const companyNumber: string | undefined = req.session?.getExtraData(COMPANY_NUMBER);
     const companyEmailAddress: RegisteredEmailAddress | undefined = req.session?.getExtraData(REGISTERED_EMAIL_ADDRESS);
 
     if (companyEmailAddress !== undefined && companyNumber !== undefined) {

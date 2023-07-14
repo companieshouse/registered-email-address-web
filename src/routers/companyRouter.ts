@@ -47,9 +47,9 @@ router.get(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFun
 });
 
 router.post(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFunction) => {
-  const companyProfile: CompanyProfile | undefined = req.session?.getExtraData("companyProfile");
+  const companyProfile: CompanyProfile | undefined = req.session?.getExtraData(constants.COMPANY_PROFILE);
   if (companyProfile !== undefined) {
-    req.session?.setExtraData("companyNumber", companyProfile.companyNumber);
+    req.session?.setExtraData(constants.COMPANY_NUMBER, companyProfile.companyNumber);
   }
   const handler = new ConfirmCompanyHandler();
   await handler.post(req, res).then((data) => {
