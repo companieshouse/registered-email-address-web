@@ -1,11 +1,11 @@
-import { Request, Response } from "express";
+import {Request, Response} from "express";
 import { GenericHandler } from "./../generic";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile";
 import { Session } from "@companieshouse/node-session-handler";
 import { getCompanyProfile } from "../../../services/company/company.profile.service";
 import { buildAddress, formatForDisplay } from "../../../services/company/confirm.company.service";
 import { getCompanyEmail } from "../../../services/company/company.email.service";
-import { logger } from "../../../lib/Logger";
+import {logger} from "../../../lib/Logger";
 import * as constants from "../../../constants/app.const";
 import * as validationConstants from "../../../constants/validation.const";
 import * as config from "../../../config/index";
@@ -13,12 +13,13 @@ import * as config from "../../../config/index";
 
 export class ConfirmCompanyHandler extends GenericHandler {
 
-  constructor () {
+  constructor() {
     super();
   }
 
-  async get (req: Request, response: Response): Promise<Object> {
+  async get(req: Request, response: Response): Promise<Object> {
     logger.info(`GET request to serve company confirm page`);
+
     const session: Session = req.session as Session;
     let companyProfile: CompanyProfile;
     if (req.query.companyNumber === undefined) {
@@ -49,8 +50,9 @@ export class ConfirmCompanyHandler extends GenericHandler {
     return Promise.resolve(this.viewData);
   }
 
-  async post (req: Request, response: Response): Promise<any> {
+  async post(req: Request, response: Response): Promise<any> {
     logger.info(`POST request to serve company confirm page`);
+
     const session: Session = req.session as Session;
     const companyProfile: CompanyProfile = session.data.extra_data.companyProfile;
     if (!validationConstants.VALID_COMPANY_TYPES.includes(companyProfile.type)) {

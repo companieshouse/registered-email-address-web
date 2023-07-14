@@ -1,17 +1,19 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import { inject } from "inversify";
-import { Session } from "@companieshouse/node-session-handler";
 import { logger } from "../../../lib/Logger";
 import { validateEmailString } from "../../../utils/validateEmailString";
 
-import { 
+import {
   NO_EMAIL_ADDRESS_FOUND,
-  REGISTERED_EMAIL_ADDRESS,
-  EMAIL_ADDRESS_INVALID
+  EMAIL_ADDRESS_INVALID,
+  REGISTERED_EMAIL_ADDRESS
 } from "../../../constants/app.const";
 
-import { COMPANY_BASE_URL, CONFIRM_URL } from "../../../config/index";
+import { 
+  COMPANY_BASE_URL,
+  CONFIRM_URL
+} from "../../../config/index";
 
 import ValidationErrors from "../../../models/view/validationErrors.model";
 
@@ -38,7 +40,7 @@ export class ChangeEmailAddressHandler extends GenericHandler {
 
     if (companyEmailAddress !== undefined) {
       this.viewData.companyEmailAddress = companyEmailAddress;
-      return Promise.resolve(this.viewData); 
+      return Promise.resolve(this.viewData);
     } else {
       logger.info(`company confirm - company email not found`);
       this.viewData.errors = NO_EMAIL_ADDRESS_FOUND;

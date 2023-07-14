@@ -34,3 +34,4 @@ export const getCompanyEmail = async (companyNumber: string): Promise<Registered
 
   return sdkResponse.resource;
 };
+

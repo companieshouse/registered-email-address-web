@@ -33,7 +33,7 @@ describe("Registered email address update - test GET method", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     changeEmailAddressHandler = new ChangeEmailAddressHandler(
-      formValidator, 
+      formValidator,
       TEST_EMAIL_EXISTING
     );
     // session instance
@@ -72,7 +72,7 @@ describe("Registered email address update - test POST method", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     changeEmailAddressHandler = new ChangeEmailAddressHandler(
-      formValidator, 
+      formValidator,
       TEST_EMAIL_EXISTING
     );
     // session instance
@@ -83,7 +83,7 @@ describe("Registered email address update - test POST method", () => {
     });
     response = createResponse();
   });
-  
+
   it("No email in POST request body - return view data error", async () => {
     //set email address in request body to empty
     request.body.changeEmailAddress = "";

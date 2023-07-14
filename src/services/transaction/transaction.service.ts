@@ -7,11 +7,11 @@ import { Session } from "@companieshouse/node-session-handler";
 import ApiClient from "@companieshouse/api-sdk-node/dist/client";
 import { ApiErrorResponse, ApiResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 
-import { 
+import {
   DESCRIPTION,
   REFERENCE,
   transactionStatuses
-} from "../../config/index";
+} from "../../config";
 
 /**
  * Post transaction
@@ -27,7 +27,7 @@ export const postTransaction = async (session: Session, companyNumber: string, d
 
   logger.debug(`Creating transaction with company number ${companyNumber}`);
   const sdkResponse: Resource<Transaction> | ApiErrorResponse = await apiClient.transaction.postTransaction(transaction);
-  
+
   if (!sdkResponse) {
     throw createAndLogError( SERVICE_UNAVAILABLE, `Transaction API POST request returned no response for company number ${companyNumber}`);
   }
