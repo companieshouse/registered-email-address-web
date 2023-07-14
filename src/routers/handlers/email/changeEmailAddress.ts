@@ -7,20 +7,20 @@ import { validateEmailString } from "../../../utils/validateEmailString";
 import { getCompanyEmail } from "../../../services/company/company.email.service";
 import { postTransaction } from "../../../services/transaction/transaction.service";
 
-import { 
+import {
   COMPANY_EMAIL,
   COMPANY_NUMBER,
   SUBMISSION_ID,
   NO_EMAIL_ADDRESS_FOUND,
   EMAIL_ADDRESS_INVALID,
-  TRANSACTION_CREATE_ERROR 
+  TRANSACTION_CREATE_ERROR
 } from "../../../constants/app.const";
 
-import { 
+import {
   COMPANY_BASE_URL,
   CONFIRM_URL,
   DESCRIPTION,
-  REFERENCE 
+  REFERENCE
 } from "../../../config/index";
 
 import ValidationErrors from "../../../models/view/validationErrors.model";
@@ -51,7 +51,7 @@ export class ChangeEmailAddressHandler extends GenericHandler {
     // check session state - if not found, we'll need a call to oracle api
     if (companyEmailAddress !== undefined) {
       this.viewData.companyEmailAddress = companyEmailAddress;
-      return Promise.resolve(this.viewData); 
+      return Promise.resolve(this.viewData);
     } else {
       if (companyNumber !== undefined) {
         // create transaction record

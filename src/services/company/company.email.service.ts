@@ -1,13 +1,14 @@
-import { companyEmailResource, companyEmail } from "./resources/resources";
-import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
-import { CHS_API_KEY, ORACLE_QUERY_API_URL } from "../../config/index";
-import { StatusCodes } from 'http-status-codes';
+import {companyEmail, companyEmailResource} from "./resources/resources";
+import {createApiClient, Resource} from "@companieshouse/api-sdk-node";
+import {CHS_API_KEY, ORACLE_QUERY_API_URL} from "../../config";
+import {StatusCodes} from 'http-status-codes';
+
 
 /**
-* Get the registered email address for a company.
-*
-* @param companyNumber the company number to look up
-*/
+ * Get the registered email address for a company.
+ *
+ * @param companyNumber the company number to look up
+ */
 export const getCompanyEmail = async (companyNumber: string): Promise<Resource<companyEmail>> => {
   // build client object
   const client = createApiClient(
@@ -34,3 +35,4 @@ export const getCompanyEmail = async (companyNumber: string): Promise<Resource<c
   };
   return emailResource;
 };
+

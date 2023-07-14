@@ -24,7 +24,7 @@ router.post(config.NUMBER_URL, async (req: Request, res: Response, next: NextFun
   const companyNumberSanitizer = new CompanyNumberSanitizer();
   await new CompanySearchHandlerPost(formValidator, companyNumberSanitizer).post(req, res).then((data) => {
     // eslint-disable-next-line no-prototype-builtins
-    if (Object.prototype.hasOwnProperty.call(data, errorsConst) === true) {
+    if (Object.prototype.hasOwnProperty.call(data, errorsConst)) {
       res.render(`${routeViews}` + config.COMPANY_SEARCH_PAGE, data);
     } else {
       // eslint-disable-next-line no-unused-expressions
@@ -38,7 +38,7 @@ router.get(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFun
   const handler = new ConfirmCompanyHandler();
   const viewData = await handler.get(req, res);
   // eslint-disable-next-line no-prototype-builtins
-  if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) === true) {
+  if (Object.prototype.hasOwnProperty.call(viewData, errorsConst)) {
     res.render(`${routeViews}` + config.COMPANY_SEARCH_PAGE, viewData);
   } else {
     res.render(`${routeViews}` + config.CONFIRM_URL, viewData);
