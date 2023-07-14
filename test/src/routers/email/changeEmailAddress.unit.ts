@@ -152,7 +152,7 @@ describe("Registered email address update - test POST method", () => {
 
       expect(changeEmailAddressResponseJson.errors).toBeTruthy;
       expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
-      expect(changeEmailAddressResponseJson.statementError.changeEmailAddress).toEqual(NO_EMAIL_ADDRESS_SUPPLIED);
+      expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(NO_EMAIL_ADDRESS_SUPPLIED);
     });
   });
 

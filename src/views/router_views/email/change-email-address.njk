@@ -22,8 +22,8 @@
           govukInput({
             describedBy: "change-email-address-hint",
             errorMessage: {
-              text: statementError.changeEmailAddress
-            } if statementError.changeEmailAddress,
+              text: errors.changeEmailAddress
+            } if errors.changeEmailAddress,
             classes: "govuk-input",
             id: "change-email-address",
             name: "changeEmailAddress",

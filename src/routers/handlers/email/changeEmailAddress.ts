@@ -7,20 +7,20 @@ import { validateEmailString } from "../../../utils/validateEmailString";
 import { getCompanyEmail } from "../../../services/company/company.email.service";
 import { postTransaction } from "../../../services/transaction/transaction.service";
 
-import { 
+import {
   COMPANY_EMAIL,
   COMPANY_NUMBER,
   SUBMISSION_ID,
   NO_EMAIL_ADDRESS_FOUND,
   EMAIL_ADDRESS_INVALID,
-  TRANSACTION_CREATE_ERROR 
+  TRANSACTION_CREATE_ERROR
 } from "../../../constants/app.const";
 
-import { 
+import {
   COMPANY_BASE_URL,
   CONFIRM_URL,
   DESCRIPTION,
-  REFERENCE 
+  REFERENCE
 } from "../../../config/index";
 
 import ValidationErrors from "../../../models/view/validationErrors.model";
@@ -68,7 +68,7 @@ export class ChangeEmailAddressHandler extends GenericHandler {
         }
         await getCompanyEmail(companyNumber).then((companyEmail) => {
           if (companyEmail.resource?.companyEmail === undefined) {
-            this.viewData.statementError = {
+            this.viewData.errors = {
               changeEmailAddress: NO_EMAIL_ADDRESS_FOUND
             };
             return Promise.resolve(this.viewData);
@@ -90,7 +90,7 @@ export class ChangeEmailAddressHandler extends GenericHandler {
 
     //check: no email supplied
     if (errors) {
-      this.viewData.statementError = errors;
+      this.viewData.errors = errors;
       return this.viewData;
     }
 
