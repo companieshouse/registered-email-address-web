@@ -6,10 +6,10 @@ import {companyEmail} from "../../../../src/services/company/resources/resources
 import {HttpResponse} from "@companieshouse/api-sdk-node/dist/http/http-client";
 import {StatusCodes} from 'http-status-codes';
 import {Request, Response} from "express";
-import {COMPANY_EMAIL} from "../../../../src/constants/app.const";
+import {COMPANY_EMAIL, SUBMISSION_ID} from "../../../../src/constants/app.const";
 import {Session} from "@companieshouse/node-session-handler";
 
-import * as rea from '../../../../src/services/company/createRegisteredEmailAddressResource';
+import * as rea from '../../../../src/services/email/createRegisteredEmailAddressResource';
 import * as transactions from '../../../../src/services/transaction/transaction.service';
 import {CheckAnswerHandler} from "../../../../src/routers/handlers/email/checkAnswer";
 import {createResponse, MockResponse} from "node-mocks-http";
@@ -98,7 +98,8 @@ describe("Company email address service test", () => {
         body: {emailConfirmation: "confirm"}
       } as Request;
 
-      mockRequest.session = new Session();
+      mockRequest.session = session;
+      session.setExtraData(SUBMISSION_ID, "anything");
 
       jest.spyOn(rea, 'createRegisteredEmailAddressResource').mockResolvedValue(clone(createdResponse));
       jest.spyOn(transactions, 'closeTransaction').mockResolvedValue(clone(noContentResponse));
@@ -107,6 +108,7 @@ describe("Company email address service test", () => {
         expect(result).toMatchObject({backUri: "/registered-email-address/email/change-email-address"});
         expect(result).toMatchObject({signoutBanner: true});
         expect(result).toMatchObject({userEmail: undefined});
+        expect(result).toMatchObject({submissionID: "anything"});
       });
     });
 

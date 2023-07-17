@@ -1,6 +1,6 @@
 import mocks from "../../../mocks/all.middleware.mock";
 import request from "supertest";
-import * as rea from '../../../../src/services/company/createRegisteredEmailAddressResource';
+import * as rea from '../../../../src/services/email/createRegisteredEmailAddressResource';
 import * as transactions from '../../../../src/services/transaction/transaction.service';
 import app from "../../../../src/app";
 import {EMAIL_CHECK_ANSWER_URL} from "../../../../src/config";

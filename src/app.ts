@@ -5,7 +5,6 @@ import path from "path";
 import { logger } from "./lib/Logger";
 import routerDispatch from "./router.dispatch";
 import * as config from "./config";
-import {NODE_MODULES_BASE_PATH} from "./config";
 import {authenticationMiddleware} from "./middleware/authentication.middleware";
 import {companyAuthenticationMiddleware} from "./middleware/company.authentication.middleware";
 import cookieParser from "cookie-parser";
@@ -16,7 +15,8 @@ const app = express();
 
 app.set("views", [
   path.join(__dirname, "/views"),
-  path.join(__dirname, NODE_MODULES_BASE_PATH + "/node_modules/govuk-frontend")
+  path.join(__dirname, "/node_modules/govuk-frontend"),
+  path.join(__dirname, "../node_modules/govuk-frontend")
 ]);
 
 const nunjucksLoaderOpts = {

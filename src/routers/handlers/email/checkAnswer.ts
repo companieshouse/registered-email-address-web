@@ -9,7 +9,7 @@ import {
   TRANSACTION_CLOSE_ERROR
 } from "../../../constants/app.const";
 import {EMAIL_CHANGE_EMAIL_ADDRESS_URL} from "../../../config";
-import {createRegisteredEmailAddressResource} from "../../../services/company/createRegisteredEmailAddressResource";
+import {createRegisteredEmailAddressResource} from "../../../services/email/createRegisteredEmailAddressResource";
 import {closeTransaction} from "../../../services/transaction/transaction.service";
 
 export class CheckAnswerHandler extends GenericHandler {
@@ -59,7 +59,8 @@ export class CheckAnswerHandler extends GenericHandler {
             return {
               backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
               signoutBanner: true,
-              userEmail: req.session?.data.signin_info?.user_profile?.email
+              userEmail: req.session?.data.signin_info?.user_profile?.email,
+              submissionID: transactionId
             };
           }).catch((err) => {
             return {
