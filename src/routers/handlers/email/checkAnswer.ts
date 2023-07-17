@@ -19,7 +19,7 @@ export class CheckAnswerHandler extends GenericHandler {
   }
 
   async get(req: Request, response: Response): Promise<Object> {
-    logger.info(`GET request to serve company confirm page`);
+    logger.info(`GET request to serve check your answer page`);
 
     const session: Session = req.session as Session;
     const companyEmail: string | undefined = session.getExtraData(REGISTERED_EMAIL_ADDRESS);
@@ -33,7 +33,7 @@ export class CheckAnswerHandler extends GenericHandler {
   }
 
   async post(req: Request, response: Response): Promise<any> {
-    logger.info(`POST request to serve company confirm page`);
+    logger.info(`POST request to serve check your answer page`);
 
     const session: Session = req.session as Session;
     const companyEmail = req.session?.getExtraData(REGISTERED_EMAIL_ADDRESS);
@@ -59,8 +59,8 @@ export class CheckAnswerHandler extends GenericHandler {
             return {
               backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
               signoutBanner: true,
-                            userEmail: req.session?.data.signin_info?.user_profile?.email,
-                            submissionID: transactionId
+              userEmail: req.session?.data.signin_info?.user_profile?.email,
+              submissionID: transactionId
             };
           }).catch((err) => {
             return {
