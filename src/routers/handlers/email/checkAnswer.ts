@@ -59,7 +59,8 @@ export class CheckAnswerHandler extends GenericHandler {
             return {
               backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
               signoutBanner: true,
-              userEmail: req.session?.data.signin_info?.user_profile?.email
+                            userEmail: req.session?.data.signin_info?.user_profile?.email,
+                            submissionID: transactionId
             };
           }).catch((err) => {
             return {
