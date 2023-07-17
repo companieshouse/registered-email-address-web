@@ -2,6 +2,7 @@ import PrivateApiClient from "./privateApiClient";
 import { API_URL, ACCOUNT_URL } from "./config";
 import { RequestClient, HttpClientOptions, IHttpClient } from "@companieshouse/api-sdk-node/dist/http";
 import Resource from "@companieshouse/api-sdk-node/dist/services/resource";
+import { PRIVATE_API_ERROR } from "../../../constants/app.const";
 
 /**
  * Creates a new API Client.
@@ -12,7 +13,7 @@ import Resource from "@companieshouse/api-sdk-node/dist/services/resource";
  */
 export const createPrivateApiClient = (apiKey?: string, oauthToken?: string, baseUrl: string = API_URL, baseAccountUrl: string = ACCOUNT_URL): PrivateApiClient => {
   if (apiKey && oauthToken) {
-    throw new Error("You cannot set both api key and oauth token to create a client. Please use one or the other");
+    throw new Error(PRIVATE_API_ERROR);
   }
 
   // the http client adapter for the api domain
