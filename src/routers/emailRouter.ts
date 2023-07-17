@@ -46,31 +46,31 @@ router.post(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response,
 
 // GET: /check-your-answers
 router.get(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunction) => {
-    await new CheckAnswerHandler().get(req, res)
-        .then((viewData) => {
-            res.render(`${routeViews}` + CHECK_ANSWER_URL, viewData);
-        });
+  await new CheckAnswerHandler().get(req, res)
+    .then((viewData) => {
+      res.render(`${routeViews}` + CHECK_ANSWER_URL, viewData);
+    });
 });
 
 // POST: /check-your-answers
 router.post(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunction) => {
-    await new CheckAnswerHandler().post(req, res)
-        .then((viewData) => {
-            if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) ||
+  await new CheckAnswerHandler().post(req, res)
+    .then((viewData) => {
+      if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) ||
                 Object.prototype.hasOwnProperty.call(viewData, statementErrorsConst)) {
-                res.render(`${routeViews}` + CHECK_ANSWER_URL, viewData);
-            } else {
-                res.render(`${routeViews}` + UPDATE_SUBMITTED, viewData);
-            }
-        });
+        res.render(`${routeViews}` + CHECK_ANSWER_URL, viewData);
+      } else {
+        res.render(`${routeViews}` + UPDATE_SUBMITTED, viewData);
+      }
+    });
 });
 
 // GET: /update-submitted
 router.get(UPDATE_SUBMITTED, async (req: Request, res: Response, next: NextFunction) => {
-    const handler = new UpdateSubmittedHandler();
-    await handler.get(req, res).then((viewData) => {
-        res.render(`${routeViews}` + UPDATE_SUBMITTED, viewData);
-    });
+  const handler = new UpdateSubmittedHandler();
+  await handler.get(req, res).then((viewData) => {
+    res.render(`${routeViews}` + UPDATE_SUBMITTED, viewData);
+  });
 });
 
 export default router;

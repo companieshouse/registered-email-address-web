@@ -61,7 +61,7 @@ describe("Request to enter company number - test GET method", () => {
       session: session
     });
     response = createResponse();
-      //set email in session
+    //set email in session
     request.session?.setExtraData(COMPANY_EMAIL, TEST_EMAIL_EXISTING);
   });
   
@@ -69,7 +69,7 @@ describe("Request to enter company number - test GET method", () => {
   it("Request to enter company number - request for company profile successful", async () => {
     mockGetCompanyProfile.mockResolvedValueOnce(clone(validSDKResource));
     //set email in session
-    request._setBody({companyNumber :  '12345678'})
+    request._setBody({companyNumber :  '12345678'});
     await companySearchHandler.post(request, response).then((searchCompanyNumbersResponse) => {
       const searchCompanyNumbersResponseJson = JSON.parse(JSON.stringify(searchCompanyNumbersResponse));
       expect(searchCompanyNumbersResponseJson.companyName).toEqual('Test Company');
@@ -79,16 +79,16 @@ describe("Request to enter company number - test GET method", () => {
     });
   });
 
-    it("Request to enter company number - request for company profile Error", async () => {
-      mockGetCompanyProfile.mockResolvedValueOnce(clone(CompanyProfileErrorResponse));
-      request._setBody({companyNumber :  '12345678'})
-      await companySearchHandler.post(request, response).then((searchCompanyNumbersResponse) => {
-        const searchCompanyNumbersResponseJson = JSON.parse(JSON.stringify(searchCompanyNumbersResponse));
-        expect(searchCompanyNumbersResponseJson.backUri).toEqual('/registered-email-address');
-        expect(searchCompanyNumbersResponseJson.signoutBanner).toEqual(true);
-        expect(searchCompanyNumbersResponseJson.errors.companyNumber).toEqual('You must enter a valid company number');
-      });
+  it("Request to enter company number - request for company profile Error", async () => {
+    mockGetCompanyProfile.mockResolvedValueOnce(clone(CompanyProfileErrorResponse));
+    request._setBody({companyNumber :  '12345678'});
+    await companySearchHandler.post(request, response).then((searchCompanyNumbersResponse) => {
+      const searchCompanyNumbersResponseJson = JSON.parse(JSON.stringify(searchCompanyNumbersResponse));
+      expect(searchCompanyNumbersResponseJson.backUri).toEqual('/registered-email-address');
+      expect(searchCompanyNumbersResponseJson.signoutBanner).toEqual(true);
+      expect(searchCompanyNumbersResponseJson.errors.companyNumber).toEqual('You must enter a valid company number');
     });
-
   });
+
+});
     

@@ -13,12 +13,12 @@ import * as config from "../../../config/index";
 
 export class ConfirmCompanyHandler extends GenericHandler {
 
-    constructor() {
-        super();
-    }
+  constructor() {
+    super();
+  }
 
-    async get(req: Request, response: Response): Promise<Object> {
-        logger.info(`GET request to serve company confirm page`);
+  async get(req: Request, response: Response): Promise<Object> {
+    logger.info(`GET request to serve company confirm page`);
 
     const session: Session = req.session as Session;
     let companyProfile: CompanyProfile;
@@ -36,15 +36,15 @@ export class ConfirmCompanyHandler extends GenericHandler {
         this.viewData.errors = {
           companyNumber: constants.INVALID_COMPANY_NUMBER
         };
-    }
+      }
     }
     return Promise.resolve(this.viewData);
   }
 
-    async post(req: Request, response: Response): Promise<any> {
-        logger.info(`POST request to serve company confirm page`);
+  async post(req: Request, response: Response): Promise<any> {
+    logger.info(`POST request to serve company confirm page`);
 
-        const session: Session = req.session as Session;
+    const session: Session = req.session as Session;
     const companyProfile: CompanyProfile = session.data.extra_data.companyProfile;
     if (!validationConstants.VALID_COMPANY_TYPES.includes(companyProfile.type)) {
       logger.info(`company confirm - invalid company type`);
@@ -59,8 +59,7 @@ export class ConfirmCompanyHandler extends GenericHandler {
         if (companyEmail.resource?.companyEmail) {
           logger.info(`company confirm - company email found: ${companyEmail}`);
           session?.setExtraData(constants.REGISTERED_EMAIL_ADDRESS, companyEmail.resource.companyEmail);
-        }
-        else {
+        } else {
           logger.info(`company confirm - company email not found`);
           this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_NO_EMAIL_REASON;
         }    
@@ -77,7 +76,7 @@ export class ConfirmCompanyHandler extends GenericHandler {
     this.viewData.address = address;
     this.viewData.userEmail = session.data.signin_info?.user_profile?.email;
     this.viewData.backUri = config.COMPANY_NUMBER_URL;
-        }
+  }
 
 
 }

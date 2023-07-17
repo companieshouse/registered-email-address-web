@@ -65,14 +65,14 @@ describe("Test ConfirmCompanyHandler", () => {
       session: session
     });
     response = createResponse();
-      //set email in session
+    //set email in session
     request.session?.setExtraData(COMPANY_EMAIL, TEST_EMAIL_EXISTING);
   });
   
 
   it("Get Request in ConfirmCompanyHandlerr - Get Confirm Company Screen Successful", async () => {
     //set Company Profile in session
-    request.session?.setExtraData(constants.COMPANY_PROFILE , validSDKResource.resource)
+    request.session?.setExtraData(constants.COMPANY_PROFILE, validSDKResource.resource);
     await confirmCompanyHandler.get(request, response).then((confirmCompanyResponse) => {
       const confirmCompanyResponseJson = JSON.parse(JSON.stringify(confirmCompanyResponse));
       expect(confirmCompanyResponseJson.company.companyName).toEqual('Test Company');
@@ -84,22 +84,22 @@ describe("Test ConfirmCompanyHandler", () => {
     });
   });
 
-    it("Get Request in ConfirmCompanyHandler - Get Confirm Company Screen Successful via a request backlink", async () => {
-      // Mock Company Profile Request
-      mockGetCompanyProfile.mockResolvedValueOnce(clone(validSDKResource));
+  it("Get Request in ConfirmCompanyHandler - Get Confirm Company Screen Successful via a request backlink", async () => {
+    // Mock Company Profile Request
+    mockGetCompanyProfile.mockResolvedValueOnce(clone(validSDKResource));
 
-      //Set Company Number in Query
-      request.query = {companyNumber : '12345678'}
+    //Set Company Number in Query
+    request.query = {companyNumber : '12345678'};
   
-      await confirmCompanyHandler.get(request, response).then((confirmCompanyResponse) => {
-        const confirmCompanyResponseJson = JSON.parse(JSON.stringify(confirmCompanyResponse));
-        expect(confirmCompanyResponseJson.company.companyName).toEqual('Test Company');
-        expect(confirmCompanyResponseJson.company.companyNumber).toEqual('12345678');
-        expect(confirmCompanyResponseJson.company.companyStatus).toEqual('Active');
-        expect(confirmCompanyResponseJson.company.type).toEqual('Private limited company');
-        expect(confirmCompanyResponseJson.company.registeredOfficeAddress).toBeTruthy();
-        expect(confirmCompanyResponseJson.backUri).toEqual('/registered-email-address/company/number');
-      });
+    await confirmCompanyHandler.get(request, response).then((confirmCompanyResponse) => {
+      const confirmCompanyResponseJson = JSON.parse(JSON.stringify(confirmCompanyResponse));
+      expect(confirmCompanyResponseJson.company.companyName).toEqual('Test Company');
+      expect(confirmCompanyResponseJson.company.companyNumber).toEqual('12345678');
+      expect(confirmCompanyResponseJson.company.companyStatus).toEqual('Active');
+      expect(confirmCompanyResponseJson.company.type).toEqual('Private limited company');
+      expect(confirmCompanyResponseJson.company.registeredOfficeAddress).toBeTruthy();
+      expect(confirmCompanyResponseJson.backUri).toEqual('/registered-email-address/company/number');
+    });
   });
 
   it("Get Request in ConfirmCompanyHandler - Confirm Company Screen Unsuccessful via a request backlink", async () => {
@@ -107,7 +107,7 @@ describe("Test ConfirmCompanyHandler", () => {
     mockGetCompanyProfile.mockResolvedValueOnce(clone(CompanyProfileErrorResponse));
 
     //Set Company Number in Query
-    request.query = {companyNumber : '12345678'}
+    request.query = {companyNumber : '12345678'};
 
     await confirmCompanyHandler.get(request, response).then((confirmCompanyResponse) => {
       const confirmCompanyResponseJson = JSON.parse(JSON.stringify(confirmCompanyResponse));
@@ -119,7 +119,7 @@ describe("Test ConfirmCompanyHandler", () => {
     mockGetCompanyEmailResponse.mockResolvedValueOnce(clone(queryReponse));
 
     //set Company Profile in session
-    request.session?.setExtraData(constants.COMPANY_PROFILE , validSDKResource.resource)
+    request.session?.setExtraData(constants.COMPANY_PROFILE, validSDKResource.resource);
 
     await confirmCompanyHandler.post(request, response).then(() => {
       expect(request.session?.getExtraData(constants.REGISTERED_EMAIL_ADDRESS)).toBeTruthy;
@@ -129,8 +129,8 @@ describe("Test ConfirmCompanyHandler", () => {
 
   it("POST Request in ConfirmCompanyHandler - Company has invalid company type", async () => {
     //set Company Profile in session    
-    var invalidCompany = {type : "invalid-company-type"}
-    request.session?.setExtraData(constants.COMPANY_PROFILE , invalidCompany)
+    const invalidCompany = {type : "invalid-company-type"};
+    request.session?.setExtraData(constants.COMPANY_PROFILE, invalidCompany);
 
     await confirmCompanyHandler.post(request, response).then((confirmCompanyResponse) => {
       const confirmCompanyResponseJson = JSON.parse(JSON.stringify(confirmCompanyResponse));
@@ -140,10 +140,10 @@ describe("Test ConfirmCompanyHandler", () => {
 
   it("POST Request in ConfirmCompanyHandler - Company has invalid company status", async () => {
     //set Company Profile in session    
-    var invalidCompany = {
+    const invalidCompany = {
       type : "ltd",
-      companyStatus : "invalid-company-staus"}
-    request.session?.setExtraData(constants.COMPANY_PROFILE , invalidCompany)
+      companyStatus : "invalid-company-staus"};
+    request.session?.setExtraData(constants.COMPANY_PROFILE, invalidCompany);
 
     await confirmCompanyHandler.post(request, response).then((confirmCompanyResponse) => {
       const confirmCompanyResponseJson = JSON.parse(JSON.stringify(confirmCompanyResponse));
@@ -156,12 +156,12 @@ describe("Test ConfirmCompanyHandler", () => {
     mockGetCompanyEmailResponse.mockResolvedValueOnce(clone(EmailErrorReponse));
 
     //set Company Profile in session    
-    var invalidCompany = {
+    const invalidCompany = {
       type : "ltd",
       companyStatus : "active",
       companyNumber : "12345678"
-    }
-    request.session?.setExtraData(constants.COMPANY_PROFILE , invalidCompany)
+    };
+    request.session?.setExtraData(constants.COMPANY_PROFILE, invalidCompany);
 
     await confirmCompanyHandler.post(request, response).then((confirmCompanyResponse) => {
       const confirmCompanyResponseJson = JSON.parse(JSON.stringify(confirmCompanyResponse));
@@ -169,5 +169,5 @@ describe("Test ConfirmCompanyHandler", () => {
     });
   });
 
-  });
+});
     
