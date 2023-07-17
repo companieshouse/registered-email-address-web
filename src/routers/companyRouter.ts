@@ -1,5 +1,5 @@
 import { Request, Response, Router, NextFunction } from "express";
-import { CompanySearchHandlerPost } from "./handlers/company/companySearch";
+import { CompanySearchHandler } from "./handlers/company/companySearch";
 import { ConfirmCompanyHandler } from "./handlers/company/confirm";
 import { InvalidCompanyHandler } from "./handlers/company/invalidCompany";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
@@ -22,7 +22,7 @@ router.get(config.NUMBER_URL, (req: Request, res: Response, next: NextFunction) 
 router.post(config.NUMBER_URL, async (req: Request, res: Response, next: NextFunction) => {
   const formValidator = new FormValidator();
   const companyNumberSanitizer = new CompanyNumberSanitizer();
-  await new CompanySearchHandlerPost(formValidator, companyNumberSanitizer).post(req, res).then((data) => {
+  await new CompanySearchHandler(formValidator, companyNumberSanitizer).post(req, res).then((data) => {
     // eslint-disable-next-line no-prototype-builtins
     if (Object.prototype.hasOwnProperty.call(data, errorsConst)) {
       res.render(`${routeViews}` + config.COMPANY_SEARCH_PAGE, data);

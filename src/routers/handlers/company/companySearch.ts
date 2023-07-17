@@ -16,7 +16,7 @@ import { INVALID_COMPANY_NUMBER } from "../../../constants/app.const";
 const pageTitleConst: string = "Company Number";
 const postRequestLogConst: string = "POST request to get company details page";
 
-export class CompanySearchHandlerPost extends GenericHandler {
+export class CompanySearchHandler extends GenericHandler {
   constructor (
         @inject(FormValidator) private validator: FormValidator,
         @inject(CompanyNumberSanitizer) private companyNumberSanitizer: CompanyNumberSanitizer

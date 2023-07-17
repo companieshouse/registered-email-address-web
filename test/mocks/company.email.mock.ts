@@ -22,6 +22,6 @@ export const queryReponse: HttpResponse = {
     body: OK_RESPONSE_BODY
 };
 
-export const errorReponse: ApiErrorResponse = {
+export const EmailErrorReponse: ApiErrorResponse = {
     httpStatusCode: StatusCodes.INTERNAL_SERVER_ERROR
 };

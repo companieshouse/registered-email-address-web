@@ -20,7 +20,7 @@ export class ConfirmCompanyHandler extends GenericHandler {
     async get(req: Request, response: Response): Promise<Object> {
         logger.info(`GET request to serve company confirm page`);
 
-        const session: Session = req.session as Session;
+    const session: Session = req.session as Session;
     let companyProfile: CompanyProfile;
     if (req.query.companyNumber === undefined) {
       companyProfile = session.data.extra_data.companyProfile;
@@ -56,16 +56,14 @@ export class ConfirmCompanyHandler extends GenericHandler {
       await getCompanyEmail(companyProfile.companyNumber).then((companyEmail) => {
         logger.info(`company confirm - checking company email`);
         logger.info(`company confirm - status returned: ${companyEmail.httpStatusCode}`);
-        if (companyEmail.resource?.companyEmail !== undefined ) {
-          logger.info(`company confirm - company email check returned: ${companyEmail.resource?.companyEmail}`);
+        if (companyEmail.resource?.companyEmail) {
+          logger.info(`company confirm - company email found: ${companyEmail}`);
+          session?.setExtraData(constants.REGISTERED_EMAIL_ADDRESS, companyEmail.resource.companyEmail);
         }
-        if (companyEmail.resource?.companyEmail === undefined) {
+        else {
           logger.info(`company confirm - company email not found`);
           this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_NO_EMAIL_REASON;
-        } else {
-          logger.info(`company confirm - company email found: ${companyEmail}`);
-          session?.setExtraData(constants.REGISTERED_EMAIL_ADDRESS, companyEmail);
-        }
+        }    
       });
     }
     return Promise.resolve(this.viewData);

@@ -23,7 +23,7 @@ export const getCompanyEmail = async (companyNumber: string): Promise<Resource<c
   };
 
   // return error response code if one received
-  if (resp.status >= StatusCodes.BAD_REQUEST) {
+  if (resp.status !== StatusCodes.OK) {
     return emailResource;
   }
 
