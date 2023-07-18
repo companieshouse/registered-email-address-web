@@ -1,14 +1,12 @@
 import {NextFunction, Request, Response, Router} from "express";
 import { ChangeEmailAddressHandler } from "./handlers/email/changeEmailAddress";
 import { UpdateSubmittedHandler } from "./handlers/email/updateSubmitted";
-import * as config from "../config/index";
-import {CHECK_ANSWER_URL} from "../config";
+import {CHANGE_EMAIL_ADDRESS_URL, EMAIL_CHECK_ANSWER_URL} from "../config/index";
+import {CHECK_ANSWER_URL, EMAIL_UPDATE_SUBMITTED_URL, UPDATE_SUBMITTED} from "../config";
 import FormValidator from "../utils/formValidator.util";
 import * as constants from "../constants/app.const";
 
 import {CheckAnswerHandler} from "./handlers/email/checkAnswer";
-import {EMAIL_UPDATE_SUBMITTED_URL, UPDATE_SUBMITTED} from "../config";
-import {CHANGE_EMAIL_ADDRESS_URL, EMAIL_CHECK_ANSWER_URL, EMAIL_UPDATE_SUBMITTED} from "../config/index";
 
 const router: Router = Router();
 const routeViews: string = "router_views/email/";
@@ -35,7 +33,7 @@ router.post(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: 
     req.session?.data.signin_info?.user_profile?.email
   );
   await handler.post(req, res).then((viewData) => {
-    if (Object.prototype.hasOwnProperty.call(viewData, statementErrorsConst)) {
+    if (Object.prototype.hasOwnProperty.call(viewData, errorsConst)) {
       res.render(`${routeViews}` + CHANGE_EMAIL_ADDRESS_URL, viewData);
     } else {
       req.session?.setExtraData(constants.COMPANY_EMAIL, req.body.changeEmailAddress);
@@ -55,7 +53,7 @@ router.get(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunct
 // POST: /check-your-answers
 router.post(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunction) => {
     await new CheckAnswerHandler().post(req, res)
-        .then((viewData) => {
+        .then((viewData)             => {
             if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) ||
                 Object.prototype.hasOwnProperty.call(viewData, statementErrorsConst)) {
                 res.render(`${routeViews}` + CHECK_ANSWER_URL, viewData);

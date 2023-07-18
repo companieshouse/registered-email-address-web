@@ -64,7 +64,7 @@ export class CheckAnswerHandler extends GenericHandler {
                         };
                     }).catch((err) => {
                         return {
-                            statementError: TRANSACTION_CLOSE_ERROR + companyNumber,
+                            errors: TRANSACTION_CLOSE_ERROR + companyNumber,
                             companyEmail: companyEmail,
                             backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
                             signoutBanner: true,
@@ -73,7 +73,7 @@ export class CheckAnswerHandler extends GenericHandler {
                     });
             }).catch((e) => {
                 return {
-                    statementError: FAILED_TO_CREATE_REA_ERROR + companyNumber,
+                    errors: FAILED_TO_CREATE_REA_ERROR + companyNumber,
                     companyEmail: companyEmail,
                     backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
                     signoutBanner: true,
