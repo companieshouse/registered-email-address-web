@@ -11,6 +11,7 @@ import {
   SUBMISSION_ID,
   NO_EMAIL_ADDRESS_FOUND,
   EMAIL_ADDRESS_INVALID,
+  NEW_EMAIL_ADDRESS,
   REGISTERED_EMAIL_ADDRESS,
   TRANSACTION_CREATE_ERROR,
   SOMETHING_HAS_GONE_WRONG
@@ -21,7 +22,7 @@ import {
   CONFIRM_URL,
   DESCRIPTION,
   REFERENCE
-} from "../../../config/index";
+} from "../../../config";
 
 import ValidationErrors from "../../../models/view/validationErrors.model";
 
@@ -88,8 +89,10 @@ export class ChangeEmailAddressHandler extends GenericHandler {
     if (!validateEmailString(companyEmailAddressGiven)) {
       this.viewData.errors = {
         changeEmailAddress: EMAIL_ADDRESS_INVALID
-      };
+      } ;
       return Promise.resolve(this.viewData);
+    } else {
+      req.session?.setExtraData(NEW_EMAIL_ADDRESS, req.body.changeEmailAddress);
     }
     return Promise.resolve(this.viewData);
   }
