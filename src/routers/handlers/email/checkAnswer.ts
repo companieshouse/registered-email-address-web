@@ -43,6 +43,7 @@ export class CheckAnswerHandler extends GenericHandler {
     if (emailConfirmation === undefined) {
       return {
         statementError: CONFIRM_EMAIL_CHANGE_ERROR,
+        errors: CONFIRM_EMAIL_CHANGE_ERROR,
         companyEmail: companyEmail,
         backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
         signoutBanner: true,
