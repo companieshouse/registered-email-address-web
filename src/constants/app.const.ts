@@ -22,4 +22,4 @@ export const RETURN_URL = 'returnToUrl';
 export const TRANSACTION_CREATE_ERROR = "Unable to create a transaction record for company ";
 export const TRANSACTION_CLOSE_ERROR = "Unable to close a transaction record for company ";
 export const CONFIRM_EMAIL_CHANGE_ERROR = "You need to accept the registered email address statement";
-export const FAILED_TO_CREATE_REA_ERROR = "Failed to create Registered Email Address Resource";
+export const FAILED_TO_CREATE_REA_ERROR = "Failed to create Registered Email Address Resource for company ";

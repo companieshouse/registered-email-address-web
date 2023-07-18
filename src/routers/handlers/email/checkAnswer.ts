@@ -4,7 +4,7 @@ import {Session} from "@companieshouse/node-session-handler";
 import {logger} from "../../../lib/Logger";
 import {
     COMPANY_EMAIL,
-    COMPANY_NUMBER, CONFIRM_EMAIL_CHANGE_ERROR,
+    COMPANY_NUMBER, CONFIRM_EMAIL_CHANGE_ERROR, FAILED_TO_CREATE_REA_ERROR,
     SUBMISSION_ID,
     TRANSACTION_CLOSE_ERROR
 } from "../../../constants/app.const";
@@ -64,7 +64,7 @@ export class CheckAnswerHandler extends GenericHandler {
                         };
                     }).catch((err) => {
                         return {
-                            statementError: err.message,
+                            statementError: TRANSACTION_CLOSE_ERROR + companyNumber,
                             companyEmail: companyEmail,
                             backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
                             signoutBanner: true,
@@ -73,7 +73,7 @@ export class CheckAnswerHandler extends GenericHandler {
                     });
             }).catch((e) => {
                 return {
-                    statementError: TRANSACTION_CLOSE_ERROR + companyNumber,
+                    statementError: FAILED_TO_CREATE_REA_ERROR + companyNumber,
                     companyEmail: companyEmail,
                     backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
                     signoutBanner: true,
