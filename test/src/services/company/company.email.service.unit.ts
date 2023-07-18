@@ -1,166 +1,99 @@
-import "reflect-metadata";
-import {getCompanyEmail} from "../../../../src/services/company/company.email.service";
-import {createApiClient, Resource} from "@companieshouse/api-sdk-node";
-import {validEmailSDKResource} from "../../../mocks/company.email.mock";
-import {companyEmail} from "../../../../src/services/company/resources/resources";
-import {HttpResponse} from "@companieshouse/api-sdk-node/dist/http/http-client";
-import {StatusCodes} from 'http-status-codes';
-import {Request, Response} from "express";
-import {COMPANY_EMAIL, SUBMISSION_ID} from "../../../../src/constants/app.const";
-import {Session} from "@companieshouse/node-session-handler";
-
-import * as rea from '../../../../src/services/company/createRegisteredEmailAddressResource';
-import * as transactions from '../../../../src/services/transaction/transaction.service';
-import {CheckAnswerHandler} from "../../../../src/routers/handlers/email/checkAnswer";
-import {createResponse, MockResponse} from "node-mocks-http";
-
 jest.mock("@companieshouse/api-sdk-node");
+jest.mock("../../../../src/services/api/private-get-rea");
 jest.mock("../../../../src/lib/Logger");
 
-const mockCreateApiClient = createApiClient as jest.Mock;
-const mockGetCompanyEmail = jest.fn();
+import { getCompanyEmail } from "../../../../src/services/company/company.email.service";
+import { RegisteredEmailAddress, createPrivateApiClient } from "../../../../src/services/api/private-get-rea";
+import { Resource } from "@companieshouse/api-sdk-node";
+import { createAndLogError  } from "../../../../src/lib/Logger";
+import { validEmailSDKResource } from "../../../mocks/company.email.mock";
+import { StatusCodes } from 'http-status-codes';
+import { SERVICE_UNAVAILABLE, SOMETHING_HAS_GONE_WRONG } from "../../../../src/constants/app.const";
 
-let session: Session;
-let response: MockResponse<Response>;
+const mockCreatePrivateApiClient = createPrivateApiClient as jest.Mock;
+const mockGetRegisteredEmailAddress = jest.fn();
 
-mockCreateApiClient.mockReturnValue({
-    apiClient: {
-        httpGet: mockGetCompanyEmail
-    }
+mockCreatePrivateApiClient.mockReturnValue({
+  registeredEmailAddress: {
+    getRegisteredEmailAddress: mockGetRegisteredEmailAddress
+  }
 });
 
-const createdResponse: HttpResponse = {status: StatusCodes.CREATED};
-const noContentResponse: HttpResponse = {status: StatusCodes.NO_CONTENT};
-const okResponse: HttpResponse = {status: StatusCodes.OK};
-
 const clone = (objectToClone: any): any => {
-    return JSON.parse(JSON.stringify(objectToClone));
+  return JSON.parse(JSON.stringify(objectToClone));
 };
 
 describe("Company email address service test", () => {
-    const COMPANY_NUMBER = "1234567";
-    const TEST_EMAIL = "test@test.co.biz";
-    const OK_RESPONSE_BODY = {"registered_email_address": `${TEST_EMAIL}`};
+  const COMPANY_NUMBER = "1234567";
+  const TEST_EMAIL = "test@test.co.biz";
 
-    beforeEach(() => {
-        jest.clearAllMocks();
-        session = new Session();
-        response = createResponse();
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe("getCompanyEmail tests", () => {
+    it("Should return a company email address", async () => {
+      mockGetRegisteredEmailAddress.mockResolvedValueOnce(clone(validEmailSDKResource));
+      const returnedEmail: RegisteredEmailAddress = await getCompanyEmail(COMPANY_NUMBER);
+
+      Object.getOwnPropertyNames(validEmailSDKResource.resource).forEach(property => {
+        expect(returnedEmail?.registeredEmailAddress).toEqual(TEST_EMAIL);
+      });
     });
 
-    describe("getCompanyProfile tests", () => {
-        it("Should return a company email address", async () => {
-            const queryReponse: HttpResponse = {
-                status: StatusCodes.OK,
-                body: OK_RESPONSE_BODY
-            };
-            mockGetCompanyEmail.mockResolvedValueOnce(clone(queryReponse));
-            const returnedEmail: Resource<companyEmail> = await getCompanyEmail(COMPANY_NUMBER);
+    it("Should throw an error if no response returned from SDK", async () => {
+      mockGetRegisteredEmailAddress.mockResolvedValueOnce(undefined);
 
-            Object.getOwnPropertyNames(validEmailSDKResource.resource).forEach(property => {
-                expect(returnedEmail.httpStatusCode).toEqual(StatusCodes.OK);
-                expect(returnedEmail.resource).toHaveProperty(property);
-                expect(returnedEmail.resource?.companyEmail).toEqual(TEST_EMAIL);
-            });
-        });
-
-        it("Should return the received error code if response status >= 400", async () => {
-            const queryReponse: HttpResponse = {
-                status: StatusCodes.BAD_REQUEST
-            };
-            mockGetCompanyEmail.mockResolvedValueOnce(clone(queryReponse));
-
-            const returnedEmail: Resource<companyEmail> = await getCompanyEmail(COMPANY_NUMBER);
-
-            Object.getOwnPropertyNames(validEmailSDKResource.resource).forEach(() => {
-                expect(returnedEmail.httpStatusCode).toEqual(StatusCodes.BAD_REQUEST);
-                expect(returnedEmail.resource).toBeNull;
-            });
+      await expect(getCompanyEmail(COMPANY_NUMBER))
+        .rejects.toBe(undefined)
+        .catch(() => {
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(SERVICE_UNAVAILABLE));
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining("Registered email address API"));
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
         });
     });
 
-    describe("Check your answer tests", () => {
-        it("Should return data required in check your answer page", async () => {
-            const mockRequest = {} as Request;
-            mockRequest.session = session;
-            session.setExtraData(COMPANY_EMAIL, "test@test.com");
+    it (`Should throw an error if SERVICE UNAVAILABLE returned from SDK`, async () => {
+      const HTTP_STATUS_CODE = StatusCodes.SERVICE_UNAVAILABLE;
+      mockGetRegisteredEmailAddress.mockResolvedValueOnce({
+        httpStatusCode: HTTP_STATUS_CODE
+      } as Resource<RegisteredEmailAddress>);
 
-            await new CheckAnswerHandler().get(mockRequest, response).then((result) => {
-                expect(result).toMatchObject({"companyEmail": "test@test.com"});
-                expect(result).toMatchObject({backUri: "/registered-email-address/email/change-email-address"});
-                expect(result).toMatchObject({signoutBanner: true});
-                expect(result).toMatchObject({userEmail: undefined});
-            });
-        });
-
-        it("Should return data required in confirmation page", async () => {
-            const mockRequest = {
-                body: {emailConfirmation: "confirm"}
-            } as Request;
-
-            mockRequest.session = session;
-            session.setExtraData(SUBMISSION_ID, "anything");
-
-            jest.spyOn(rea, 'createRegisteredEmailAddressResource').mockResolvedValue(clone(createdResponse));
-            jest.spyOn(transactions, 'closeTransaction').mockResolvedValue(clone(noContentResponse));
-
-            await new CheckAnswerHandler().post(mockRequest, response).then((result) => {
-                expect(result).toMatchObject({backUri: "/registered-email-address/email/change-email-address"});
-                expect(result).toMatchObject({signoutBanner: true});
-                expect(result).toMatchObject({userEmail: undefined});
-                expect(result).toMatchObject({submissionID: "anything"});
-            });
-        });
-
-        it("Should reject continue when not confirmed", async () => {
-            const mockRequest = {
-                body: {},
-            } as Request;
-            mockRequest.session = session;
-            session.setExtraData(COMPANY_EMAIL, "test@test.com");
-
-            await new CheckAnswerHandler().post(mockRequest, response).then((result) => {
-                expect(result).toMatchObject({statementError: "You need to accept the registered email address statement"});
-                expect(result).toMatchObject({companyEmail: "test@test.com"});
-                expect(result).toMatchObject({backUri: "/registered-email-address/email/change-email-address"});
-            });
-        });
-
-        it("Should throw an error on failure to create REA resource", async () => {
-            const mockRequest = {
-                body: {emailConfirmation: "confirm"}
-            } as Request;
-            mockRequest.session = session;
-            session.setExtraData(COMPANY_EMAIL, "test@test.com");
-
-            jest.spyOn(rea, 'createRegisteredEmailAddressResource').mockRejectedValue("anything");
-
-            await new CheckAnswerHandler().post(mockRequest, response).then((result) => {
-                expect(result).toMatchObject({statementError: "Unable to close a transaction record for company undefined"});
-                expect(result).toMatchObject({companyEmail: "test@test.com"});
-                expect(result).toMatchObject({backUri: "/registered-email-address/email/change-email-address"});
-                expect(result).toMatchObject({signoutBanner: true});
-                expect(result).toMatchObject({userEmail: undefined});
-            });
-        });
-
-        it("Should throw an error on failure to close transaction", async () => {
-            const mockRequest = {
-                body: {emailConfirmation: "confirm"}
-            } as Request;
-            mockRequest.session = session;
-            session.setExtraData(COMPANY_EMAIL, "test@test.com");
-
-            jest.spyOn(rea, 'createRegisteredEmailAddressResource').mockResolvedValue((clone(okResponse)));
-            jest.spyOn(transactions, 'closeTransaction').mockRejectedValue(new Error("anything"));
-
-            await new CheckAnswerHandler().post(mockRequest, response).then((result) => {
-                expect(result).toMatchObject({statementError: "anything"});
-                expect(result).toMatchObject({companyEmail: "test@test.com"});
-                expect(result).toMatchObject({backUri: "/registered-email-address/email/change-email-address"});
-                expect(result).toMatchObject({signoutBanner: true});
-                expect(result).toMatchObject({userEmail: undefined});
-            });
+      await expect(getCompanyEmail(COMPANY_NUMBER))
+        .rejects.toBe(undefined)
+        .catch(() => {
+          expect(createAndLogError).toHaveBeenCalledWith(SERVICE_UNAVAILABLE);
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining("Registered email address API"));
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
         });
     });
+
+    it (`Should return the received error code if response status >= ${StatusCodes.BAD_REQUEST}`, async () => {
+      const HTTP_STATUS_CODE = StatusCodes.BAD_REQUEST;
+      mockGetRegisteredEmailAddress.mockResolvedValueOnce({
+        httpStatusCode: HTTP_STATUS_CODE
+      } as Resource<RegisteredEmailAddress>);
+
+      await expect(getCompanyEmail(COMPANY_NUMBER))
+        .rejects.toBe(undefined)
+        .catch(() => {
+          expect(createAndLogError).toHaveBeenCalledWith(SOMETHING_HAS_GONE_WRONG);
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${StatusCodes.BAD_REQUEST}`));
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
+        });
+    });
+
+    it("Should throw an error if no response resource returned from SDK", async () => {
+      console.log("Should throw an error if no response resource returned from SDK");
+      mockGetRegisteredEmailAddress.mockResolvedValueOnce({} as Resource<RegisteredEmailAddress>);
+
+      await expect(getCompanyEmail(COMPANY_NUMBER))
+        .rejects.toBe(undefined)
+        .catch(() => {
+          expect(createAndLogError).toHaveBeenCalledWith(SOMETHING_HAS_GONE_WRONG);
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining("no resource"));
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
+        });
+    });
+  });
 });

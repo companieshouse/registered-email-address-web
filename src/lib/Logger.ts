@@ -6,8 +6,9 @@ console.log(`env.LOG_LEVEL set to ${process.env.LOG_LEVEL}`);
 
 export const logger: ApplicationLogger = createLogger(process.env.APP_NAME ?? "registered-email-address-web");
 
-export const createAndLogError = (description: string): Error => {
+export const createAndLogError = (name: string, description: string): Error => {
   const error = new Error(description);
+  error.name = name;
   logger.error(`${error.stack}`);
   return error;
 };

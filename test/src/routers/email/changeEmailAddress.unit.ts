@@ -9,7 +9,7 @@ import { createRequest, createResponse, MockRequest, MockResponse } from 'node-m
 import { ChangeEmailAddressHandler } from "../../../../src/routers/handlers/email/changeEmailAddress";
 import FormValidator from "../../../../src/utils/formValidator.util";
 import { Session } from "@companieshouse/node-session-handler";
-import { COMPANY_EMAIL, COMPANY_NUMBER, SUBMISSION_ID, TRANSACTION_CREATE_ERROR, NO_EMAIL_ADDRESS_SUPPLIED, EMAIL_ADDRESS_INVALID } from "../../../../src/constants/app.const";
+import { REGISTERED_EMAIL_ADDRESS, COMPANY_NUMBER, SUBMISSION_ID, TRANSACTION_CREATE_ERROR, NO_EMAIL_ADDRESS_SUPPLIED, EMAIL_ADDRESS_INVALID } from "../../../../src/constants/app.const";
 import { validTransactionSDKResource, transactionId } from "../../../mocks/transaction.mock";
 import { queryReponse, errorReponse } from "../../../mocks/company.email.mock";
 import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
@@ -82,6 +82,7 @@ describe("Registered email address update - test GET method", () => {
     mockPostTransactionResponse.mockResolvedValueOnce(clone(errorReponse));
     //set company number in session
     request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
+    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
 
     await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
@@ -95,7 +96,8 @@ describe("Registered email address update - test GET method", () => {
   it("Registered email address update - company email in session", async () => {
     mockPostTransactionResponse.mockResolvedValueOnce(clone(validTransactionSDKResource));
     //set email in session
-    request.session?.setExtraData(COMPANY_EMAIL, TEST_EMAIL_EXISTING);
+    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
+    request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
 
     await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
@@ -111,6 +113,7 @@ describe("Registered email address update - test GET method", () => {
     mockPostTransactionResponse.mockResolvedValueOnce(clone(validTransactionSDKResource));
     mockGetCompanyEmailResponse.mockResolvedValueOnce(clone(queryReponse));
     //set company number in session
+    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
     request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
 
     await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {

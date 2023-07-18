@@ -6,14 +6,14 @@ import { API_URL, CHS_API_KEY } from "../../config/index";
 import { createAndLogError } from "../../lib/Logger";
 import { createApiClient } from "@companieshouse/api-sdk-node";
 import ApiClient from "@companieshouse/api-sdk-node/dist/client";
-import { getAccessToken } from "../../utils/session";
+import { SOMETHING_HAS_GONE_WRONG } from "../../constants/app.const";
 
 export const createPublicOAuthApiClient = (session: Session): ApiClient => {
   const oAuth = session.data?.[SessionKey.SignInInfo]?.[SignInInfoKeys.AccessToken]?.[AccessTokenKeys.AccessToken];
   if (oAuth) {
     return createApiClient(undefined, oAuth, API_URL);
   }
-  throw createAndLogError("Error getting session keys for creating public api client");
+  throw createAndLogError( SOMETHING_HAS_GONE_WRONG, "Error getting session keys for creating public api client");
 };
 
 export const createPublicApiKeyClient = (): ApiClient => {
@@ -25,5 +25,5 @@ export const createPaymentApiClient = (session: Session, paymentUrl: string): Ap
   if (oAuth) {
     return createApiClient(undefined, oAuth, paymentUrl);
   }
-  throw createAndLogError("Error getting session keys for creating public api client");
+  throw createAndLogError( SOMETHING_HAS_GONE_WRONG, "Error getting session keys for creating public api client");
 };
