@@ -4,6 +4,7 @@ import {Session} from "@companieshouse/node-session-handler";
 import {logger} from "../../../lib/Logger";
 import {
   REGISTERED_EMAIL_ADDRESS,
+  NEW_EMAIL_ADDRESS,
   COMPANY_NUMBER, CONFIRM_EMAIL_CHANGE_ERROR,
   SUBMISSION_ID,
   TRANSACTION_CLOSE_ERROR
@@ -22,7 +23,7 @@ export class CheckAnswerHandler extends GenericHandler {
     logger.info(`GET request to serve check your answer page`);
 
     const session: Session = req.session as Session;
-    const companyEmail: string | undefined = session.getExtraData(REGISTERED_EMAIL_ADDRESS);
+    const companyEmail: string | undefined = session.getExtraData(NEW_EMAIL_ADDRESS);
 
     return {
       companyEmail: companyEmail,
@@ -36,7 +37,7 @@ export class CheckAnswerHandler extends GenericHandler {
     logger.info(`POST request to serve check your answer page`);
 
     const session: Session = req.session as Session;
-    const companyEmail = req.session?.getExtraData(REGISTERED_EMAIL_ADDRESS);
+    const companyEmail = req.session?.getExtraData(NEW_EMAIL_ADDRESS);
     const emailConfirmation: string | undefined = req.body.emailConfirmation;
 
     if (emailConfirmation === undefined) {

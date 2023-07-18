@@ -1,14 +1,16 @@
 import {NextFunction, Request, Response, Router} from "express";
 import { ChangeEmailAddressHandler } from "./handlers/email/changeEmailAddress";
 import { UpdateSubmittedHandler } from "./handlers/email/updateSubmitted";
-import * as config from "../config/index";
-import {CHECK_ANSWER_URL} from "../config";
 import FormValidator from "../utils/formValidator.util";
-import * as constants from "../constants/app.const";
-
 import {CheckAnswerHandler} from "./handlers/email/checkAnswer";
-import {EMAIL_UPDATE_SUBMITTED_URL, UPDATE_SUBMITTED} from "../config";
-import {EMAIL_UPDATE_SUBMITTED} from "../config/index";
+
+import {
+  CHANGE_EMAIL_ADDRESS_URL,
+  CHECK_ANSWER_URL,
+  COMPANY_SEARCH_PAGE,
+  EMAIL_CHECK_ANSWER_URL,
+  UPDATE_SUBMITTED,
+} from "../config";
 
 const router: Router = Router();
 const companyRouterViews: string = "router_views/company/";
@@ -17,7 +19,7 @@ const statementErrorsConst: string = "statementError";
 const errorsConst: string = "errors";
 
 // GET: /change-email-address
-router.get(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
+router.get(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
   const formValidator = new FormValidator();
   const handler = new ChangeEmailAddressHandler(
     formValidator,
@@ -26,15 +28,15 @@ router.get(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, 
   await handler.get(req, res).then((viewData) => {
     if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) === true) {
       // TODO: go to "something has gone" wrong page
-      res.render(`${companyRouterViews}` + config.COMPANY_SEARCH_PAGE, viewData);
+      res.render(`${companyRouterViews}` + COMPANY_SEARCH_PAGE, viewData);
     } else {
-      res.render(`${emailRouterViews}` + config.CHANGE_EMAIL_ADDRESS_URL, viewData);
+      res.render(`${emailRouterViews}` + CHANGE_EMAIL_ADDRESS_URL, viewData);
     }
   });
 });
 
 // POST: /change-email-address
-router.post(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
+router.post(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
   const formValidator = new FormValidator();
   const handler = new ChangeEmailAddressHandler(
     formValidator,
@@ -42,10 +44,9 @@ router.post(config.CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response,
   );
   await handler.post(req, res).then((viewData) => {
     if (Object.prototype.hasOwnProperty.call(viewData, errorsConst)) {
-      res.render(`${emailRouterViews}` + config.CHANGE_EMAIL_ADDRESS_URL, viewData);
+      res.render(`${emailRouterViews}` + CHANGE_EMAIL_ADDRESS_URL, viewData);
     } else {
-      req.session?.setExtraData(constants.REGISTERED_EMAIL_ADDRESS, req.body.changeEmailAddress);
-      res.redirect(config.EMAIL_CHECK_ANSWER_URL);
+      res.redirect(EMAIL_CHECK_ANSWER_URL);
     }
   });
 });
@@ -72,10 +73,10 @@ router.post(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunc
 });
 
 // GET: /update-submitted
-router.get(config.UPDATE_SUBMITTED, async (req: Request, res: Response, next: NextFunction) => {
+router.get(UPDATE_SUBMITTED, async (req: Request, res: Response, next: NextFunction) => {
   const handler = new UpdateSubmittedHandler();
   await handler.get(req, res).then((viewData) => {
-    res.render(`${emailRouterViews}` + config.UPDATE_SUBMITTED, viewData);
+    res.render(`${emailRouterViews}` + UPDATE_SUBMITTED, viewData);
   });
 });
 
