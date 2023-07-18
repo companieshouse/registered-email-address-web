@@ -23,7 +23,6 @@ describe("Email router tests", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
-        console.log("clearAllMocks()");
     });
 
     describe("Change email tests", () => {
