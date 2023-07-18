@@ -22,7 +22,7 @@ export class CheckAnswerHandler extends GenericHandler {
         logger.info(`GET request to serve company confirm page`);
 
         const session: Session = req.session as Session;
-        const companyEmail: string | undefined = session.getExtraData(COMPANY_EMAIL);
+        const companyEmail: string | undefined = session?.getExtraData(COMPANY_EMAIL);
 
         return {
             companyEmail: companyEmail,
@@ -36,7 +36,7 @@ export class CheckAnswerHandler extends GenericHandler {
         logger.info(`POST request to serve company confirm page`);
 
         const session: Session = req.session as Session;
-        const companyEmail = req.session?.getExtraData(COMPANY_EMAIL);
+        const companyEmail: string | undefined = session?.getExtraData(COMPANY_EMAIL);
         const emailConfirmation: string | undefined = req.body.emailConfirmation;
 
         if (emailConfirmation === undefined) {
@@ -49,8 +49,8 @@ export class CheckAnswerHandler extends GenericHandler {
             };
         }
 
-        const transactionId = session.getExtraData(SUBMISSION_ID);
-        const companyNumber = session.getExtraData(COMPANY_NUMBER);
+        const transactionId: string | undefined = session?.getExtraData(SUBMISSION_ID);
+        const companyNumber: string | undefined = session?.getExtraData(COMPANY_NUMBER);
 
         return await createRegisteredEmailAddressResource(session, <string>transactionId, <string>companyEmail)
             .then(async () => {
