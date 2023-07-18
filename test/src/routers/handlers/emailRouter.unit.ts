@@ -13,6 +13,7 @@ import {ChangeEmailAddressHandler} from "../../../../src/routers/handlers/email/
 import {UpdateSubmittedHandler} from "../../../../src/routers/handlers/email/updateSubmitted";
 
 const okResponse: HttpResponse = {status: StatusCodes.OK};
+const movedTemporarilyResponse: HttpResponse = {status: StatusCodes.MOVED_TEMPORARILY};
 
 const clone = (objectToClone: any): any => {
     return JSON.parse(JSON.stringify(objectToClone));
@@ -34,6 +35,7 @@ describe("Email router tests", () => {
             await request(app)
                 .get(EMAIL_CHANGE_EMAIL_ADDRESS_URL)
                 .then((response) => {
+                    expect(response.status).toBe(200);
                     expect(response.text).toContain(COMMON_PAGE_HEADING);
                     expect(response.text).toContain(PAGE_HEADING);
                     expect(getSpy).toHaveBeenCalled();
@@ -58,11 +60,12 @@ describe("Email router tests", () => {
         });
 
         it("Should navigate to check your answer page when valid Email entered", async () => {
-            const postSpy = jest.spyOn(ChangeEmailAddressHandler.prototype, 'post').mockResolvedValue(okResponse);
+            const postSpy = jest.spyOn(ChangeEmailAddressHandler.prototype, 'post').mockResolvedValue(movedTemporarilyResponse);
 
             await request(app)
                 .post(EMAIL_CHANGE_EMAIL_ADDRESS_URL)
                 .then((response) => {
+                    expect(response.status).toBe(302);
                     expect(response.text).toContain("Redirecting to /registered-email-address/email/check-your-answer");
                     expect(postSpy).toHaveBeenCalled();
                 });
@@ -78,6 +81,7 @@ describe("Email router tests", () => {
             await request(app)
                 .get(EMAIL_CHECK_ANSWER_URL)
                 .then((response) => {
+                    expect(response.status).toBe(200);
                     expect(response.text).toContain(PAGE_HEADING);
                     expect(getSpy).toHaveBeenCalled();
                     expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
@@ -115,12 +119,13 @@ describe("Email router tests", () => {
         });
 
         it("Should navigate to update submitted page when Email confirmed", async () => {
-            const postSpy = jest.spyOn(CheckAnswerHandler.prototype, 'post').mockResolvedValue({});
+            const postSpy = jest.spyOn(CheckAnswerHandler.prototype, 'post').mockResolvedValue(movedTemporarilyResponse);
 
             await request(app)
                 .post(EMAIL_CHECK_ANSWER_URL)
                 .send({emailConfirmation: 'anything'})
                 .then((response) => {
+                    expect(response.status).toBe(302);
                     expect(response.text).toContain("Redirecting to /registered-email-address/email/update-submitted");
                     expect(postSpy).toHaveBeenCalled();
                 });
@@ -136,6 +141,7 @@ describe("Email router tests", () => {
             await request(app)
                 .get(EMAIL_UPDATE_SUBMITTED_URL)
                 .then((response) => {
+                    expect(response.status).toBe(200);
                     expect(response.text).toContain(PAGE_HEADING);
                     expect(getSpy).toHaveBeenCalled();
                     expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
