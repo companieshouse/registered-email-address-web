@@ -1,15 +1,16 @@
 import {Request, Response} from "express";
 import {GenericHandler} from "../generic";
 import {Session} from "@companieshouse/node-session-handler";
-import {logger} from "../../../lib/Logger";
+import {logger} from "../../../utils/common/Logger";
 import {
   NEW_EMAIL_ADDRESS,
   COMPANY_NUMBER, CONFIRM_EMAIL_CHANGE_ERROR,
   SUBMISSION_ID,
-  TRANSACTION_CLOSE_ERROR
+  TRANSACTION_CLOSE_ERROR,
+  FAILED_TO_CREATE_REA_ERROR
 } from "../../../constants/app.const";
 import {EMAIL_CHANGE_EMAIL_ADDRESS_URL} from "../../../config";
-import {createRegisteredEmailAddressResource} from "../../../services/company/createRegisteredEmailAddressResource";
+import {createRegisteredEmailAddressResource} from "../../../services/email/createRegisteredEmailAddressResource";
 import {closeTransaction} from "../../../services/transaction/transaction.service";
 
 export class CheckAnswerHandler extends GenericHandler {
@@ -36,12 +37,13 @@ export class CheckAnswerHandler extends GenericHandler {
     logger.info(`POST request to serve check your answer page`);
 
     const session: Session = req.session as Session;
-    const companyEmail = req.session?.getExtraData(NEW_EMAIL_ADDRESS);
+    const companyEmail: string | undefined  = req.session?.getExtraData(NEW_EMAIL_ADDRESS);
     const emailConfirmation: string | undefined = req.body.emailConfirmation;
 
     if (emailConfirmation === undefined) {
       return {
         statementError: CONFIRM_EMAIL_CHANGE_ERROR,
+        errors: CONFIRM_EMAIL_CHANGE_ERROR,
         companyEmail: companyEmail,
         backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
         signoutBanner: true,
@@ -49,8 +51,8 @@ export class CheckAnswerHandler extends GenericHandler {
       };
     }
 
-    const transactionId = session.getExtraData(SUBMISSION_ID);
-    const companyNumber: string | undefined = session.getExtraData(COMPANY_NUMBER);
+    const transactionId: string | undefined  = session?.getExtraData(SUBMISSION_ID);
+    const companyNumber: string | undefined = session?.getExtraData(COMPANY_NUMBER);
 
     return await createRegisteredEmailAddressResource(session, <string>transactionId, <string>companyEmail)
       .then(async () => {
@@ -63,7 +65,7 @@ export class CheckAnswerHandler extends GenericHandler {
             };
           }).catch((err) => {
             return {
-              statementError: err.message,
+              errors: TRANSACTION_CLOSE_ERROR + companyNumber,
               companyEmail: companyEmail,
               backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
               signoutBanner: true,
@@ -72,7 +74,7 @@ export class CheckAnswerHandler extends GenericHandler {
           });
       }).catch((e) => {
         return {
-          statementError: TRANSACTION_CLOSE_ERROR + companyNumber,
+          errors: FAILED_TO_CREATE_REA_ERROR + companyNumber,
           companyEmail: companyEmail,
           backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
           signoutBanner: true,

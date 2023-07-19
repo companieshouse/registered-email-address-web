@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
-import { createAndLogError } from "../lib/Logger";
-import { THERE_IS_A_PROBLEM } from "../constants/app.const";
+import { createAndLogError } from "../../utils/common/Logger";
+import { THERE_IS_A_PROBLEM } from "../../constants/app.const";
 
 export const toReadableFormat = (dateToConvert: string): string => {
   if (!dateToConvert) {
@@ -23,4 +23,15 @@ export const isInFuture = (dateToCheckISO: string): boolean => {
   const timeUnitDay = "day";
 
   return dateToCheck.startOf(timeUnitDay) > today.startOf(timeUnitDay);
+};
+
+export const toReadableFormatMonthYear = (monthNum: number, year: number): string => {
+  const datetime = DateTime.fromObject({ month: monthNum });
+  const convertedMonth = datetime.toFormat("MMMM");
+
+  if (convertedMonth === "Invalid DateTime") {
+    throw createAndLogError( THERE_IS_A_PROBLEM, `toReadableFormatMonthYear() - Unable to convert provided month ${monthNum}`);
+  }
+
+  return `${convertedMonth} ${year}`;
 };

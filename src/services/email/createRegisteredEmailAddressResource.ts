@@ -4,7 +4,7 @@ import ApiClient from "@companieshouse/api-sdk-node/dist/client";
 import {createPublicOAuthApiClient} from "../api/api.service";
 import {FAILED_TO_CREATE_REA_ERROR} from "../../constants/app.const";
 import {StatusCodes} from "http-status-codes";
-import { logger } from "../../lib/Logger";
+import { logger } from "../../utils/common/Logger";
 
 export const createRegisteredEmailAddressResource = async (session: Session, transactionId: string, companyEmail: string): Promise<Awaited<HttpResponse>> => {
   const apiClient: ApiClient = createPublicOAuthApiClient(session);

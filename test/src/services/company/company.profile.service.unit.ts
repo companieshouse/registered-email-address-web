@@ -1,12 +1,12 @@
 import { getCompanyProfile } from "../../../../src/services/company/company.profile.service";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
-import { createAndLogError } from "../../../../src/lib/Logger";
-import { THERE_IS_A_PROBLEM } from "../../../../src/constants/app.const";
+import { createAndLogError } from "../../../../src/utils/common/Logger";
 import { validSDKResource } from "../../../mocks/company.profile.mock";
 import { StatusCodes } from "http-status-codes";
 jest.mock("@companieshouse/api-sdk-node");
-jest.mock("../../../../src/lib/Logger");
+jest.mock("../../../../src/utils/common/Logger");
+import { THERE_IS_A_PROBLEM } from "../../../../src/constants/app.const";
 
 const mockCreateApiClient = createApiClient as jest.Mock;
 const mockGetCompanyProfile = jest.fn();

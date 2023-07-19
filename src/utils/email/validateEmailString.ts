@@ -1,4 +1,4 @@
-import {VALID_EMAIL_REGEX_PATTERN} from "../config/index";
+import {VALID_EMAIL_REGEX_PATTERN} from "../../config/index";
 
 // validateEmailString simple function that validates email string
 export function validateEmailString (emailString: string): boolean {

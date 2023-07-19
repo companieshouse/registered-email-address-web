@@ -1,11 +1,11 @@
 jest.mock("@companieshouse/api-sdk-node");
 jest.mock("../../../../src/services/api/private-get-rea");
-jest.mock("../../../../src/lib/Logger");
+jest.mock("../../../../src/utils/common/Logger");
 
 import { getCompanyEmail } from "../../../../src/services/company/company.email.service";
 import { RegisteredEmailAddress, createPrivateApiClient } from "../../../../src/services/api/private-get-rea";
 import { Resource } from "@companieshouse/api-sdk-node";
-import { createAndLogError  } from "../../../../src/lib/Logger";
+import { createAndLogError  } from "../../../../src/utils/common/Logger";
 import { validEmailSDKResource } from "../../../mocks/company.email.mock";
 import { StatusCodes } from 'http-status-codes';
 import { THERE_IS_A_PROBLEM } from "../../../../src/constants/app.const";

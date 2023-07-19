@@ -1,12 +1,12 @@
-import mocks from "../../../mocks/all.middleware.mock";
+import mocks from "../../../../mocks/all.middleware.mock";
 import request from "supertest";
-import * as rea from '../../../../src/services/company/createRegisteredEmailAddressResource';
-import * as transactions from '../../../../src/services/transaction/transaction.service';
-import app from "../../../../src/app";
-import {EMAIL_CHECK_ANSWER_URL} from "../../../../src/config";
+import * as rea from '../../../../../src/services/email/createRegisteredEmailAddressResource';
+import * as transactions from '../../../../../src/services/transaction/transaction.service';
+import app from "../../../../../src/app";
+import {EMAIL_CHECK_ANSWER_URL, EMAIL_UPDATE_SUBMITTED_URL} from "../../../../../src/config";
 import {HttpResponse} from "@companieshouse/api-sdk-node/dist/http/http-client";
 import {StatusCodes} from "http-status-codes";
-import {CheckAnswerHandler} from "../../../../src/routers/handlers/email/checkAnswer";
+import {CheckAnswerHandler} from "../../../../../src/routers/handlers/email/checkAnswer";
 
 const createdResponse: HttpResponse = {status: StatusCodes.CREATED};
 const noContentResponse: HttpResponse = {status: StatusCodes.NO_CONTENT};
@@ -54,8 +54,8 @@ describe("Confirm email router tests", () => {
       .post(EMAIL_CHECK_ANSWER_URL)
       .send({emailConfirmation: 'anything'})
       .then((response) => {
-        expect(response.text).toContain("Registered email address update submitted");
-        expect(response.status).toBe(200);
+        expect(response.text).toContain(EMAIL_UPDATE_SUBMITTED_URL);
+        expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
         expect(createSpy).toHaveBeenCalled();
         expect(transSpy).toHaveBeenCalled();
       });

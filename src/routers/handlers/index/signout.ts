@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import { Session } from "@companieshouse/node-session-handler";
 import { FAILED_TO_FIND_RETURN_URL, RETURN_URL} from "../../../constants/app.const";
-import { logger } from "../../../lib/Logger";
+import { logger } from "../../../utils/common/Logger";
 export class SignOutHandler extends GenericHandler {
 
   constructor () {

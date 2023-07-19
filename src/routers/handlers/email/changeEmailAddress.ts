@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import { inject } from "inversify";
 import { Session } from "@companieshouse/node-session-handler";
-import { logger, createAndLogError } from "../../../lib/Logger";
-import { validateEmailString } from "../../../utils/validateEmailString";
+import { logger, createAndLogError } from "../../../utils/common/Logger";
+import { validateEmailString } from "../../../utils/email/validateEmailString";
 import { postTransaction } from "../../../services/transaction/transaction.service";
 
 import {
@@ -17,18 +17,18 @@ import {
   THERE_IS_A_PROBLEM
 } from "../../../constants/app.const";
 
-import { 
+import {
   COMPANY_BASE_URL,
   CONFIRM_URL,
   DESCRIPTION,
   REFERENCE
 } from "../../../config";
 
-import ValidationErrors from "../../../models/view/validationErrors.model";
+import ValidationErrors from "../../../models/validationErrors.model";
 
 import { StatusCodes } from 'http-status-codes';
 import Optional from "../../../models/optional";
-import FormValidator from "../../../utils/formValidator.util";
+import FormValidator from "../../../utils/common/formValidator.util";
 import formSchema from "../../../schemas/changeEmailAddress.schema";
 import { RegisteredEmailAddress } from "services/api/private-get-rea";
 

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "./../generic";
 import { Session } from "@companieshouse/node-session-handler";
-import { logger } from "../../../lib/Logger";
+import { logger } from "../../../utils/common/Logger";
 import {
   COMPANY_NAME_PLACEHOLDER,
   invalidCompanyTypePage,

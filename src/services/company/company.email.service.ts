@@ -1,7 +1,7 @@
 import { Resource } from "@companieshouse/api-sdk-node";
 import { createPrivateApiClient, RegisteredEmailAddress } from "../api/private-get-rea";
 import { CHS_API_KEY, ORACLE_QUERY_API_URL } from "../../config";
-import { logger, createAndLogError } from "../../lib/Logger";
+import { logger, createAndLogError } from "../../utils/common/Logger";
 import { THERE_IS_A_PROBLEM } from "../../constants/app.const";
 import { StatusCodes } from 'http-status-codes';
 
