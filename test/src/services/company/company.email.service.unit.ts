@@ -8,7 +8,7 @@ import { Resource } from "@companieshouse/api-sdk-node";
 import { createAndLogError  } from "../../../../src/lib/Logger";
 import { validEmailSDKResource } from "../../../mocks/company.email.mock";
 import { StatusCodes } from 'http-status-codes';
-import { SERVICE_UNAVAILABLE, SOMETHING_HAS_GONE_WRONG } from "../../../../src/constants/app.const";
+import { THERE_IS_A_PROBLEM } from "../../../../src/constants/app.const";
 
 const mockCreatePrivateApiClient = createPrivateApiClient as jest.Mock;
 const mockGetRegisteredEmailAddress = jest.fn();
@@ -47,7 +47,7 @@ describe("Company email address service test", () => {
       await expect(getCompanyEmail(COMPANY_NUMBER))
         .rejects.toBe(undefined)
         .catch(() => {
-          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(SERVICE_UNAVAILABLE));
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(THERE_IS_A_PROBLEM));
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining("Registered email address API"));
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
         });
@@ -62,7 +62,7 @@ describe("Company email address service test", () => {
       await expect(getCompanyEmail(COMPANY_NUMBER))
         .rejects.toBe(undefined)
         .catch(() => {
-          expect(createAndLogError).toHaveBeenCalledWith(SERVICE_UNAVAILABLE);
+          expect(createAndLogError).toHaveBeenCalledWith(THERE_IS_A_PROBLEM);
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining("Registered email address API"));
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
         });
@@ -77,7 +77,7 @@ describe("Company email address service test", () => {
       await expect(getCompanyEmail(COMPANY_NUMBER))
         .rejects.toBe(undefined)
         .catch(() => {
-          expect(createAndLogError).toHaveBeenCalledWith(SOMETHING_HAS_GONE_WRONG);
+          expect(createAndLogError).toHaveBeenCalledWith(THERE_IS_A_PROBLEM);
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${StatusCodes.BAD_REQUEST}`));
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
         });
@@ -90,7 +90,7 @@ describe("Company email address service test", () => {
       await expect(getCompanyEmail(COMPANY_NUMBER))
         .rejects.toBe(undefined)
         .catch(() => {
-          expect(createAndLogError).toHaveBeenCalledWith(SOMETHING_HAS_GONE_WRONG);
+          expect(createAndLogError).toHaveBeenCalledWith(THERE_IS_A_PROBLEM);
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining("no resource"));
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
         });

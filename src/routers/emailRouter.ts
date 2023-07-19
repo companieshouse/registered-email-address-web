@@ -9,11 +9,12 @@ import {
   CHECK_ANSWER_URL,
   COMPANY_SEARCH_PAGE,
   EMAIL_CHECK_ANSWER_URL,
+  THERE_IS_A_PROBLEM_PAGE,
+  THERE_IS_A_PROBLEM_URL,
   UPDATE_SUBMITTED,
 } from "../config";
 
 const router: Router = Router();
-const companyRouterViews: string = "router_views/company/";
 const emailRouterViews: string = "router_views/email/";
 const statementErrorsConst: string = "statementError";
 const errorsConst: string = "errors";
@@ -27,8 +28,7 @@ router.get(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: N
   );
   await handler.get(req, res).then((viewData) => {
     if (Object.prototype.hasOwnProperty.call(viewData, errorsConst) === true) {
-      // TODO: go to "something has gone" wrong page
-      res.render(`${companyRouterViews}` + COMPANY_SEARCH_PAGE, viewData);
+      res.render(THERE_IS_A_PROBLEM_URL, viewData);
     } else {
       res.render(`${emailRouterViews}` + CHANGE_EMAIL_ADDRESS_URL, viewData);
     }
@@ -42,13 +42,13 @@ router.post(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: 
     formValidator,
     req.session?.data.signin_info?.user_profile?.email
   );
-  await handler.post(req, res).then((viewData) => {
-    if (Object.prototype.hasOwnProperty.call(viewData, errorsConst)) {
-      res.render(`${emailRouterViews}` + CHANGE_EMAIL_ADDRESS_URL, viewData);
-    } else {
+  await handler.post(req, res)
+    .then((viewData) => {
       res.redirect(EMAIL_CHECK_ANSWER_URL);
-    }
-  });
+    })
+    .catch((viewData) => {
+      res.render(`${emailRouterViews}` + CHANGE_EMAIL_ADDRESS_URL, viewData);
+    });
 });
 
 // GET: /check-your-answers

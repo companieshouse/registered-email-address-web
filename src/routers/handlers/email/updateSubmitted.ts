@@ -21,6 +21,7 @@ export class UpdateSubmittedHandler extends GenericHandler {
     logger.info(`GET request to serve update submitted page`);
     const session: Session = req.session as Session;
     this.viewData.userEmail = session.data.signin_info?.user_profile?.email;
+    this.viewData.backUri = undefined;
     this.viewData.submissionID = session.getExtraData(SUBMISSION_ID);
 
     // clear session.ExtraData

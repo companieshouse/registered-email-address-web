@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import { Session } from "@companieshouse/node-session-handler";
-import {RETURN_URL} from "../../../constants/app.const";
+import { FAILED_TO_FIND_RETURN_URL, RETURN_URL} from "../../../constants/app.const";
 import { logger } from "../../../lib/Logger";
 export class SignOutHandler extends GenericHandler {
 
@@ -17,10 +17,14 @@ export class SignOutHandler extends GenericHandler {
   }
 
   default (req: Request, response: Response): Promise<Object> {
-    this.viewData.backUri = getReturnPageFromSession(req);
-    this.viewData.noInputSelectedError = true;
-    logger.info(`POST request to serve signout page`);
-    return Promise.resolve(this.viewData);
+    try {
+      this.viewData.backUri = getReturnPageFromSession(req);
+      this.viewData.noInputSelectedError = true;
+      logger.info(`POST request to serve signout page`);
+      return Promise.resolve(this.viewData);
+    } catch (e) {
+      return Promise.reject(FAILED_TO_FIND_RETURN_URL);
+    }
   }
 }
 

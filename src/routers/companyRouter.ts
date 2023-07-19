@@ -17,7 +17,7 @@ import {
   INVALID_URL,
   NUMBER_URL,
   REA_HOME_PAGE,
-  SERVICE_UNAVAILABLE_URL
+  THERE_IS_A_PROBLEM_URL
 } from "../config";
 
 import { COMPANY_PROFILE, COMPANY_NUMBER, INVALID_COMPANY_REASON } from "../constants/app.const";
@@ -69,7 +69,7 @@ router.post(CONFIRM_URL, async (req: Request, res: Response, next: NextFunction)
   await handler.post(req, res).then((data) => {
     if (Object.prototype.hasOwnProperty.call(data, invalidCompanyReason)) {
       if (data.invalidCompanyReason === INVALID_COMPANY_SERVICE_UNAVAILABLE) {
-        res.redirect(SERVICE_UNAVAILABLE_URL);
+        res.redirect(THERE_IS_A_PROBLEM_URL);
       } else {
         req.session?.setExtraData(INVALID_COMPANY_REASON, data.invalidCompanyReason);
         res.redirect(INVALID_COMPANY_URL);

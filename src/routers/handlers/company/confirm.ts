@@ -6,9 +6,23 @@ import { getCompanyProfile } from "../../../services/company/company.profile.ser
 import { buildAddress, formatForDisplay } from "../../../services/company/confirm.company.service";
 import { getCompanyEmail } from "../../../services/company/company.email.service";
 import {logger} from "../../../lib/Logger";
-import * as constants from "../../../constants/app.const";
-import * as validationConstants from "../../../constants/validation.const";
-import * as config from "../../../config/index";
+
+import {
+  COMPANY_PROFILE,
+  COMPANY_NUMBER,
+  INVALID_COMPANY_NUMBER,
+  REGISTERED_EMAIL_ADDRESS,  
+  THERE_IS_A_PROBLEM
+} from "../../../constants/app.const";
+import {
+  INVALID_COMPANY_NO_EMAIL_REASON,
+  INVALID_COMPANY_SERVICE_UNAVAILABLE,
+  INVALID_COMPANY_STATUS_REASON,
+  INVALID_COMPANY_TYPE_REASON,
+  VALID_COMPANY_STATUS,
+  VALID_COMPANY_TYPES
+} from "../../../constants/validation.const";
+import { COMPANY_NUMBER_URL } from "../../../config";
 
 
 export class ConfirmCompanyHandler extends GenericHandler {
@@ -30,20 +44,20 @@ export class ConfirmCompanyHandler extends GenericHandler {
         const companyNumber: string = req.query.companyNumber?.toString() ?? "";
         companyProfile = await getCompanyProfile(companyNumber);
         // eslint-disable-next-line no-unused-expressions
-        session?.setExtraData(constants.COMPANY_NUMBER, companyProfile.companyNumber);
-        session?.setExtraData(constants.COMPANY_PROFILE, companyProfile);
+        session?.setExtraData(COMPANY_NUMBER, companyProfile.companyNumber);
+        session?.setExtraData(COMPANY_PROFILE, companyProfile);
         this.buildPageOptions(session, companyProfile);
       } catch (e) {
         const error = e as Error;
-        if (error?.name === constants.SERVICE_UNAVAILABLE) {
+        if (error?.name === THERE_IS_A_PROBLEM) {
           logger.info(`company confirm - oracle query service unavailable`);
           this.viewData.errors = {
-            companyNumber: constants.SERVICE_UNAVAILABLE
+            companyNumber: THERE_IS_A_PROBLEM
           };
         } else {
           logger.info(`company confirm - company profile not found`);
           this.viewData.errors = {
-            companyNumber: constants.INVALID_COMPANY_NUMBER
+            companyNumber: INVALID_COMPANY_NUMBER
           };
         }
       }
@@ -56,26 +70,26 @@ export class ConfirmCompanyHandler extends GenericHandler {
 
     const session: Session = req.session as Session;
     const companyProfile: CompanyProfile = session.data.extra_data.companyProfile;
-    if (!validationConstants.VALID_COMPANY_TYPES.includes(companyProfile.type)) {
+    if (!VALID_COMPANY_TYPES.includes(companyProfile.type)) {
       logger.info(`company confirm - invalid company type`);
-      this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_TYPE_REASON;
-    } else if (!validationConstants.VALID_COMPANY_STATUS.includes(companyProfile.companyStatus)) {
+      this.viewData.invalidCompanyReason = INVALID_COMPANY_TYPE_REASON;
+    } else if (!VALID_COMPANY_STATUS.includes(companyProfile.companyStatus)) {
       logger.info(`company confirm - invalid company status`);
-      this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_STATUS_REASON;
+      this.viewData.invalidCompanyReason = INVALID_COMPANY_STATUS_REASON;
     } else {
       try {
         logger.info(`company confirm - checking company email`);
         const companyEmail = await getCompanyEmail(companyProfile.companyNumber);
         logger.info(`company confirm - company email found: ${companyEmail}`);
-        session?.setExtraData(constants.REGISTERED_EMAIL_ADDRESS, companyEmail.registeredEmailAddress);
+        session?.setExtraData(REGISTERED_EMAIL_ADDRESS, companyEmail.registeredEmailAddress);
       } catch (e) {
         const error = e as Error;
-        if (error?.name === constants.SERVICE_UNAVAILABLE) {
+        if (error?.name === THERE_IS_A_PROBLEM) {
           logger.info(`company confirm - oracle query service unavailable`);
-          this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_SERVICE_UNAVAILABLE;
+          this.viewData.invalidCompanyReason = INVALID_COMPANY_SERVICE_UNAVAILABLE;
         } else {
           logger.info(`company confirm - company email not found`);
-          this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_NO_EMAIL_REASON;
+          this.viewData.invalidCompanyReason = INVALID_COMPANY_NO_EMAIL_REASON;
         }
       }      
     }
@@ -89,6 +103,6 @@ export class ConfirmCompanyHandler extends GenericHandler {
     this.viewData.company = formattedCompanyProfile;
     this.viewData.address = address;
     this.viewData.userEmail = session.data.signin_info?.user_profile?.email;
-    this.viewData.backUri = config.COMPANY_NUMBER_URL;
+    this.viewData.backUri = COMPANY_NUMBER_URL;
   }
 }

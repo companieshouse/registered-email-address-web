@@ -3,7 +3,6 @@ import {GenericHandler} from "../generic";
 import {Session} from "@companieshouse/node-session-handler";
 import {logger} from "../../../lib/Logger";
 import {
-  REGISTERED_EMAIL_ADDRESS,
   NEW_EMAIL_ADDRESS,
   COMPANY_NUMBER, CONFIRM_EMAIL_CHANGE_ERROR,
   SUBMISSION_ID,
@@ -58,7 +57,6 @@ export class CheckAnswerHandler extends GenericHandler {
         return await closeTransaction(session, <string> companyNumber, <string>transactionId)
           .then(() => {
             return {
-              backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
               signoutBanner: true,
               userEmail: req.session?.data.signin_info?.user_profile?.email,
               submissionID: transactionId

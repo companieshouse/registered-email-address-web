@@ -14,7 +14,7 @@ import {
   NEW_EMAIL_ADDRESS,
   REGISTERED_EMAIL_ADDRESS,
   TRANSACTION_CREATE_ERROR,
-  SOMETHING_HAS_GONE_WRONG
+  THERE_IS_A_PROBLEM
 } from "../../../constants/app.const";
 
 import { 
@@ -107,6 +107,6 @@ export const createTransaction = async (session: Session, companyNumber: string)
     });
     return Promise.resolve(transactionId);
   } catch (e) {
-    throw createAndLogError( SOMETHING_HAS_GONE_WRONG, `update registered email address: ${StatusCodes.INTERNAL_SERVER_ERROR} - error while create transaction record for ${companyNumber}`);
+    throw createAndLogError( THERE_IS_A_PROBLEM, `update registered email address: ${StatusCodes.INTERNAL_SERVER_ERROR} - error while create transaction record for ${companyNumber}`);
   }
 };
