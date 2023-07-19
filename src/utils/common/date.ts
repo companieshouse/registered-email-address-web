@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { createAndLogError } from "../lib/Logger";
+import { createAndLogError } from "./Logger";
 
 export const toReadableFormat = (dateToConvert: string): string => {
   if (!dateToConvert) {

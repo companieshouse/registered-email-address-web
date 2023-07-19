@@ -4,9 +4,9 @@ import { ConfirmCompanyHandler } from "./handlers/company/confirm";
 import { InvalidCompanyHandler } from "./handlers/company/invalidCompany";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import * as config from "../config/index";
-import { logger } from "../lib/Logger";
-import FormValidator from "../utils/formValidator.util";
-import CompanyNumberSanitizer from "../utils/companyNumberSanitizer";
+import { logger } from "../utils/common/Logger";
+import FormValidator from "../utils/common/formValidator.util";
+import CompanyNumberSanitizer from "../utils/company/companyNumberSanitizer";
 import * as constants from "../constants/app.const";
 
 const router: Router = Router();
@@ -35,8 +35,7 @@ router.post(config.NUMBER_URL, async (req: Request, res: Response, next: NextFun
 });
 
 router.get(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFunction) => {
-  const handler = new ConfirmCompanyHandler();
-  const viewData = await handler.get(req, res);
+  const viewData = await new ConfirmCompanyHandler().get(req, res);
   // eslint-disable-next-line no-prototype-builtins
   if (Object.prototype.hasOwnProperty.call(viewData, errorsConst)) {
     res.render(`${routeViews}` + config.COMPANY_SEARCH_PAGE, viewData);
@@ -62,8 +61,7 @@ router.post(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFu
 });
 
 router.get(config.INVALID_URL, async (req: Request, res: Response, next: NextFunction) => {
-  const handler = new InvalidCompanyHandler();
-  await handler.get(req, res).then((data) => {
+  await new InvalidCompanyHandler().get(req, res).then((data) => {
     res.render(`${routeViews}` + config.COMPANY_INVALID_PAGE, data);
   });
 });

@@ -1,8 +1,8 @@
 import { AnySchema, ValidationErrorItem, ValidationOptions, ValidationResult } from "joi";
 import { provide } from "inversify-binding-decorators";
 
-import Optional from "../models/optional";
-import ValidationErrors from "../models/view/validationErrors.model";
+import Optional from "../../models/optional";
+import ValidationErrors from "../../models/validationErrors.model";
 
 @provide(FormValidator)
 export default class FormValidator {

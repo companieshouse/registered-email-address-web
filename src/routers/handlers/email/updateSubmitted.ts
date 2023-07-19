@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
-import { logger } from "../../../lib/Logger";
+import { logger } from "../../../utils/common/Logger";
 import { Session } from "@companieshouse/node-session-handler";
 import { SUBMISSION_ID } from "../../../constants/app.const";
 

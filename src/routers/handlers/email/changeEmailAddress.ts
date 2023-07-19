@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import { inject } from "inversify";
 import { Session } from "@companieshouse/node-session-handler";
-import { logger, createAndLogError } from "../../../lib/Logger";
-import { validateEmailString } from "../../../utils/validateEmailString";
+import { logger, createAndLogError } from "../../../utils/common/Logger";
+import { validateEmailString } from "../../../utils/email/validateEmailString";
 import { getCompanyEmail } from "../../../services/company/company.email.service";
 import { postTransaction } from "../../../services/transaction/transaction.service";
 
@@ -23,11 +23,11 @@ import {
   REFERENCE
 } from "../../../config/index";
 
-import ValidationErrors from "../../../models/view/validationErrors.model";
+import ValidationErrors from "../../../models/validationErrors.model";
 
 import { StatusCodes } from 'http-status-codes';
 import Optional from "../../../models/optional";
-import FormValidator from "../../../utils/formValidator.util";
+import FormValidator from "../../../utils/common/formValidator.util";
 import formSchema from "../../../schemas/changeEmailAddress.schema";
 
 export class ChangeEmailAddressHandler extends GenericHandler {

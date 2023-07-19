@@ -15,7 +15,7 @@ import {CheckAnswerHandler} from "../../../../src/routers/handlers/email/checkAn
 import {createResponse, MockResponse} from "node-mocks-http";
 
 jest.mock("@companieshouse/api-sdk-node");
-jest.mock("../../../../src/lib/Logger");
+jest.mock("../../../../src/utils/common/Logger");
 
 const mockCreateApiClient = createApiClient as jest.Mock;
 const mockGetCompanyEmail = jest.fn();

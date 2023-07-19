@@ -1,18 +1,18 @@
 jest.mock("@companieshouse/api-sdk-node");
-jest.mock("../../../../src/services/api/api.service");
-jest.mock("../../../../src/lib/Logger");
+jest.mock("../../../../../src/services/api/api.service");
+jest.mock("../../../../../src/utils/common/Logger");
 
 import "reflect-metadata";
-import FormValidator from "../../../../src/utils/formValidator.util";
-import CompanyNumberSanitizer from "../../../../src/utils/companyNumberSanitizer";
+import FormValidator from "../../../../../src/utils/common/formValidator.util";
+import CompanyNumberSanitizer from "../../../../../src/utils/company/companyNumberSanitizer";
 import { Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from 'node-mocks-http';
-import { CompanySearchHandler } from "../../../../src/routers/handlers/company/companySearch";
+import { CompanySearchHandler } from "../../../../../src/routers/handlers/company/companySearch";
 import { Session } from "@companieshouse/node-session-handler";
-import { COMPANY_EMAIL } from "../../../../src/constants/app.const";
+import { COMPANY_EMAIL } from "../../../../../src/constants/app.const";
 import {createApiClient} from "@companieshouse/api-sdk-node";
-import { validSDKResource, CompanyProfileErrorResponse} from "../../../mocks/company.profile.mock";
-import { createAndLogError } from "../../../../src/lib/Logger";
+import { validSDKResource, CompanyProfileErrorResponse} from "../../../../mocks/company.profile.mock";
+import { createAndLogError } from "../../../../../src/utils/common/Logger";
 
 // Testing Const
 const TEST_EMAIL_EXISTING: string = "test@test.co.biz";

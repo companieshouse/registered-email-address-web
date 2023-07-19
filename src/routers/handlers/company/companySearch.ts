@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import { inject } from "inversify";
-import { logger } from "../../../lib/Logger";
+import { logger } from "../../../utils/common/Logger";
 import { REA_HOME_PAGE } from "../../../config/index";
 import Optional from "../../../models/optional";
-import FormValidator from "../../../utils/formValidator.util";
+import FormValidator from "../../../utils/common/formValidator.util";
 import formSchema from "../../../schemas/companySearch.schema";
-import ValidationErrors from "../../../models/view/validationErrors.model";
-import CompanyNumberSanitizer from "../../../utils/companyNumberSanitizer";
+import ValidationErrors from "../../../models/validationErrors.model";
+import CompanyNumberSanitizer from "../../../utils/company/companyNumberSanitizer";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getCompanyProfile } from "../../../services/company/company.profile.service";
 import { INVALID_COMPANY_NUMBER } from "../../../constants/app.const";

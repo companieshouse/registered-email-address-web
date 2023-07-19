@@ -1,7 +1,7 @@
 import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { CHS_API_KEY } from "../../config/index";
-import { logger, createAndLogError } from "../../lib/Logger";
+import { logger, createAndLogError } from "../../utils/common/Logger";
 
 export const getCompanyProfile = async (companyNumber: string): Promise<CompanyProfile> => {
   const apiClient = createApiClient(CHS_API_KEY);

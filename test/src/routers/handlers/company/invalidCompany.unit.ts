@@ -1,17 +1,17 @@
 jest.mock("@companieshouse/api-sdk-node");
-jest.mock("../../../../src/services/api/api.service");
-jest.mock("../../../../src/lib/Logger");
+jest.mock("../../../../../src/services/api/api.service");
+jest.mock("../../../../../src/utils/common/Logger");
 
 import "reflect-metadata";
 import { Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from 'node-mocks-http';
-import { InvalidCompanyHandler } from "../../../../src/routers/handlers/company/invalidCompany";
+import { InvalidCompanyHandler } from "../../../../../src/routers/handlers/company/invalidCompany";
 import { Session } from "@companieshouse/node-session-handler";
-import { COMPANY_EMAIL } from "../../../../src/constants/app.const";
-import { validSDKResource} from "../../../mocks/company.profile.mock";
-import { createAndLogError } from "../../../../src/lib/Logger";
-import * as constants from "../../../../src/constants/app.const";
-import * as validationConstants from "../../../../src/constants/validation.const";
+import { COMPANY_EMAIL } from "../../../../../src/constants/app.const";
+import { validSDKResource} from "../../../../mocks/company.profile.mock";
+import { createAndLogError } from "../../../../../src/utils/common/Logger";
+import * as constants from "../../../../../src/constants/app.const";
+import * as validationConstants from "../../../../../src/constants/validation.const";
 
 
 // Testing Const

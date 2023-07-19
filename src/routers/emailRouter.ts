@@ -3,12 +3,11 @@ import { ChangeEmailAddressHandler } from "./handlers/email/changeEmailAddress";
 import { UpdateSubmittedHandler } from "./handlers/email/updateSubmitted";
 import * as config from "../config/index";
 import {CHECK_ANSWER_URL} from "../config";
-import FormValidator from "../utils/formValidator.util";
+import FormValidator from "../utils/common/formValidator.util";
 import * as constants from "../constants/app.const";
-
 import {CheckAnswerHandler} from "./handlers/email/checkAnswer";
-import {EMAIL_UPDATE_SUBMITTED_URL, UPDATE_SUBMITTED} from "../config";
-import {EMAIL_UPDATE_SUBMITTED} from "../config/index";
+import {UPDATE_SUBMITTED} from "../config";
+
 
 const router: Router = Router();
 const routeViews: string = "router_views/email/";

@@ -1,20 +1,20 @@
 // jest.mock("../../../../src/services/transaction/transaction.service");
 jest.mock("@companieshouse/api-sdk-node");
-jest.mock("../../../../src/services/api/api.service");
-jest.mock("../../../../src/lib/Logger");
+jest.mock("../../../../../src/services/api/api.service");
+jest.mock("../../../../../src/utils/common/Logger");
 
 import "reflect-metadata";
 import { Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from 'node-mocks-http';
-import { ChangeEmailAddressHandler } from "../../../../src/routers/handlers/email/changeEmailAddress";
-import FormValidator from "../../../../src/utils/formValidator.util";
+import { ChangeEmailAddressHandler } from "../../../../../src/routers/handlers/email/changeEmailAddress";
+import FormValidator from "../../../../../src/utils/common/formValidator.util";
 import { Session } from "@companieshouse/node-session-handler";
-import { COMPANY_EMAIL, COMPANY_NUMBER, SUBMISSION_ID, TRANSACTION_CREATE_ERROR, NO_EMAIL_ADDRESS_SUPPLIED, EMAIL_ADDRESS_INVALID } from "../../../../src/constants/app.const";
-import { validTransactionSDKResource, transactionId } from "../../../mocks/transaction.mock";
-import { queryReponse, EmailErrorReponse } from "../../../mocks/company.email.mock";
+import { COMPANY_EMAIL, COMPANY_NUMBER, SUBMISSION_ID, TRANSACTION_CREATE_ERROR, NO_EMAIL_ADDRESS_SUPPLIED, EMAIL_ADDRESS_INVALID } from "../../../../../src/constants/app.const";
+import { validTransactionSDKResource, transactionId } from "../../../../mocks/transaction.mock";
+import { queryReponse, EmailErrorReponse } from "../../../../mocks/company.email.mock";
 import { createApiClient } from "@companieshouse/api-sdk-node";
-import { createPublicOAuthApiClient } from "../../../../src/services/api/api.service";
-import { createAndLogError } from "../../../../src/lib/Logger";
+import { createPublicOAuthApiClient } from "../../../../../src/services/api/api.service";
+import { createAndLogError } from "../../../../../src/utils/common/Logger";
 
 const COMPANY_NO: string = "1234567";
 const TEST_EMAIL_EXISTING: string = "test@test.co.biz";
@@ -65,7 +65,7 @@ describe("Registered email address update - test GET method", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     changeEmailAddressHandler = new ChangeEmailAddressHandler(
-      formValidator,
+      formValidator, 
       TEST_EMAIL_EXISTING
     );
     // session instance
@@ -76,7 +76,7 @@ describe("Registered email address update - test GET method", () => {
     });
     response = createResponse();
   });
-
+  
   it("Handle error returned from creating transaction record", async () => {
     // build required transaction response for test
     mockPostTransactionResponse.mockResolvedValueOnce(clone(EmailErrorReponse));
@@ -131,7 +131,7 @@ describe("Registered email address update - test POST method", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     changeEmailAddressHandler = new ChangeEmailAddressHandler(
-      formValidator,
+      formValidator, 
       TEST_EMAIL_EXISTING
     );
     // session instance
@@ -142,7 +142,7 @@ describe("Registered email address update - test POST method", () => {
     });
     response = createResponse();
   });
-
+  
   it("No email in POST request body - return view data error", async () => {
     //set email address in request body to empty
     request.body.changeEmailAddress = "";
