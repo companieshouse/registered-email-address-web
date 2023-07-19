@@ -1,8 +1,11 @@
 jest.mock("../../src/services/company/company.profile.service");
 
 import { Resource } from "@companieshouse/api-sdk-node";
-import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile";
+import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
+import { ApiErrorResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 import { StatusCodes } from 'http-status-codes';
+
+
 
 export const validCompanyProfile: CompanyProfile = {
   accounts: {
@@ -47,4 +50,8 @@ export const validCompanyProfile: CompanyProfile = {
 export const validSDKResource: Resource<CompanyProfile> = {
   httpStatusCode: StatusCodes.OK,
   resource: validCompanyProfile,
+};
+
+export const CompanyProfileErrorResponse: ApiErrorResponse = {
+  httpStatusCode: StatusCodes.INTERNAL_SERVER_ERROR
 };

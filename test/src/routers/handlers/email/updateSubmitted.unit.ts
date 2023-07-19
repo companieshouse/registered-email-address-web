@@ -1,13 +1,10 @@
 import "reflect-metadata";
 import { Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from 'node-mocks-http';
-import { UpdateSubmittedHandler } from "../../../../src/routers/handlers/email/updateSubmitted";
+import { UpdateSubmittedHandler } from "../../../../../src/routers/handlers/email/updateSubmitted";
 import { Session } from "@companieshouse/node-session-handler";
-import { SessionKey } from "@companieshouse/node-session-handler/lib/session/keys/SessionKey";
-import { createSessionData } from "../../../mocks/sessionGenerator.mock";
-import { IUserProfile } from "@companieshouse/node-session-handler/lib/session/model/SessionInterfaces";
-import { SignInInfoKeys } from "@companieshouse/node-session-handler/lib/session/keys/SignInInfoKeys";
-import { SUBMISSION_ID } from "../../../../src/constants/app.const";
+import { createSessionData } from "../../../../mocks/sessionGenerator.mock";
+import { SUBMISSION_ID } from "../../../../../src/constants/app.const";
 import * as crypto from "crypto";
 
 const TEST_USER_EMAIL: string = "test_user@test.co.biz";

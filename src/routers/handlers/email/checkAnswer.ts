@@ -1,16 +1,17 @@
 import {Request, Response} from "express";
 import {GenericHandler} from "../generic";
 import {Session} from "@companieshouse/node-session-handler";
-import {logger} from "../../../lib/Logger";
+import {logger} from "../../../utils/common/Logger";
 import {
   REGISTERED_EMAIL_ADDRESS,
   NEW_EMAIL_ADDRESS,
   COMPANY_NUMBER, CONFIRM_EMAIL_CHANGE_ERROR,
   SUBMISSION_ID,
-  TRANSACTION_CLOSE_ERROR, FAILED_TO_CREATE_REA_ERROR
+  TRANSACTION_CLOSE_ERROR,
+  FAILED_TO_CREATE_REA_ERROR
 } from "../../../constants/app.const";
 import {EMAIL_CHANGE_EMAIL_ADDRESS_URL} from "../../../config";
-import {createRegisteredEmailAddressResource} from "../../../services/company/createRegisteredEmailAddressResource";
+import {createRegisteredEmailAddressResource} from "../../../services/email/createRegisteredEmailAddressResource";
 import {closeTransaction} from "../../../services/transaction/transaction.service";
 
 export class CheckAnswerHandler extends GenericHandler {
