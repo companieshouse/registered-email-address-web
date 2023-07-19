@@ -10,12 +10,12 @@ import { createAndLogError } from "../../../../src/utils/common/Logger";
 import { ApiResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 import { REFERENCE } from "../../../../src/config/index";
 import { StatusCodes } from 'http-status-codes';
+import { SERVICE_UNAVAILABLE, SOMETHING_HAS_GONE_WRONG } from "../../../../src/constants/app.const";
 
 const mockCreatePublicOAuthApiClient = createPublicOAuthApiClient as jest.Mock;
 const mockPostTransaction = jest.fn();
 const mockPutTransaction = jest.fn();
 const mockGetTransaction = jest.fn();
-const mockCreateAndLogError = createAndLogError as jest.Mock;
 
 mockCreatePublicOAuthApiClient.mockReturnValue({
   transaction: {
@@ -24,9 +24,6 @@ mockCreatePublicOAuthApiClient.mockReturnValue({
     putTransaction: mockPutTransaction
   }
 });
-
-const ERROR: Error = new Error("oops");
-mockCreateAndLogError.mockReturnValue(ERROR);
 
 let session: any;
 const TRANSACTION_ID = "2222";
@@ -60,8 +57,12 @@ describe("transaction service tests", () => {
     it("Should throw an error when no transaction api response", async () => {
       mockPostTransaction.mockResolvedValueOnce(undefined);
 
-      await expect(postTransaction(session, COMPANY_NUMBER, "desc", "ref")).rejects.toThrow(ERROR);
-      expect(mockCreateAndLogError).toBeCalledWith("Transaction API POST request returned no response for company number 12345678");
+      await expect(postTransaction(session, COMPANY_NUMBER, "desc", "ref"))
+        .rejects.toBe(undefined)
+        .catch(() => {
+          expect(createAndLogError).toHaveBeenCalledWith(SERVICE_UNAVAILABLE);
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining("Transaction API POST request returned no response for company number 12345678"));
+        });
     });
 
     it("Should throw an error when transaction api returns a status greater than 400", async () => {
@@ -69,8 +70,12 @@ describe("transaction service tests", () => {
         httpStatusCode: StatusCodes.NOT_FOUND
       });
 
-      await expect(postTransaction(session, COMPANY_NUMBER, "desc", "ref")).rejects.toThrow(ERROR);
-      expect(mockCreateAndLogError).toBeCalledWith(`Http status code ${StatusCodes.NOT_FOUND} - Failed to post transaction for company number 12345678`);
+      await expect(postTransaction(session, COMPANY_NUMBER, "desc", "ref"))
+        .rejects.toBe(undefined)
+        .catch(() => {
+          expect(createAndLogError).toHaveBeenCalledWith(SOMETHING_HAS_GONE_WRONG);
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`Http status code ${StatusCodes.NOT_FOUND} - Failed to post transaction for company number 12345678`));
+        });
     });
 
     it("Should throw an error when transaction api returns no resource", async () => {
@@ -78,8 +83,12 @@ describe("transaction service tests", () => {
         httpStatusCode: StatusCodes.OK
       });
 
-      await expect(postTransaction(session, COMPANY_NUMBER, "desc", "ref")).rejects.toThrow(ERROR);
-      expect(mockCreateAndLogError).toBeCalledWith("Transaction API POST request returned no resource for company number 12345678");
+      await expect(postTransaction(session, COMPANY_NUMBER, "desc", "ref"))
+        .rejects.toBe(undefined)
+        .catch(() => {
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(SOMETHING_HAS_GONE_WRONG));
+          expect(createAndLogError).toBeCalledWith(expect.stringContaining("Transaction API POST request returned no resource for company number 12345678"));
+        });
     });
   });
 
@@ -113,8 +122,13 @@ describe("transaction service tests", () => {
     it("Should throw an error when no transaction api response", async () => {
       mockPutTransaction.mockResolvedValueOnce(undefined);
 
-      await expect(putTransaction(session, COMPANY_NUMBER, TRANSACTION_ID, "desc", "closed")).rejects.toThrow(ERROR);
-      expect(mockCreateAndLogError).toBeCalledWith(`Transaction API PUT request returned no response for transaction id ${TRANSACTION_ID}, company number ${COMPANY_NUMBER}`);
+      await expect(putTransaction(session, COMPANY_NUMBER, TRANSACTION_ID, "desc", "closed"))
+        .rejects.toBe(undefined)
+        .catch(() => {
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(SERVICE_UNAVAILABLE));
+          expect(createAndLogError).toBeCalledWith(expect.stringContaining(`Transaction API PUT request returned no response for transaction id ${TRANSACTION_ID}`));
+          expect(createAndLogError).toBeCalledWith(expect.stringContaining(`company number ${COMPANY_NUMBER}`));
+        });
     });
 
     it("Should throw an error when transaction api returns a status greater than 400", async () => {
@@ -122,8 +136,12 @@ describe("transaction service tests", () => {
         httpStatusCode: StatusCodes.NOT_FOUND
       });
 
-      await expect(putTransaction(session, COMPANY_NUMBER, TRANSACTION_ID, "desc", "closed")).rejects.toThrow(ERROR);
-      expect(mockCreateAndLogError).toBeCalledWith(`Http status code ${StatusCodes.NOT_FOUND} - Failed to put transaction for transaction id ${TRANSACTION_ID}, company number ${COMPANY_NUMBER}`);
+      await expect(putTransaction(session, COMPANY_NUMBER, TRANSACTION_ID, "desc", "closed"))
+        .rejects.toBe(undefined)
+        .catch(() => {
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(SOMETHING_HAS_GONE_WRONG));
+          expect(createAndLogError).toBeCalledWith(`Http status code ${StatusCodes.NOT_FOUND} - Failed to put transaction for transaction id ${TRANSACTION_ID}, company number ${COMPANY_NUMBER}`);
+        });
     });
   });
 

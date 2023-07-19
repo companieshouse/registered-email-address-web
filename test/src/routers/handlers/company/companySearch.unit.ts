@@ -9,7 +9,7 @@ import { Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from 'node-mocks-http';
 import { CompanySearchHandler } from "../../../../../src/routers/handlers/company/companySearch";
 import { Session } from "@companieshouse/node-session-handler";
-import { COMPANY_EMAIL } from "../../../../../src/constants/app.const";
+import { REGISTERED_EMAIL_ADDRESS } from "../../../../../src/constants/app.const";
 import {createApiClient} from "@companieshouse/api-sdk-node";
 import { validSDKResource, CompanyProfileErrorResponse} from "../../../../mocks/company.profile.mock";
 import { createAndLogError } from "../../../../../src/utils/common/Logger";
@@ -62,7 +62,7 @@ describe("Request to enter company number - test GET method", () => {
     });
     response = createResponse();
     //set email in session
-    request.session?.setExtraData(COMPANY_EMAIL, TEST_EMAIL_EXISTING);
+    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
   });
   
 

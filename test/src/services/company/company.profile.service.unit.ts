@@ -6,10 +6,10 @@ import { validSDKResource } from "../../../mocks/company.profile.mock";
 import { StatusCodes } from "http-status-codes";
 jest.mock("@companieshouse/api-sdk-node");
 jest.mock("../../../../src/utils/common/Logger");
+import { SOMETHING_HAS_GONE_WRONG, SERVICE_UNAVAILABLE } from "../../../../src/constants/app.const";
 
 const mockCreateApiClient = createApiClient as jest.Mock;
 const mockGetCompanyProfile = jest.fn();
-const mockCreateAndLogError = createAndLogError as jest.Mock;
 
 mockCreateApiClient.mockReturnValue({
   companyProfile: {
@@ -17,7 +17,6 @@ mockCreateApiClient.mockReturnValue({
   }
 });
 
-mockCreateAndLogError.mockReturnValue(new Error());
 
 const clone = (objectToClone: any): any => {
   return JSON.parse(JSON.stringify(objectToClone));
@@ -40,31 +39,44 @@ describe("Company profile service test", () => {
       });
     });
 
+    it("Should throw an error if no response returned from SDK", async () => {
+      mockGetCompanyProfile.mockResolvedValueOnce(undefined);
+
+      await expect(getCompanyProfile(COMPANY_NUMBER))
+        .rejects.toBe(undefined)
+        .catch(() => {
+          expect(createAndLogError).toHaveBeenCalledWith(SERVICE_UNAVAILABLE);
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining("Company profile API"));
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
+        });
+    });
+
+    it("Should throw an error if SERVICE UNAVAILABLE returned from SDK", async () => {
+      const HTTP_STATUS_CODE = StatusCodes.SERVICE_UNAVAILABLE;
+      mockGetCompanyProfile.mockResolvedValueOnce({
+        httpStatusCode: HTTP_STATUS_CODE
+      } as Resource<CompanyProfile>);
+
+      await expect(getCompanyProfile(COMPANY_NUMBER))
+        .rejects.toBe(undefined)
+        .catch(() => {
+          expect(createAndLogError).toHaveBeenCalledWith(SERVICE_UNAVAILABLE);
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining("Company profile API"));
+          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
+        });
+    });
+
     it(`Should throw an error if status code >= ${StatusCodes.BAD_REQUEST}`, async () => {
       const HTTP_STATUS_CODE = StatusCodes.BAD_REQUEST;
       mockGetCompanyProfile.mockResolvedValueOnce({
         httpStatusCode: HTTP_STATUS_CODE
       } as Resource<CompanyProfile>);
 
-      await getCompanyProfile(COMPANY_NUMBER)
-        .then(() => {
-          fail("Was expecting an error to be thrown.");
-        })
+      await expect(getCompanyProfile(COMPANY_NUMBER))
+        .rejects.toBe(undefined)
         .catch(() => {
+          expect(createAndLogError).toHaveBeenCalledWith(SOMETHING_HAS_GONE_WRONG);
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${HTTP_STATUS_CODE}`));
-          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
-        });
-    });
-
-    it("Should throw an error if no response returned from SDK", async () => {
-      mockGetCompanyProfile.mockResolvedValueOnce(undefined);
-
-      await getCompanyProfile(COMPANY_NUMBER)
-        .then(() => {
-          fail("Was expecting an error to be thrown.");
-        })
-        .catch(() => {
-          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining("no response"));
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
         });
     });
@@ -72,11 +84,10 @@ describe("Company profile service test", () => {
     it("Should throw an error if no response resource returned from SDK", async () => {
       mockGetCompanyProfile.mockResolvedValueOnce({} as Resource<CompanyProfile>);
 
-      await getCompanyProfile(COMPANY_NUMBER)
-        .then(() => {
-          fail("Was expecting an error to be thrown.");
-        })
+      await expect(getCompanyProfile(COMPANY_NUMBER))
+        .rejects.toBe(undefined)
         .catch(() => {
+          expect(createAndLogError).toHaveBeenCalledWith(SOMETHING_HAS_GONE_WRONG);
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining("no resource"));
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
         });

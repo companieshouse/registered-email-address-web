@@ -1,4 +1,3 @@
-// jest.mock("../../../../src/services/transaction/transaction.service");
 jest.mock("@companieshouse/api-sdk-node");
 jest.mock("../../../../../src/services/api/api.service");
 jest.mock("../../../../../src/utils/common/Logger");
@@ -9,7 +8,7 @@ import { createRequest, createResponse, MockRequest, MockResponse } from 'node-m
 import { ChangeEmailAddressHandler } from "../../../../../src/routers/handlers/email/changeEmailAddress";
 import FormValidator from "../../../../../src/utils/common/formValidator.util";
 import { Session } from "@companieshouse/node-session-handler";
-import { COMPANY_EMAIL, COMPANY_NUMBER, SUBMISSION_ID, TRANSACTION_CREATE_ERROR, NO_EMAIL_ADDRESS_SUPPLIED, EMAIL_ADDRESS_INVALID } from "../../../../../src/constants/app.const";
+import { REGISTERED_EMAIL_ADDRESS, COMPANY_NUMBER, SUBMISSION_ID, TRANSACTION_CREATE_ERROR, NO_EMAIL_ADDRESS_SUPPLIED, EMAIL_ADDRESS_INVALID } from "../../../../../src/constants/app.const";
 import { validTransactionSDKResource, transactionId } from "../../../../mocks/transaction.mock";
 import { queryReponse, EmailErrorReponse } from "../../../../mocks/company.email.mock";
 import { createApiClient } from "@companieshouse/api-sdk-node";
@@ -65,7 +64,7 @@ describe("Registered email address update - test GET method", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     changeEmailAddressHandler = new ChangeEmailAddressHandler(
-      formValidator, 
+      formValidator,
       TEST_EMAIL_EXISTING
     );
     // session instance
@@ -76,12 +75,13 @@ describe("Registered email address update - test GET method", () => {
     });
     response = createResponse();
   });
-  
+
   it("Handle error returned from creating transaction record", async () => {
     // build required transaction response for test
     mockPostTransactionResponse.mockResolvedValueOnce(clone(EmailErrorReponse));
     //set company number in session
     request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
+    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
 
     await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
@@ -95,7 +95,8 @@ describe("Registered email address update - test GET method", () => {
   it("Registered email address update - company email in session", async () => {
     mockPostTransactionResponse.mockResolvedValueOnce(clone(validTransactionSDKResource));
     //set email in session
-    request.session?.setExtraData(COMPANY_EMAIL, TEST_EMAIL_EXISTING);
+    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
+    request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
 
     await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
@@ -111,6 +112,7 @@ describe("Registered email address update - test GET method", () => {
     mockPostTransactionResponse.mockResolvedValueOnce(clone(validTransactionSDKResource));
     mockGetCompanyEmailResponse.mockResolvedValueOnce(clone(queryReponse));
     //set company number in session
+    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
     request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
 
     await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {
@@ -131,7 +133,7 @@ describe("Registered email address update - test POST method", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     changeEmailAddressHandler = new ChangeEmailAddressHandler(
-      formValidator, 
+      formValidator,
       TEST_EMAIL_EXISTING
     );
     // session instance
@@ -142,7 +144,7 @@ describe("Registered email address update - test POST method", () => {
     });
     response = createResponse();
   });
-  
+
   it("No email in POST request body - return view data error", async () => {
     //set email address in request body to empty
     request.body.changeEmailAddress = "";

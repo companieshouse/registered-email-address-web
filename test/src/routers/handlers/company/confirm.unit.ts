@@ -7,7 +7,7 @@ import { Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from 'node-mocks-http';
 import { ConfirmCompanyHandler } from "../../../../../src/routers/handlers/company/confirm";
 import { Session } from "@companieshouse/node-session-handler";
-import { COMPANY_EMAIL } from "../../../../../src/constants/app.const";
+import { REGISTERED_EMAIL_ADDRESS } from "../../../../../src/constants/app.const";
 import {createApiClient} from "@companieshouse/api-sdk-node";
 import { CompanyProfileErrorResponse, validSDKResource} from "../../../../mocks/company.profile.mock";
 import { queryReponse, EmailErrorReponse} from "../../../../mocks/company.email.mock";
@@ -65,7 +65,7 @@ describe("Test ConfirmCompanyHandler", () => {
     });
     response = createResponse();
     //set email in session
-    request.session?.setExtraData(COMPANY_EMAIL, TEST_EMAIL_EXISTING);
+    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
   });
   
 

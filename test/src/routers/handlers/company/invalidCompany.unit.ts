@@ -7,7 +7,7 @@ import { Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from 'node-mocks-http';
 import { InvalidCompanyHandler } from "../../../../../src/routers/handlers/company/invalidCompany";
 import { Session } from "@companieshouse/node-session-handler";
-import { COMPANY_EMAIL } from "../../../../../src/constants/app.const";
+import { REGISTERED_EMAIL_ADDRESS } from "../../../../../src/constants/app.const";
 import { validSDKResource} from "../../../../mocks/company.profile.mock";
 import { createAndLogError } from "../../../../../src/utils/common/Logger";
 import * as constants from "../../../../../src/constants/app.const";
@@ -47,7 +47,7 @@ describe("Test ConfirmCompanyHandler", () => {
     });
     response = createResponse();
     //set email in session
-    request.session?.setExtraData(COMPANY_EMAIL, TEST_EMAIL_EXISTING);
+    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
     request.session?.setExtraData(constants.COMPANY_PROFILE, validSDKResource.resource);
   });
   

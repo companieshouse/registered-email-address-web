@@ -42,4 +42,8 @@ router.get(config.ACCESSIBILITY_STATEMENT_URL, async (req: Request, res: Respons
   res.render(`${routeViews}` + config.ACCESSIBILITY_STATEMENT_PAGE);
 });
 
+router.get(config.SERVICE_UNAVAILABLE_URL, async (req: Request, res: Response, next: NextFunction) => {
+  res.render(`${routeViews}` + config.SERVICE_UNAVAILABLE_PAGE, { title: "Service offline - " + config.REFERENCE + " - GOV.UK" });
+});
+
 export default router;

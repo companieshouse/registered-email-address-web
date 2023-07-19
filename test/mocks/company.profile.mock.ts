@@ -48,7 +48,7 @@ export const validCompanyProfile: CompanyProfile = {
 };
 
 export const validSDKResource: Resource<CompanyProfile> = {
-  httpStatusCode: 200,
+  httpStatusCode: StatusCodes.OK,
   resource: validCompanyProfile,
 };
 
