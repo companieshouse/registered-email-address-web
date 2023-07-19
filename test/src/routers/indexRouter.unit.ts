@@ -1,7 +1,13 @@
 import mocks from "../../mocks/all.middleware.mock";
 import request from "supertest";
 import app from "../../../src/app";
-import {HOME_URL, COMPANY_NUMBER_URL, SIGN_OUT_URL, ACCOUNTS_SIGNOUT_PATH} from "../../../src/config";
+import {
+    HOME_URL,
+    COMPANY_NUMBER_URL,
+    SIGN_OUT_URL,
+    ACCOUNTS_SIGNOUT_PATH,
+    ACCESSIBILITY_STATEMENT_URL, SERVICE_UNAVAILABLE_URL
+} from "../../../src/config";
 import {StatusCodes} from "http-status-codes";
 import {HomeHandler} from "../../../src/routers/handlers/index/home";
 import {SignOutHandler} from "../../../src/routers/handlers/index/signout";
@@ -100,7 +106,35 @@ describe("Index router tests -", () => {
 
         });
     });
-
-
   });
+
+    describe("Accessibility tests -", () => {
+        const PAGE_TITLE = "Accessibility statement for the Update registered email address service"
+        it("GET request to render Accessibility page ", async () => {
+            await request(app)
+                .get( ACCESSIBILITY_STATEMENT_URL)
+                .then((response) => {
+                    expect(response.text).toContain(PAGE_TITLE);
+                    expect(response.status).toBe(StatusCodes.OK);
+                    expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+
+                });
+
+        })
+    });
+
+    describe("Service Unavailable tests -", () => {
+        const PAGE_TITLE = "Sorry, the service is unavailable"
+        it("GET request to render Service Unavailable page ", async () => {
+            await request(app)
+                .get( SERVICE_UNAVAILABLE_URL)
+                .then((response) => {
+                    expect(response.text).toContain(PAGE_TITLE);
+                    expect(response.status).toBe(StatusCodes.OK);
+                    expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+
+                });
+
+        })
+    });
 });
