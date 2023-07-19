@@ -11,7 +11,7 @@ import {
   EMAIL_CHECK_ANSWER_URL, EMAIL_UPDATE_SUBMITTED_URL,
   UPDATE_SUBMITTED,
 } from "../config";
-import {requestFailed} from "../utils/general";
+import {requestFailed} from "../utils/error/errorHandler";
 
 const router: Router = Router();
 const companyRouterViews: string = "router_views/company/";
