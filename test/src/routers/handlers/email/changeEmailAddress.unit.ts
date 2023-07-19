@@ -8,10 +8,17 @@ import { createRequest, createResponse, MockRequest, MockResponse } from 'node-m
 import { ChangeEmailAddressHandler } from "../../../../../src/routers/handlers/email/changeEmailAddress";
 import FormValidator from "../../../../../src/utils/common/formValidator.util";
 import { Session } from "@companieshouse/node-session-handler";
-import { REGISTERED_EMAIL_ADDRESS, COMPANY_NUMBER, SUBMISSION_ID, TRANSACTION_CREATE_ERROR, NO_EMAIL_ADDRESS_SUPPLIED, EMAIL_ADDRESS_INVALID } from "../../../../../src/constants/app.const";
+import { 
+  REGISTERED_EMAIL_ADDRESS,
+  COMPANY_NUMBER, SUBMISSION_ID,
+  TRANSACTION_CREATE_ERROR,
+  NO_EMAIL_ADDRESS_SUPPLIED,
+  EMAIL_ADDRESS_INVALID,
+  UPDATE_EMAIL_ERROR_ANCHOR,
+} from "../../../../../src/constants/app.const";
 import { validTransactionSDKResource, transactionId } from "../../../../mocks/transaction.mock";
 import { queryReponse, EmailErrorReponse } from "../../../../mocks/company.email.mock";
-import { createApiClient } from "@companieshouse/api-sdk-node";
+import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
 import { createPublicOAuthApiClient } from "../../../../../src/services/api/api.service";
 import { createAndLogError } from "../../../../../src/utils/common/Logger";
 
@@ -87,8 +94,12 @@ describe("Registered email address update - test GET method", () => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
 
       expect(changeEmailAddressResponseJson.errors).toBeTruthy;
+      expect(changeEmailAddressResponseJson.errors.errorList).toBeTruthy;
+      expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(CREATE_TRANSACTION_ERROR);
+      expect(changeEmailAddressResponseJson.errors.errorList).toHaveLength(1);
+      expect(changeEmailAddressResponseJson.errors.errorList[0].href).toEqual(UPDATE_EMAIL_ERROR_ANCHOR);
+      expect(changeEmailAddressResponseJson.errors.errorList[0].text).toEqual(CREATE_TRANSACTION_ERROR);
       expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
-      expect(changeEmailAddressResponseJson.errors.companyNumber).toEqual(CREATE_TRANSACTION_ERROR);
     });
   });
 
@@ -153,12 +164,16 @@ describe("Registered email address update - test POST method", () => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
 
       expect(changeEmailAddressResponseJson.errors).toBeTruthy;
-      expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
+      expect(changeEmailAddressResponseJson.errors.errorList).toBeTruthy;
       expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(NO_EMAIL_ADDRESS_SUPPLIED);
+      expect(changeEmailAddressResponseJson.errors.errorList).toHaveLength(1);
+      expect(changeEmailAddressResponseJson.errors.errorList[0].href).toEqual(UPDATE_EMAIL_ERROR_ANCHOR);
+      expect(changeEmailAddressResponseJson.errors.errorList[0].text).toEqual(NO_EMAIL_ADDRESS_SUPPLIED);
+      expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
     });
   });
 
-  it("Updated email address supplied does not match expected patter - return view data error", async () => {
+  it("Updated email address supplied does not match expected pattern - return view data error", async () => {
     //set email address in request body to invalid pattern
     request.body.changeEmailAddress = INVALID_EMAIL_ADDRESS;
 
@@ -166,6 +181,10 @@ describe("Registered email address update - test POST method", () => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
 
       expect(changeEmailAddressResponseJson.errors).toBeTruthy;
+      expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(EMAIL_ADDRESS_INVALID);
+      expect(changeEmailAddressResponseJson.errors.errorList).toHaveLength(1);
+      expect(changeEmailAddressResponseJson.errors.errorList[0].href).toEqual(UPDATE_EMAIL_ERROR_ANCHOR);
+      expect(changeEmailAddressResponseJson.errors.errorList[0].text).toEqual(EMAIL_ADDRESS_INVALID);
       expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
       expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(EMAIL_ADDRESS_INVALID);
     });

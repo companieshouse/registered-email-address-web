@@ -6,6 +6,7 @@ import {
   EMAIL_CHECK_ANSWER_URL,
   EMAIL_UPDATE_SUBMITTED_URL
 } from "../../../src/config";
+import {THERE_IS_A_PROBLEM_ERROR} from "../../../src/constants/app.const";
 import {HttpResponse} from "@companieshouse/api-sdk-node/dist/http/http-client";
 import {StatusCodes} from "http-status-codes";
 import {CheckAnswerHandler} from "../../../src/routers/handlers/email/checkAnswer";
@@ -36,7 +37,7 @@ describe("Email router tests", () => {
         await request(app)
           .get(EMAIL_CHANGE_EMAIL_ADDRESS_URL)
           .then((response) => {
-            expect(response.status).toBe(200);
+            expect(response.status).toBe(StatusCodes.OK);
             expect(response.text).toContain(COMMON_PAGE_HEADING);
             expect(response.text).toContain(PAGE_HEADING);
             expect(getSpy).toHaveBeenCalled();
@@ -51,7 +52,7 @@ describe("Email router tests", () => {
         await request(app)
           .get(EMAIL_CHANGE_EMAIL_ADDRESS_URL)
           .then((response) => {
-            expect(response.status).toBe(200);
+            expect(response.status).toBe(StatusCodes.OK);
             expect(response.text).toContain(COMMON_PAGE_HEADING);
             expect(response.text).toContain("What is the company number?");
             expect(getSpy).toHaveBeenCalled();
@@ -81,7 +82,7 @@ describe("Email router tests", () => {
         await request(app)
           .post(EMAIL_CHANGE_EMAIL_ADDRESS_URL)
           .then((response) => {
-            expect(response.status).toBe(302);
+            expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
             expect(response.text).toContain("Redirecting to /registered-email-address/email/check-your-answer");
             expect(postSpy).toHaveBeenCalled();
           });
@@ -97,7 +98,7 @@ describe("Email router tests", () => {
         await request(app)
           .get(EMAIL_CHECK_ANSWER_URL)
           .then((response) => {
-            expect(response.status).toBe(200);
+            expect(response.status).toBe(StatusCodes.OK);
             expect(response.text).toContain(COMMON_PAGE_HEADING);
             expect(response.text).toContain(PAGE_HEADING);
             expect(getSpy).toHaveBeenCalled();
@@ -130,7 +131,7 @@ describe("Email router tests", () => {
           .then((response) => {
             expect(response.text).toContain(COMMON_PAGE_HEADING);
             expect(response.text).toContain(PAGE_HEADING);
-            expect(response.text).toContain("There is a problem with the details you gave us");
+            expect(response.text).toContain(THERE_IS_A_PROBLEM_ERROR);
             expect(postSpy).toHaveBeenCalled();
           });
       });
@@ -159,7 +160,7 @@ describe("Email router tests", () => {
       await request(app)
         .get(EMAIL_UPDATE_SUBMITTED_URL)
         .then((response) => {
-          expect(response.status).toBe(200);
+          expect(response.status).toBe(StatusCodes.OK);
           expect(response.text).toContain(PAGE_HEADING);
           expect(getSpy).toHaveBeenCalled();
           expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();

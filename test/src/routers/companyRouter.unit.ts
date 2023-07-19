@@ -2,21 +2,21 @@ import mocks from "../../mocks/all.middleware.mock";
 import request from "supertest";
 import app from "../../../src/app";
 import {
-    COMPANY_CONFIRM_URL,
-    COMPANY_NUMBER_URL,
-    EMAIL_CHANGE_EMAIL_ADDRESS_URL,
-    INVALID_COMPANY_URL,
-    SERVICE_UNAVAILABLE_URL
+  COMPANY_CONFIRM_URL,
+  COMPANY_NUMBER_URL,
+  EMAIL_CHANGE_EMAIL_ADDRESS_URL,
+  INVALID_COMPANY_URL,
+  SERVICE_UNAVAILABLE_URL
 } from "../../../src/config";
 import {StatusCodes} from "http-status-codes";
 import {CompanySearchHandler} from "../../../src/routers/handlers/company/companySearch";
 import {HttpResponse} from "@companieshouse/api-sdk-node/dist/http/http-client";
-import {INVALID_COMPANY_NUMBER} from "../../../src/constants/app.const";
+import {INVALID_COMPANY_NUMBER, THERE_IS_A_PROBLEM_ERROR} from "../../../src/constants/app.const";
 import {InvalidCompanyHandler} from "../../../src/routers/handlers/company/invalidCompany";
 import {ConfirmCompanyHandler} from "../../../src/routers/handlers/company/confirm";
 import {
-    INVALID_COMPANY_SERVICE_UNAVAILABLE,
-    INVALID_COMPANY_TYPE_REASON
+  INVALID_COMPANY_SERVICE_UNAVAILABLE,
+  INVALID_COMPANY_TYPE_REASON
 } from "../../../src/constants/validation.const";
 
 
@@ -24,10 +24,8 @@ const okResponse: HttpResponse = {status: StatusCodes.OK};
 
 
 describe("Company router tests -", () => {
-  const ERROR_HEADING = "There is a problem with the details you gave us";
   const COMPANY_NUMBER_PAGE_TITLE = "What is the company number? – Update a registered email address – GOV.UK";
-
-
+  
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -65,7 +63,7 @@ describe("Company router tests -", () => {
         .send({companyNumber : '12345678'})
         .then((response) => {
           expect(response.text).toContain(COMPANY_NUMBER_PAGE_TITLE);
-          expect(response.text).toContain(ERROR_HEADING);
+          expect(response.text).toContain(THERE_IS_A_PROBLEM_ERROR);
           expect(response.status).toBe(StatusCodes.OK);
           expect(getSpy).toHaveBeenCalled();
           expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
@@ -118,20 +116,20 @@ describe("Company router tests -", () => {
         });
     });
 
-      it("Post Request to confirm URL should redirect to Service unavailable", async () => {
-          const getSpy = jest.spyOn(ConfirmCompanyHandler.prototype, 'post')
-              .mockResolvedValue({invalidCompanyReason : INVALID_COMPANY_SERVICE_UNAVAILABLE });
-          await request(app)
-              .post(COMPANY_CONFIRM_URL)
-              .then((response) => {
-                  expect(response.text).toContain(SERVICE_UNAVAILABLE_URL);
-                  expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
-                  expect(getSpy).toHaveBeenCalled();
-                  expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
-              });
-      });
+    it("Post Request to confirm URL should redirect to Service unavailable", async () => {
+      const getSpy = jest.spyOn(ConfirmCompanyHandler.prototype, 'post')
+        .mockResolvedValue({invalidCompanyReason : INVALID_COMPANY_SERVICE_UNAVAILABLE });
+      await request(app)
+        .post(COMPANY_CONFIRM_URL)
+        .then((response) => {
+          expect(response.text).toContain(SERVICE_UNAVAILABLE_URL);
+          expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
+          expect(getSpy).toHaveBeenCalled();
+          expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+        });
+    });
 
-      it("Post Request to confirm URL should redirect to Invalid company", async () => {
+    it("Post Request to confirm URL should redirect to Invalid company", async () => {
       const getSpy = jest.spyOn(ConfirmCompanyHandler.prototype, 'post')
         .mockResolvedValue({invalidCompanyReason : INVALID_COMPANY_TYPE_REASON });
       await request(app)
