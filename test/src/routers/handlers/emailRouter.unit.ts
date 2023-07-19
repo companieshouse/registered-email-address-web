@@ -23,15 +23,13 @@ describe("Email router tests", () => {
     const COMMON_PAGE_HEADING = "Update a registered email address";
 
     describe("Confirm email router tests", () => {
-        const PAGE_HEADING = "Update a registered email address";
+        const PAGE_HEADING = "What is the new registered email address?";
 
         beforeEach(() => {
             jest.clearAllMocks();
         });
 
         describe("Change email tests", () => {
-            const PAGE_HEADING = "What is the new registered email address?";
-
             it("Should navigate to change email page", async () => {
                 const getSpy = jest.spyOn(ChangeEmailAddressHandler.prototype, 'get').mockResolvedValue(clone(okResponse));
 
