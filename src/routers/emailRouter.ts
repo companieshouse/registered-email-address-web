@@ -47,7 +47,7 @@ router.post(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: 
       res.render(`${emailRouterViews}` + CHANGE_EMAIL_ADDRESS_URL, viewData);
     } else {
       res.redirect(EMAIL_CHECK_ANSWER_URL);
-    };
+    }
   });  
 });
 
