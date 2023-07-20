@@ -2,11 +2,12 @@ import mocks from "../../mocks/all.middleware.mock";
 import request from "supertest";
 import app from "../../../src/app";
 import {
-    COMPANY_CONFIRM_URL,
-    COMPANY_NUMBER_URL,
-    EMAIL_CHANGE_EMAIL_ADDRESS_URL,
-    INVALID_COMPANY_URL,
-    SERVICE_UNAVAILABLE_URL
+  COMPANY_CONFIRM_URL,
+  COMPANY_NUMBER_URL,
+  EMAIL_CHANGE_EMAIL_ADDRESS_URL,
+  INVALID_COMPANY_URL,
+  THERE_IS_A_PROBLEM_PAGE,
+  THERE_IS_A_PROBLEM_URL
 } from "../../../src/config";
 import {StatusCodes} from "http-status-codes";
 import {CompanySearchHandler} from "../../../src/routers/handlers/company/companySearch";
@@ -15,8 +16,8 @@ import {INVALID_COMPANY_NUMBER} from "../../../src/constants/app.const";
 import {InvalidCompanyHandler} from "../../../src/routers/handlers/company/invalidCompany";
 import {ConfirmCompanyHandler} from "../../../src/routers/handlers/company/confirm";
 import {
-    INVALID_COMPANY_SERVICE_UNAVAILABLE,
-    INVALID_COMPANY_TYPE_REASON
+  INVALID_COMPANY_SERVICE_UNAVAILABLE,
+  INVALID_COMPANY_TYPE_REASON
 } from "../../../src/constants/validation.const";
 
 
@@ -118,20 +119,20 @@ describe("Company router tests -", () => {
         });
     });
 
-      it("Post Request to confirm URL should redirect to Service unavailable", async () => {
-          const getSpy = jest.spyOn(ConfirmCompanyHandler.prototype, 'post')
-              .mockResolvedValue({invalidCompanyReason : INVALID_COMPANY_SERVICE_UNAVAILABLE });
-          await request(app)
-              .post(COMPANY_CONFIRM_URL)
-              .then((response) => {
-                  expect(response.text).toContain(SERVICE_UNAVAILABLE_URL);
-                  expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
-                  expect(getSpy).toHaveBeenCalled();
-                  expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
-              });
-      });
+    it("Post Request to confirm URL should redirect to Service unavailable", async () => {
+      const getSpy = jest.spyOn(ConfirmCompanyHandler.prototype, 'post')
+        .mockResolvedValue({invalidCompanyReason : INVALID_COMPANY_SERVICE_UNAVAILABLE });
+      await request(app)
+        .post(COMPANY_CONFIRM_URL)
+        .then((response) => {
+          expect(response.text).toContain(THERE_IS_A_PROBLEM_URL);
+          expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
+          expect(getSpy).toHaveBeenCalled();
+          expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+        });
+    });
 
-      it("Post Request to confirm URL should redirect to Invalid company", async () => {
+    it("Post Request to confirm URL should redirect to Invalid company", async () => {
       const getSpy = jest.spyOn(ConfirmCompanyHandler.prototype, 'post')
         .mockResolvedValue({invalidCompanyReason : INVALID_COMPANY_TYPE_REASON });
       await request(app)

@@ -36,7 +36,7 @@ describe("Email router tests", () => {
         await request(app)
           .get(EMAIL_CHANGE_EMAIL_ADDRESS_URL)
           .then((response) => {
-            expect(response.status).toBe(200);
+            expect(response.status).toBe(StatusCodes.OK);
             expect(response.text).toContain(COMMON_PAGE_HEADING);
             expect(response.text).toContain(PAGE_HEADING);
             expect(getSpy).toHaveBeenCalled();
@@ -44,16 +44,16 @@ describe("Email router tests", () => {
           });
       });
 
-      it("Should navigate back to company search page if unexpected data", async () => {
+      it("Should navigate back to there is a problem page if unexpected data", async () => {
         const errorObject = {errors: "anything"};
         const getSpy = jest.spyOn(ChangeEmailAddressHandler.prototype, 'get').mockResolvedValue(errorObject);
 
         await request(app)
           .get(EMAIL_CHANGE_EMAIL_ADDRESS_URL)
           .then((response) => {
-            expect(response.status).toBe(200);
+            expect(response.status).toBe(StatusCodes.OK);
             expect(response.text).toContain(COMMON_PAGE_HEADING);
-            expect(response.text).toContain("What is the company number?");
+            expect(response.text).toContain("there is a problem");
             expect(getSpy).toHaveBeenCalled();
             expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
           });

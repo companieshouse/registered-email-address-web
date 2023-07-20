@@ -7,13 +7,15 @@ import {CheckAnswerHandler} from "./handlers/email/checkAnswer";
 import {
   CHANGE_EMAIL_ADDRESS_URL,
   CHECK_ANSWER_URL,
-  THERE_IS_A_PROBLEM_URL,
+  EMAIL_CHECK_ANSWER_URL,
+  THERE_IS_A_PROBLEM_PAGE,
   EMAIL_UPDATE_SUBMITTED_URL,
   UPDATE_SUBMITTED
 } from "../config";
 import {requestFailed} from "../utils/error/errorHandler";
 
 const router: Router = Router();
+const indexRouterViews: string = "router_views/index/";
 const emailRouterViews: string = "router_views/email/";
 
 // GET: /change-email-address
@@ -26,7 +28,7 @@ router.get(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: N
   await handler.get(req, res).then((viewData) => {
     if (requestFailed(viewData)) {
       // TODO: go to "something has gone" wrong page
-      res.render(THERE_IS_A_PROBLEM_URL, viewData);
+      res.render(`${indexRouterViews}` + THERE_IS_A_PROBLEM_PAGE, viewData);
     } else {
       res.render(`${emailRouterViews}` + CHANGE_EMAIL_ADDRESS_URL, viewData);
     }
@@ -43,7 +45,9 @@ router.post(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: 
   await handler.post(req, res).then((viewData) => {
     if (requestFailed(viewData)) {
       res.render(`${emailRouterViews}` + CHANGE_EMAIL_ADDRESS_URL, viewData);
-    }
+    } else {
+      res.redirect(EMAIL_CHECK_ANSWER_URL);
+    };
   });  
 });
 
