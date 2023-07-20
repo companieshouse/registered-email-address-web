@@ -17,7 +17,8 @@ import {
   TRANSACTION_CREATE_ERROR,
   SOMETHING_HAS_GONE_WRONG,
   UPDATE_EMAIL_ERROR_KEY,
-  UPDATE_EMAIL_ERROR_ANCHOR
+  UPDATE_EMAIL_ERROR_ANCHOR,
+  COMPANY_PROFILE
 } from "../../../constants/app.const";
 
 import {
@@ -34,12 +35,12 @@ import Optional from "../../../models/optional";
 import FormValidator from "../../../utils/common/formValidator.util";
 import formSchema from "../../../schemas/changeEmailAddress.schema";
 import { RegisteredEmailAddress } from "services/api/private-get-rea";
+import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 
 export class ChangeEmailAddressHandler extends GenericHandler {
 
   constructor (@inject(FormValidator) private validator: FormValidator, userEmail: string | undefined) {
     super();
-    this.viewData.title = "Update a registered email address";
     this.viewData.backUri = COMPANY_BASE_URL+CONFIRM_URL;
     if (userEmail !== undefined) {
       this.viewData.userEmail = userEmail;
@@ -50,11 +51,14 @@ export class ChangeEmailAddressHandler extends GenericHandler {
     logger.info(`GET request to serve change registered email address page`);
 
     const session: Session = req.session as Session;
-    const companyNumber: string | undefined = req.session?.getExtraData(COMPANY_NUMBER);
-    const companyEmailAddress: RegisteredEmailAddress | undefined = req.session?.getExtraData(REGISTERED_EMAIL_ADDRESS);
+    const companyNumber: string | undefined = session.getExtraData(COMPANY_NUMBER);
+    const companyEmailAddress: RegisteredEmailAddress | undefined = session.getExtraData(REGISTERED_EMAIL_ADDRESS);
+    const companyProfile: CompanyProfile | undefined = session.getExtraData(COMPANY_PROFILE);
 
-    if (companyEmailAddress !== undefined && companyNumber !== undefined) {
+    if (companyEmailAddress && companyNumber && companyProfile) {
       this.viewData.companyEmailAddress = companyEmailAddress;
+      this.viewData.companyName = companyProfile.companyName.toUpperCase();
+      this.viewData.companyNumber = companyProfile.companyNumber;
       // create transaction record
       try {
         // get transaction record data
@@ -83,6 +87,11 @@ export class ChangeEmailAddressHandler extends GenericHandler {
 
   async post (req: Request, response: Response): Promise<Object> {
     logger.info(`POST request to serve change registered email address page`);
+
+    const session: Session = req.session as Session;
+    const companyProfile: CompanyProfile | undefined = session.getExtraData(COMPANY_PROFILE);
+    this.viewData.companyName = companyProfile?.companyName.toUpperCase();
+    this.viewData.companyNumber = companyProfile?.companyNumber;
 
     const companyEmailAddressGiven: string = req.body.changeEmailAddress;
 
