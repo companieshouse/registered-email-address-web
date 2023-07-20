@@ -5,8 +5,6 @@ import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/compa
 import { ApiErrorResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 import { StatusCodes } from 'http-status-codes';
 
-
-
 export const validCompanyProfile: CompanyProfile = {
   accounts: {
     nextAccounts: {
