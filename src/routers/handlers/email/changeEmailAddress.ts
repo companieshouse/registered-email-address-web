@@ -53,22 +53,19 @@ export class ChangeEmailAddressHandler extends GenericHandler {
     if (companyEmailAddress !== undefined && companyNumber !== undefined) {
       this.viewData.companyEmailAddress = companyEmailAddress;
       // create transaction record
-      try {
+      await createTransaction(session, companyNumber).then((transactionId) => {
         // get transaction record data
-        await createTransaction(session, companyNumber).then((transactionId) => {
-          req.session?.setExtraData(SUBMISSION_ID, transactionId);
-        });
-      } catch (e) {
-        this.viewData.errors = {
-          companyNumber: TRANSACTION_CREATE_ERROR+companyNumber
-        };
-        return this.viewData;
-      }
-      return Promise.resolve(this.viewData);
+        req.session?.setExtraData(SUBMISSION_ID, transactionId);
+      }).catch(() => {
+        logger.error(TRANSACTION_CREATE_ERROR + companyNumber);
+        return Promise.reject(this.viewData);
+      });
     } else {
-      logger.info(`company confirm - company email not found`);
+      logger.error(`company confirm - company email not found`);
       this.viewData.errors = NO_EMAIL_ADDRESS_FOUND;
+      return Promise.reject(this.viewData);
     }
+
     return Promise.resolve(this.viewData);
   }
 
@@ -90,7 +87,7 @@ export class ChangeEmailAddressHandler extends GenericHandler {
       this.viewData.errors = {
         changeEmailAddress: EMAIL_ADDRESS_INVALID
       } ;
-      return Promise.resolve(this.viewData);
+      return Promise.reject(this.viewData);
     } else {
       req.session?.setExtraData(NEW_EMAIL_ADDRESS, req.body.changeEmailAddress);
     }
@@ -107,6 +104,7 @@ export const createTransaction = async (session: Session, companyNumber: string)
     });
     return Promise.resolve(transactionId);
   } catch (e) {
-    throw createAndLogError( THERE_IS_A_PROBLEM, `update registered email address: ${StatusCodes.INTERNAL_SERVER_ERROR} - error while create transaction record for ${companyNumber}`);
+    logger.error( `update registered email address: ${StatusCodes.INTERNAL_SERVER_ERROR} - error while create transaction record for ${companyNumber}`);
+    return Promise.reject(`${StatusCodes.INTERNAL_SERVER_ERROR}`);
   }
 };

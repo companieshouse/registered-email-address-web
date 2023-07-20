@@ -25,12 +25,12 @@ export class CheckAnswerHandler extends GenericHandler {
     const session: Session = req.session as Session;
     const companyEmail: string | undefined = session.getExtraData(NEW_EMAIL_ADDRESS);
 
-    return {
+    return Promise.resolve ({
       companyEmail: companyEmail,
       backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
       signoutBanner: true,
       userEmail: req.session?.data.signin_info?.user_profile?.email
-    };
+    });
   }
 
   async post(req: Request, response: Response): Promise<any> {
@@ -41,45 +41,43 @@ export class CheckAnswerHandler extends GenericHandler {
     const emailConfirmation: string | undefined = req.body.emailConfirmation;
 
     if (emailConfirmation === undefined) {
-      return {
+      return Promise.reject({
         statementError: CONFIRM_EMAIL_CHANGE_ERROR,
         errors: CONFIRM_EMAIL_CHANGE_ERROR,
         companyEmail: companyEmail,
         backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
         signoutBanner: true,
         userEmail: req.session?.data.signin_info?.user_profile?.email
-      };
+      });
     }
 
     const transactionId: string | undefined  = session?.getExtraData(SUBMISSION_ID);
     const companyNumber: string | undefined = session?.getExtraData(COMPANY_NUMBER);
 
-    return await createRegisteredEmailAddressResource(session, <string>transactionId, <string>companyEmail)
-      .then(async () => {
-        return await closeTransaction(session, <string> companyNumber, <string>transactionId)
-          .then(() => {
-            return {
-              signoutBanner: true,
-              userEmail: req.session?.data.signin_info?.user_profile?.email,
-              submissionID: transactionId
-            };
-          }).catch((err) => {
-            return {
-              errors: TRANSACTION_CLOSE_ERROR + companyNumber,
-              companyEmail: companyEmail,
-              backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
-              signoutBanner: true,
-              userEmail: req.session?.data.signin_info?.user_profile?.email
-            };
-          });
-      }).catch((e) => {
-        return {
-          errors: FAILED_TO_CREATE_REA_ERROR + companyNumber,
+    return await createRegisteredEmailAddressResource(session, <string>transactionId, <string>companyEmail).then(async () => {
+      return await closeTransaction(session, <string> companyNumber, <string>transactionId).then(() => {
+        return Promise.resolve({
+          signoutBanner: true,
+          userEmail: req.session?.data.signin_info?.user_profile?.email,
+          submissionID: transactionId
+        });
+      }).catch(() => {
+        return Promise.reject({
+          errors: TRANSACTION_CLOSE_ERROR + companyNumber,
           companyEmail: companyEmail,
           backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
           signoutBanner: true,
           userEmail: req.session?.data.signin_info?.user_profile?.email
-        };
+        });
       });
+    }).catch((e) => {
+      return Promise.reject({
+        errors: FAILED_TO_CREATE_REA_ERROR + companyNumber,
+        companyEmail: companyEmail,
+        backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
+        signoutBanner: true,
+        userEmail: req.session?.data.signin_info?.user_profile?.email
+      });
+    });
   }
 }

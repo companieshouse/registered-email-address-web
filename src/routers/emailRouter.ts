@@ -12,7 +12,6 @@ import {
   EMAIL_UPDATE_SUBMITTED_URL,
   UPDATE_SUBMITTED
 } from "../config";
-import {requestFailed} from "../utils/error/errorHandler";
 
 const router: Router = Router();
 const indexRouterViews: string = "router_views/index/";
@@ -26,12 +25,9 @@ router.get(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: N
     req.session?.data.signin_info?.user_profile?.email
   );
   await handler.get(req, res).then((viewData) => {
-    if (requestFailed(viewData)) {
-      // TODO: go to "something has gone" wrong page
-      res.render(`${indexRouterViews}` + THERE_IS_A_PROBLEM_PAGE, viewData);
-    } else {
-      res.render(`${emailRouterViews}` + CHANGE_EMAIL_ADDRESS_URL, viewData);
-    }
+    res.render(`${emailRouterViews}` + CHANGE_EMAIL_ADDRESS_URL, viewData);
+  }).catch((viewData) => {
+    res.render(`${indexRouterViews}` + THERE_IS_A_PROBLEM_PAGE, viewData);
   });
 });
 
@@ -43,11 +39,9 @@ router.post(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: 
     req.session?.data.signin_info?.user_profile?.email
   );
   await handler.post(req, res).then((viewData) => {
-    if (requestFailed(viewData)) {
-      res.render(`${emailRouterViews}` + CHANGE_EMAIL_ADDRESS_URL, viewData);
-    } else {
-      res.redirect(EMAIL_CHECK_ANSWER_URL);
-    }
+    res.redirect(EMAIL_CHECK_ANSWER_URL);
+  }).catch((viewData) => {
+    res.render(`${emailRouterViews}` + CHANGE_EMAIL_ADDRESS_URL, viewData);
   });  
 });
 
@@ -62,12 +56,10 @@ router.get(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunct
 // POST: /check-your-answers
 router.post(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunction) => {
   await new CheckAnswerHandler().post(req, res)
-    .then((viewData) => {
-      if (requestFailed(viewData)) {
-        res.render(`${emailRouterViews}` + CHECK_ANSWER_URL, viewData);
-      } else {
-        res.redirect(EMAIL_UPDATE_SUBMITTED_URL);
-      }
+    .then(() => {
+      res.redirect(EMAIL_UPDATE_SUBMITTED_URL);
+    }).catch((viewData) => {
+      res.render(`${emailRouterViews}` + CHECK_ANSWER_URL, viewData);
     });
 });
 

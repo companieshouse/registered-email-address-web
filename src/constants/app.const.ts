@@ -15,8 +15,8 @@ export const NEW_EMAIL_ADDRESS = "newEmailAddress";
 export const INVALID_COMPANY_REASON = "invalidCompanyReason";
 export const RETURN_URL = 'returnToUrl';
 export const SUBMISSION_ID = "submissionID";
-
 export const USER_EMAIL = "userEmail";
+
 
 export const INVALID_COMPANY_NUMBER = "You must enter a valid company number";
 export const THERE_IS_A_PROBLEM = "There is a problem";

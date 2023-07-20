@@ -83,12 +83,11 @@ describe("Registered email address update - test GET method", () => {
     request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
     request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
 
-    await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {
+    await changeEmailAddressHandler.get(request, response).catch((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
 
       expect(changeEmailAddressResponseJson.errors).toBeTruthy;
       expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
-      expect(changeEmailAddressResponseJson.errors.companyNumber).toEqual(CREATE_TRANSACTION_ERROR);
     });
   });
 
@@ -162,7 +161,7 @@ describe("Registered email address update - test POST method", () => {
     //set email address in request body to invalid pattern
     request.body.changeEmailAddress = INVALID_EMAIL_ADDRESS;
 
-    await changeEmailAddressHandler.post(request, response).then((changeEmailAddressResponse) => {
+    await changeEmailAddressHandler.post(request, response).catch((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
 
       expect(changeEmailAddressResponseJson.errors).toBeTruthy;

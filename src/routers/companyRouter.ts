@@ -38,14 +38,10 @@ router.post(NUMBER_URL, async (req: Request, res: Response, next: NextFunction) 
   const formValidator = new FormValidator();
   const companyNumberSanitizer = new CompanyNumberSanitizer();
   await new CompanySearchHandler(formValidator, companyNumberSanitizer).post(req, res).then((data) => {
-    // eslint-disable-next-line no-prototype-builtins
-    if (Object.prototype.hasOwnProperty.call(data, errorsConst)) {
-      res.render(`${routeViews}` + COMPANY_SEARCH_PAGE, data);
-    } else {
-      // eslint-disable-next-line no-unused-expressions
-      req.session?.setExtraData(COMPANY_PROFILE, data);
-      res.redirect(COMPANY_CONFIRM_URL);
-    }
+    req.session?.setExtraData(COMPANY_PROFILE, data);
+    res.redirect(COMPANY_CONFIRM_URL);
+  }).catch((data) => {
+    res.render(`${routeViews}` + COMPANY_SEARCH_PAGE, data);
   });
 });
 

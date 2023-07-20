@@ -59,7 +59,7 @@ describe("Company router tests -", () => {
 
     it("Post Request to company Number URL should ERROR", async () => {
       const getSpy = jest.spyOn(CompanySearchHandler.prototype, 'post')
-        .mockResolvedValue( {errors : {companyNumber : INVALID_COMPANY_NUMBER }});
+        .mockRejectedValue( {errors : {companyNumber : INVALID_COMPANY_NUMBER }});
 
       await request(app)
         .post(COMPANY_NUMBER_URL)

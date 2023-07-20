@@ -46,7 +46,7 @@ describe("Email router tests", () => {
 
       it("Should navigate back to there is a problem page if unexpected data", async () => {
         const errorObject = {errors: "anything"};
-        const getSpy = jest.spyOn(ChangeEmailAddressHandler.prototype, 'get').mockResolvedValue(errorObject);
+        const getSpy = jest.spyOn(ChangeEmailAddressHandler.prototype, 'get').mockRejectedValue(errorObject);
 
         await request(app)
           .get(EMAIL_CHANGE_EMAIL_ADDRESS_URL)
@@ -61,7 +61,7 @@ describe("Email router tests", () => {
 
       it("Should re-display change email page when Email not entered", async () => {
         const errorObject = {errors: {changeEmailAddress: "You need to accept the registered email address statement"}};
-        const postSpy = jest.spyOn(ChangeEmailAddressHandler.prototype, 'post').mockResolvedValue(errorObject);
+        const postSpy = jest.spyOn(ChangeEmailAddressHandler.prototype, 'post').mockRejectedValue(errorObject);
 
         await request(app)
           .post(EMAIL_CHANGE_EMAIL_ADDRESS_URL)
@@ -107,7 +107,7 @@ describe("Email router tests", () => {
 
       it("Should re-display check answer page when Email change unconfirmed", async () => {
         const errorObject = {statementError: "You need to accept the registered email address statement"};
-        const postSpy = jest.spyOn(CheckAnswerHandler.prototype, 'post').mockResolvedValue(errorObject);
+        const postSpy = jest.spyOn(CheckAnswerHandler.prototype, 'post').mockRejectedValue(errorObject);
 
         await request(app)
           .post(EMAIL_CHECK_ANSWER_URL)
@@ -122,7 +122,7 @@ describe("Email router tests", () => {
 
       it("Should fail gracefully on unexpected errors", async () => {
         const errorObject = {errors: "anything"};
-        const postSpy = jest.spyOn(CheckAnswerHandler.prototype, 'post').mockResolvedValue(errorObject);
+        const postSpy = jest.spyOn(CheckAnswerHandler.prototype, 'post').mockRejectedValue(errorObject);
 
         await request(app)
           .post(EMAIL_CHECK_ANSWER_URL)

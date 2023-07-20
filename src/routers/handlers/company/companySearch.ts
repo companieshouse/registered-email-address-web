@@ -32,11 +32,11 @@ export class CompanySearchHandler extends GenericHandler {
     const errors: Optional<ValidationErrors> = this.validator.validate(body, formSchema);
     if (errors) {
       this.viewData.errors = errors;
-      return this.viewData;
+      return Promise.reject(this.viewData);
     }
     try {
       const companyProfile: CompanyProfile = await getCompanyProfile(companyNumber);
-      return companyProfile;
+      return Promise.resolve(companyProfile);
     } catch (e: any) {
       const error = e as Error;
       if (error?.name === THERE_IS_A_PROBLEM) {
@@ -50,7 +50,7 @@ export class CompanySearchHandler extends GenericHandler {
           companyNumber: INVALID_COMPANY_NUMBER
         };
       }
-      return this.viewData;
+      return Promise.reject(this.viewData);
     }
   }
 }
