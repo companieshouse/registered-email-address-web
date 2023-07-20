@@ -20,8 +20,8 @@ export const invalidCompanyTypePage = {
         <li>private unlimited company</li>
     </ul>  
 
-    <p>If this is the wrong company, <a href="` + config.COMPANY_NUMBER_URL + `" data-event-id="enter-a-different-company-number-link">go back and enter a different company number</a>.</p>
-    <p><a href="https://www.gov.uk/contact-companies-house" data-event-id="contact-us-link">Contact us</a> if you have any questions.</p>
+    <p>If this is the wrong company, <a href="` + config.COMPANY_NUMBER_URL + `" data-event-id="enter-a-different-company-number-link" class="govuk-link">go back and enter a different company number </a>.</p>
+    <p><a href="https://www.gov.uk/contact-companies-house" data-event-id="contact-us-link" class="govuk-link">Contact us</a> if you have any questions.</p>
     `
 };
 
@@ -29,9 +29,9 @@ export const invalidCompanyStatusPage = {
   pageHeader: "Company is dissolved or in the process of being dissolved",
   pageBody: `<p>` + COMPANY_NAME_PLACEHOLDER + ` cannot use this service because it has been dissolved, or it's in the process of being dissolved.</p>
 
-  <p><a href="https://www.gov.uk/guidance/company-restoration-guide" data-event-id="read-the-company-restoration-guide-link">Read the Company Restoration Guide</a> to find out more about restoring a company name to the register.</p>
-  <p>If this is the wrong company, <a href="`+ config.REA_HOME_PAGE +`" data-event-id="start-the-service-again-link">start the service again</a>.</p>
-  <p><a href="https://www.gov.uk/contact-companies-house" data-event-id="contact-us-link">Contact us</a> if you have any questions.</p>
+  <p><a href="https://www.gov.uk/guidance/company-restoration-guide" data-event-id="read-the-company-restoration-guide-link" class="govuk-link">Read the Company Restoration Guide</a> to find out more about restoring a company name to the register.</p>
+  <p>If this is the wrong company, <a href="`+ config.REA_HOME_PAGE +`" data-event-id="start-the-service-again-link" class="govuk-link">start the service again</a>.</p>
+  <p><a href="https://www.gov.uk/contact-companies-house" data-event-id="contact-us-link" class="govuk-link">Contact us</a> if you have any questions.</p>
   `
 };
 
@@ -39,7 +39,7 @@ export const invalidCompanyNoEmailPage = {
   pageHeader: "You cannot use this service",
   pageBody: `<p>` + `You cannot use this service to update the registered email address for ` + COMPANY_NAME_PLACEHOLDER + ` because it has not yet provided one.</p>
 
-  <p>The only way to provide a registered email address for a company is to <a href="https://www.gov.uk/file-your-confirmation-statement-with-companies-house" data-event-id="file-a-confirmation-statement">file a confirmation statement</a>.</p>
-  <p><a href="https://www.gov.uk/contact-companies-house" data-event-id="contact-us-link">Contact us</a> if you have any questions.</p>
+  <p>The only way to provide a registered email address for a company is to <a href="https://www.gov.uk/file-your-confirmation-statement-with-companies-house" data-event-id="file-a-confirmation-statement" class="govuk-link">file a confirmation statement</a>.</p>
+  <p><a href="https://www.gov.uk/contact-companies-house" data-event-id="contact-us-link" class="govuk-link">Contact us</a> if you have any questions.</p>
   `
 };
