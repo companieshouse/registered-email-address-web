@@ -1,30 +1,17 @@
   {% if signoutBanner %}
   <div class="govuk-section-break--visible">
-    <div class="sign-out-user-banner" style="display: flex; justify-content: space-between">
+    <div class="sign-out-user-banner">
     <div>
     <span id="signed_in_user_email" class="sign-out-user-banner__email">
-    {% if backUri %}
-      {% block backLink %}
-        {{
-          govukBackLink({
-            text: "Back",
-            href: backUri,
-            attributes: {
-              'data-event-id' : 'back-link'
-            }
-          })
-        }}
-      {% endblock %}
-    {% endif %}
     </span>
     </div>
     {% if userEmail %}
-    <div style="margin-top: 13px">
+   <div class="govuk-!-margin-3 govuk-!-text-align-right">
       {% set signoutURL = signoutURL | default("/registered-email-address/signout") %}
-      <span id="signed_in_user_email" class="sign-out-user-banner__email">
+      <span id="signed_in_user_email" class="sign-out-user-banner__email govuk-!-padding-right-1">
         {{ userEmail }}
       </span>
-        <a id="sign_out" style="margin-left: 15px" href="{{signoutURL}}" class="govuk-link" data-event-id="signout">
+        <a id="sign_out" class="sign-out-user-banner__sign-out-link" href="{{signoutURL}}" class="govuk-link"  data-event-id="signout-link">
         Sign out
         </a>
     </div>
