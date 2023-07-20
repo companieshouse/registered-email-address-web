@@ -1,7 +1,7 @@
 import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { CHS_API_KEY } from "../../config/index";
-import { logger, createAndLogError } from "../../lib/Logger";
+import { logger, createAndLogError } from "../../utils/common/Logger";
 import { SOMETHING_HAS_GONE_WRONG, SERVICE_UNAVAILABLE } from "../../constants/app.const";
 import { StatusCodes } from 'http-status-codes';
 

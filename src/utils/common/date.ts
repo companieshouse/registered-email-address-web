@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
-import { createAndLogError } from "../lib/Logger";
-import { SOMETHING_HAS_GONE_WRONG } from "../constants/app.const";
+import { createAndLogError } from "../../utils/common/Logger";
+import { SOMETHING_HAS_GONE_WRONG } from "../../constants/app.const";
 
 export const toReadableFormat = (dateToConvert: string): string => {
   if (!dateToConvert) {

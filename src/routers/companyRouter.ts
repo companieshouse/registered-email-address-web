@@ -1,12 +1,12 @@
 import { Request, Response, Router, NextFunction } from "express";
-import { CompanySearchHandlerPost } from "./handlers/company/companySearch";
+import { CompanySearchHandler } from "./handlers/company/companySearch";
 import { ConfirmCompanyHandler } from "./handlers/company/confirm";
 import { InvalidCompanyHandler } from "./handlers/company/invalidCompany";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
-import { logger } from "../lib/Logger";
-import FormValidator from "../utils/formValidator.util";
-import CompanyNumberSanitizer from "../utils/companyNumberSanitizer";
-
+import * as config from "../config/index";
+import { logger } from "../utils/common/Logger";
+import FormValidator from "../utils/common/formValidator.util";
+import CompanyNumberSanitizer from "../utils/company/companyNumberSanitizer";
 import {
   COMPANY_CONFIRM_URL,
   COMPANY_INVALID_PAGE,
@@ -37,7 +37,7 @@ router.get(NUMBER_URL, (req: Request, res: Response, next: NextFunction) => {
 router.post(NUMBER_URL, async (req: Request, res: Response, next: NextFunction) => {
   const formValidator = new FormValidator();
   const companyNumberSanitizer = new CompanyNumberSanitizer();
-  await new CompanySearchHandlerPost(formValidator, companyNumberSanitizer).post(req, res).then((data) => {
+  await new CompanySearchHandler(formValidator, companyNumberSanitizer).post(req, res).then((data) => {
     // eslint-disable-next-line no-prototype-builtins
     if (Object.prototype.hasOwnProperty.call(data, errorsConst)) {
       res.render(`${routeViews}` + COMPANY_SEARCH_PAGE, data);
@@ -49,15 +49,15 @@ router.post(NUMBER_URL, async (req: Request, res: Response, next: NextFunction) 
   });
 });
 
-router.get(CONFIRM_URL, async (req: Request, res: Response, next: NextFunction) => {
-  const handler = new ConfirmCompanyHandler();
-  const viewData = await handler.get(req, res);
+router.get(config.CONFIRM_URL, async (req: Request, res: Response, next: NextFunction) => {
+  new ConfirmCompanyHandler().get(req, res).then((viewData) => {
   // eslint-disable-next-line no-prototype-builtins
-  if (Object.prototype.hasOwnProperty.call(viewData, errorsConst)) {
-    res.render(`${routeViews}` + COMPANY_SEARCH_PAGE, viewData);
-  } else {
-    res.render(`${routeViews}` + CONFIRM_URL, viewData);
-  }
+    if (Object.prototype.hasOwnProperty.call(viewData, errorsConst)) {
+      res.render(`${routeViews}` + COMPANY_SEARCH_PAGE, viewData);
+    } else {
+      res.render(`${routeViews}` + CONFIRM_URL, viewData);
+    }
+  });
 });
 
 router.post(CONFIRM_URL, async (req: Request, res: Response, next: NextFunction) => {
@@ -65,8 +65,7 @@ router.post(CONFIRM_URL, async (req: Request, res: Response, next: NextFunction)
   if (companyProfile !== undefined) {
     req.session?.setExtraData(COMPANY_NUMBER, companyProfile.companyNumber);
   }
-  const handler = new ConfirmCompanyHandler();
-  await handler.post(req, res).then((data) => {
+  await new ConfirmCompanyHandler().post(req, res).then((data) => {
     if (Object.prototype.hasOwnProperty.call(data, invalidCompanyReason)) {
       if (data.invalidCompanyReason === INVALID_COMPANY_SERVICE_UNAVAILABLE) {
         res.redirect(SERVICE_UNAVAILABLE_URL);
@@ -81,8 +80,7 @@ router.post(CONFIRM_URL, async (req: Request, res: Response, next: NextFunction)
 });
 
 router.get(INVALID_URL, async (req: Request, res: Response, next: NextFunction) => {
-  const handler = new InvalidCompanyHandler();
-  await handler.get(req, res).then((data) => {
+  await new InvalidCompanyHandler().get(req, res).then((data) => {
     res.render(`${routeViews}` + COMPANY_INVALID_PAGE, data);
   });
 });

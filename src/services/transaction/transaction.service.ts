@@ -1,6 +1,6 @@
 import { Resource } from "@companieshouse/api-sdk-node";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
-import { createAndLogError, logger } from "../../lib/Logger";
+import { createAndLogError, logger } from "../../utils/common/Logger";
 import { SOMETHING_HAS_GONE_WRONG, SERVICE_UNAVAILABLE } from "../../constants/app.const";
 import { createPublicOAuthApiClient } from "../api/api.service";
 import { Session } from "@companieshouse/node-session-handler";

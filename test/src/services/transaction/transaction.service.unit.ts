@@ -1,12 +1,12 @@
 jest.mock("@companieshouse/api-sdk-node");
 jest.mock("../../../../src/services/api/api.service");
-jest.mock("../../../../src/lib/Logger");
+jest.mock("../../../../src/utils/common/Logger");
 
 import { Session } from "@companieshouse/node-session-handler";
 import { createPublicOAuthApiClient } from "../../../../src/services/api/api.service";
 import { closeTransaction, postTransaction, putTransaction } from "../../../../src/services/transaction/transaction.service";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
-import { createAndLogError } from "../../../../src/lib/Logger";
+import { createAndLogError } from "../../../../src/utils/common/Logger";
 import { ApiResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 import { REFERENCE } from "../../../../src/config/index";
 import { StatusCodes } from 'http-status-codes';

@@ -1,7 +1,6 @@
 import { Request, Response, Router, NextFunction, response } from "express";
 import { HomeHandler } from "./handlers/index/home";
 import { SignOutHandler, getReturnPageFromSession } from "./handlers/index/signout";
-import {RETURN_URL} from "../constants/app.const";
 import * as config from "../config/index";
 
 const router: Router = Router();
@@ -14,7 +13,6 @@ router.get(config.HOME_URL, async (req: Request, res: Response, next: NextFuncti
 });
 
 router.post(config.HOME_URL, (req: Request, res: Response, next: NextFunction) => {
-  const handler = new HomeHandler();
   res.redirect(config.COMPANY_NUMBER_URL);
 });
 

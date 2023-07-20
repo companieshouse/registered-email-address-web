@@ -2,14 +2,14 @@ import "reflect-metadata";
 import express, {NextFunction, Request, Response} from "express";
 import nunjucks from "nunjucks";
 import path from "path";
-import { logger } from "./lib/Logger";
+import { logger } from "./utils/common/Logger";
 import routerDispatch from "./router.dispatch";
 import * as config from "./config";
 import {authenticationMiddleware} from "./middleware/authentication.middleware";
 import {companyAuthenticationMiddleware} from "./middleware/company.authentication.middleware";
 import cookieParser from "cookie-parser";
 import {sessionMiddleware} from "./middleware/session.middleware";
-import {pageNotFound} from "./utils/error";
+import {pageNotFound} from "./utils/error/error";
 
 const app = express();
 

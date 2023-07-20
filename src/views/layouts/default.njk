@@ -48,10 +48,8 @@
           {% include "partials/error_summary.njk" %}
           <div id="main-page-content">
             <div class="govuk-grid-row govuk-!-margin-top-7">
-              <div class="govuk-grid-column-full">
-                {% block main_content %}
-                {% endblock %}
-              </div>  
+              {% block main_content %}
+              {% endblock %}
             </div>
           </div>
         </div>

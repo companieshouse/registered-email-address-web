@@ -2,9 +2,10 @@ import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import { inject } from "inversify";
 import { Session } from "@companieshouse/node-session-handler";
-import { logger, createAndLogError } from "../../../lib/Logger";
-import { validateEmailString } from "../../../utils/validateEmailString";
+import { logger, createAndLogError } from "../../../utils/common/Logger";
+import { validateEmailString } from "../../../utils/email/validateEmailString";
 import { postTransaction } from "../../../services/transaction/transaction.service";
+import { formatValidationError } from "../../../utils/formatValidationErrors";
 
 import {
   COMPANY_NUMBER,
@@ -14,21 +15,23 @@ import {
   NEW_EMAIL_ADDRESS,
   REGISTERED_EMAIL_ADDRESS,
   TRANSACTION_CREATE_ERROR,
-  SOMETHING_HAS_GONE_WRONG
+  SOMETHING_HAS_GONE_WRONG,
+  UPDATE_EMAIL_ERROR_KEY,
+  UPDATE_EMAIL_ERROR_ANCHOR
 } from "../../../constants/app.const";
 
-import { 
+import {
   COMPANY_BASE_URL,
   CONFIRM_URL,
   DESCRIPTION,
   REFERENCE
 } from "../../../config";
 
-import ValidationErrors from "../../../models/view/validationErrors.model";
+import ValidationErrors from "../../../models/validationErrors.model";
 
 import { StatusCodes } from 'http-status-codes';
 import Optional from "../../../models/optional";
-import FormValidator from "../../../utils/formValidator.util";
+import FormValidator from "../../../utils/common/formValidator.util";
 import formSchema from "../../../schemas/changeEmailAddress.schema";
 import { RegisteredEmailAddress } from "services/api/private-get-rea";
 
@@ -59,15 +62,21 @@ export class ChangeEmailAddressHandler extends GenericHandler {
           req.session?.setExtraData(SUBMISSION_ID, transactionId);
         });
       } catch (e) {
-        this.viewData.errors = {
-          companyNumber: TRANSACTION_CREATE_ERROR+companyNumber
-        };
+        this.viewData.errors = formatValidationError(
+          UPDATE_EMAIL_ERROR_KEY,
+          UPDATE_EMAIL_ERROR_ANCHOR,
+          TRANSACTION_CREATE_ERROR+companyNumber
+        );
         return this.viewData;
       }
       return Promise.resolve(this.viewData);
     } else {
       logger.info(`company confirm - company email not found`);
-      this.viewData.errors = NO_EMAIL_ADDRESS_FOUND;
+      this.viewData.errors = formatValidationError(
+        UPDATE_EMAIL_ERROR_KEY,
+        UPDATE_EMAIL_ERROR_ANCHOR,
+        NO_EMAIL_ADDRESS_FOUND
+      );
     }
     return Promise.resolve(this.viewData);
   }
@@ -81,15 +90,21 @@ export class ChangeEmailAddressHandler extends GenericHandler {
 
     //check: no email supplied
     if (errors) {
-      this.viewData.errors = errors;
+      this.viewData.errors = formatValidationError(
+        UPDATE_EMAIL_ERROR_KEY,
+        UPDATE_EMAIL_ERROR_ANCHOR,
+        errors[UPDATE_EMAIL_ERROR_KEY]
+      );
       return this.viewData;
     }
 
     //check: email format invalid
     if (!validateEmailString(companyEmailAddressGiven)) {
-      this.viewData.errors = {
-        changeEmailAddress: EMAIL_ADDRESS_INVALID
-      } ;
+      this.viewData.errors = formatValidationError(
+        UPDATE_EMAIL_ERROR_KEY,
+        UPDATE_EMAIL_ERROR_ANCHOR,
+        EMAIL_ADDRESS_INVALID
+      );
       return Promise.resolve(this.viewData);
     } else {
       req.session?.setExtraData(NEW_EMAIL_ADDRESS, req.body.changeEmailAddress);
@@ -107,6 +122,9 @@ export const createTransaction = async (session: Session, companyNumber: string)
     });
     return Promise.resolve(transactionId);
   } catch (e) {
-    throw createAndLogError( SOMETHING_HAS_GONE_WRONG, `update registered email address: ${StatusCodes.INTERNAL_SERVER_ERROR} - error while create transaction record for ${companyNumber}`);
+    throw createAndLogError(
+      SOMETHING_HAS_GONE_WRONG,
+      `update registered email address: ${StatusCodes.INTERNAL_SERVER_ERROR} - error while create transaction record for ${companyNumber}`
+    );
   }
 };

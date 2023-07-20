@@ -1,6 +1,6 @@
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
-import { lookupCompanyStatus, lookupCompanyType } from "../../utils/api.enumerations";
-import { toReadableFormat } from "../../utils/date";
+import { lookupCompanyStatus, lookupCompanyType } from "../../utils/common/api.enumerations";
+import { toReadableFormat } from "../../utils/common/date";
 
 export const buildAddress = (formattedCompanyProfile: any): string => {
   const addressArray: string[] = [

@@ -5,7 +5,7 @@ import { Session } from "@companieshouse/node-session-handler";
 import { getCompanyProfile } from "../../../services/company/company.profile.service";
 import { buildAddress, formatForDisplay } from "../../../services/company/confirm.company.service";
 import { getCompanyEmail } from "../../../services/company/company.email.service";
-import {logger} from "../../../lib/Logger";
+import {logger} from "../../../utils/common/Logger";
 import * as constants from "../../../constants/app.const";
 import * as validationConstants from "../../../constants/validation.const";
 import * as config from "../../../config/index";
@@ -77,7 +77,7 @@ export class ConfirmCompanyHandler extends GenericHandler {
           logger.info(`company confirm - company email not found`);
           this.viewData.invalidCompanyReason = validationConstants.INVALID_COMPANY_NO_EMAIL_REASON;
         }
-      }      
+      }
     }
     return Promise.resolve(this.viewData);
   }

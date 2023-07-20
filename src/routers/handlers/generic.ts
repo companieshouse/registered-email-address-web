@@ -3,7 +3,7 @@
 import { BaseHttpController } from "inversify-express-utils";
 import "reflect-metadata";
 
-import errorManifest from "./../../lib/utils/error_manifests/default";
+import errorManifest from "../../utils/error/errorManifest";
 
 export abstract class GenericHandler extends BaseHttpController {
 
