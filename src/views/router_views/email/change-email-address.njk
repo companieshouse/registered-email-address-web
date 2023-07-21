@@ -1,4 +1,4 @@
-{% extends "layouts/default.njk" %}
+{% extends "layouts/layout.njk" %}
 
 {% from 'govuk/components/breadcrumbs/macro.njk' import govukBreadcrumbs %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
@@ -33,7 +33,7 @@
       }}
       {{
         govukDetails({
-          summaryHtml: '<div class="piwik-event" data-event-id="help-with-change-email-address-link"> What is the registered email address used for?</div>',
+          summaryHtml: '<div class="piwik-event" data-event-id="help-with-change-email-address-dropdown"> What is the registered email address used for?</div>',
           html: '<p>It is an email address that Companies House can use to contact the company or someone acting on its behalf.</p><p>In future we will start using it to send important information that relates to your company, for example new legislative requirements or warnings about missed deadlines.</p><p>It will not be shown on the public register.</p>'
         })
       }}

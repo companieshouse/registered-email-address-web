@@ -1,0 +1,84 @@
+{% extends 'govuk/template.njk' %}
+
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/cookie-banner/macro.njk" import govukCookieBanner %}
+{% from "govuk/components/skip-link/macro.njk" import govukSkipLink %}
+{% from "govuk/components/header/macro.njk" import govukHeader %}
+{% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
+{% from "govuk/components/footer/macro.njk" import govukFooter %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+
+
+{% block pageTitle %}
+  {{ title }}
+{% endblock %}
+
+{% block head %}
+  <!--[if !IE 8]><!-->
+  <link href="//{{ cdnHost }}/stylesheets/govuk-frontend/v4.6.0/govuk-frontend-4.6.0.min.css" rel="stylesheet"/>
+  <link href="//{{ cdnHost }}/stylesheets/services/dissolution/application.css" rel="stylesheet"/>
+  <!--<![endif]-->
+   {% include "partials/__styles.njk" %}
+
+
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+          integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+          crossorigin="anonymous"></script>
+
+  <script nonce={{ nonce | dump | safe }} type="application/javascript">
+    window.SERVICE_NAME = '{{ SERVICE_NAME }}'
+    window.PIWIK_URL = '{{ PIWIK_URL }}'
+    window.PIWIK_SITE_ID = '{{ PIWIK_SITE_ID }}'
+  </script>
+
+  {% block download %}{% endblock %}
+ {% endblock %}
+
+{% block bodyStart %}
+  {% include "partials/cookie-consent-banner.njk" %}
+{% endblock %}
+
+{% block header %}
+  {{ govukHeader({
+    homepageUrl: Paths.GOV_UK_URI,
+    containerClasses: "govuk-width-container",
+    serviceName: 'Update a registered email address',
+    serviceUrl: "/registered-email-address"
+  }) }}
+{% endblock %}
+
+{% block headIcons %}
+    <link href="//{{ cdnHost }}/images/favicon.ico" rel="icon" type="image/x-icon" />
+{% endblock %}
+
+{% block beforeContent %}
+  <div id="templateName" data-id="event" hidden></div>
+  {% include "partials/phase-banner.njk" %}
+  {% include "partials/signout-banner.njk" %}
+  {% include "partials/back-link.njk" %}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {% include "partials/error_summary.njk" %}
+            {% block main_content %}
+            {% endblock %}
+         </div>
+    </div>
+{% endblock %}
+
+
+{% block footer %}
+    {% include "partials/footer.njk" %}
+{% endblock %}
+
+{% block bodyEnd %}
+  {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
+  <script src="//{{ cdnHost }}/javascripts/govuk-frontend/v3.11.0/govuk-frontend-3.11.0.min.js"></script>
+  <script nonce={{ nonce | dump | safe }}>window.GOVUKFrontend.initAll()</script>
+  <script src="//{{ cdnHost}}/javascripts/app/piwik-enable.js"></script>
+  <script src="//{{ cdnHost }}/javascripts/app/cookie-consent/cookie-consent-1.0.0.js"></script>
+  <script src="//{{ cdnHost }}/javascripts/app/cookie-consent/piwik-only-cookie-consent.js"></script>
+{% endblock %}
