@@ -37,22 +37,22 @@
       <main class="govuk-body" id="main-content">
 
       {% block beforeContent %}
-        <div id="templateName" data-id="{{ title }}" hidden></div>
+        <div id="templateName" data-id="event" hidden></div>
         {% include "partials/cookie_consent_banner.njk" %}
         {% include "../partials/signout-banner.njk" %}
-        {% block backLink %}
+        {% include "../partials/back-link.njk" %}
       {% endblock %}
 
-    {% endblock %}
-        <div>
+
+      <div id="main-page-content" class="govuk-main-wrapper">
+        <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
           {% include "partials/error_summary.njk" %}
-          <div id="main-page-content">
-            <div class="govuk-grid-row govuk-!-margin-top-7">
-              {% block main_content %}
-              {% endblock %}
-            </div>
-          </div>
+          {% block main_content %}
+          {% endblock %}
         </div>
+        </div>
+      </div>
 
       </main>
     </div>
