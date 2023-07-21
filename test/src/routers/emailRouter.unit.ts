@@ -8,7 +8,7 @@ import {
 } from "../../../src/config";
 import {
   CONFIRM_EMAIL_CHANGE_ERROR,
-  THERE_IS_A_PROBLEM_ERROR
+  FAILED_TO_CREATE_REA_ERROR
 } from "../../../src/constants/app.const";
 import {HttpResponse} from "@companieshouse/api-sdk-node/dist/http/http-client";
 import {StatusCodes} from "http-status-codes";
@@ -92,7 +92,7 @@ describe("Email router tests", () => {
     });
 
     describe("Check your answer tests", () => {
-      const PAGE_HEADING = "Check your answer before sending your application";
+      const PAGE_HEADING = "Check your answer before submitting this filing";
 
       it("Should navigate to confirm email page", async () => {
         const getSpy = jest.spyOn(CheckAnswerHandler.prototype, 'get').mockResolvedValue(clone(okResponse));
@@ -109,7 +109,15 @@ describe("Email router tests", () => {
       });
 
       it("Should re-display check answer page when Email change unconfirmed", async () => {
-        const errorObject = {errors: CONFIRM_EMAIL_CHANGE_ERROR};
+        const errorObject = {
+          statementError: CONFIRM_EMAIL_CHANGE_ERROR,
+          errors: {
+            errorList: [{
+              href: "emailConfirmation",
+              text: "wrong deliberately"
+            }]
+          }
+        };
         const postSpy = jest.spyOn(CheckAnswerHandler.prototype, 'post').mockRejectedValue(errorObject);
 
         await request(app)
@@ -117,14 +125,15 @@ describe("Email router tests", () => {
           .then((response) => {
             expect(response.text).toContain(COMMON_PAGE_HEADING);
             expect(response.text).toContain(PAGE_HEADING);
-            // expect(response.text).toContain("You need to accept the registered email address statement");
+            expect(response.text).toContain("wrong deliberately");
+            expect(response.text).toContain("You need to accept the registered email address statement");
             expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
             expect(postSpy).toHaveBeenCalled();
           });
       });
 
       it("Should fail gracefully on unexpected errors", async () => {
-        const errorObject = {errors: "anything"};
+        const errorObject = {statementError: FAILED_TO_CREATE_REA_ERROR};
         const postSpy = jest.spyOn(CheckAnswerHandler.prototype, 'post').mockRejectedValue(errorObject);
 
         await request(app)

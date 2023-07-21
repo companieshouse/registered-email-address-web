@@ -3,55 +3,61 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 
-{% set title = "Check your answer – Update a registered email address – GOV.UK " %}
+{% set title = "Check your answer before submitting this filing" %}
 
 {% block main_content %}
-            <h1 class="govuk-heading-l">Check your answer before sending your application</h1>
-                <dl class="govuk-summary-list govuk-!-margin-bottom-9">
-                    <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        New registered email address
-                    </dt>
+    <span class="govuk-caption-m">{{ companyName }} ({{ companyNumber }})</span>
+    <h1 class="govuk-heading-xl">{{ title }}</h1>
+    <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                New registered email address
+            </dt>
 
-                    <dd class="govuk-summary-list__value">
-                    {{ companyEmail }}
-                    </dd>
+            <dd class="govuk-summary-list__value">
+                {{ companyEmail }}
+            </dd>
 
-                    <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" data-event-id="change-registered-email-address-link" href="change-email-address">
+            <dd class="govuk-summary-list__actions">
+                <a class="govuk-link" data-event-id="change-registered-email-address-link" href="change-email-address">
                     Change<span class="govuk-visually-hidden"> email address</span>
-                    </a>
-                    </dd>
+                </a>
+            </dd>
 
-                    </div>
-                </dl>
-            <form action="" method="post">
+        </div>
+    </dl>
+    <form action="" method="post">
 
-                {{ govukCheckboxes({
-                    errorMessage: {
-                    text: statementError
-                    } if statementError,
-                    name: "emailConfirmation",
-                    items: [
-                        {
-                        value: "confirm",
-                        text: "I confirm that emails sent by the registrar to the new registered email address would, in the ordinary course of events, be expected to come to the attention of a person acting on behalf of the company.",
-                        attributes: {
-                            'data-event-id': 'accepted-registered-email-address-statement'
-                        }
-                        }
-                    ]
-                    })
-                }}
-                {{
-                govukButton({
-                    text: 'Continue',
+        {{ govukCheckboxes({
+            errorMessage: {
+                text: statementError
+            } if statementError,
+            name: "emailConfirmation",
+            items: [
+                {
+                    value: "confirm",
+                    text: "The new email address is an appropriate email address as outlined in section 88A(2) of the Companies Act 2006.",
                     attributes: {
-                        id: 'submit',
-                        'data-event-id' : 'check-your-answer-continue-button'
+                    'data-event-id': 'accepted-registered-email-address-statement'
+                }
+                }
+            ]
+        }) }}
 
-                    }
-                })
-                }}
-            </form>
+        {{ summaryHtml.content|safe }}
+        {{ html.content|safe }}
+        {{ govukDetails({
+            summaryHtml: "<div class='piwik-event' data-event-id='help-with-change-email-address-link'>What does 'appropriate email address' mean?</div>",
+            html: "<p>An email address is an 'appropriate email address' if, in the ordinary course of events, emails sent to it by the registrar would be expected to come to the attention of a person acting on behalf of the company.</p>"
+        }) }}
+
+        {{ govukButton({
+            text: 'Continue',
+            attributes: {
+                id: 'submit',
+                'data-event-id' : 'check-your-answer-continue-button'
+
+            }
+        }) }}
+    </form>
 {% endblock %}

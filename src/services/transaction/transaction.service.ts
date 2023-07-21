@@ -7,11 +7,8 @@ import ApiClient from "@companieshouse/api-sdk-node/dist/client";
 import { ApiErrorResponse, ApiResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 import { StatusCodes } from "http-status-codes";
 
-import {
-  DESCRIPTION,
-  REFERENCE,
-  transactionStatuses
-} from "../../config";
+import {DESCRIPTION, REFERENCE, transactionStatuses} from "../../config";
+import {DateTime} from "luxon";
 
 /**
  * Post transaction
@@ -54,7 +51,8 @@ export const postTransaction = async (session: Session, companyNumber: string, d
  * Close transaction
  */
 export const closeTransaction = async (session: Session, companyNumber: string, transactionId: string): Promise<ApiResponse<Transaction>> => {
-  const apiResponse: ApiResponse<Transaction> = await putTransaction(session, companyNumber, transactionId, DESCRIPTION, transactionStatuses.CLOSED).catch((sdkResponse) => {
+  const dateNow = DateTime.fromJSDate(new Date()).toFormat("d MMMM yyyy");
+  const apiResponse: ApiResponse<Transaction> = await putTransaction(session, companyNumber, transactionId, DESCRIPTION + dateNow, transactionStatuses.CLOSED).catch((sdkResponse) => {
     return Promise.reject(sdkResponse);    
   });
   return Promise.resolve(apiResponse);

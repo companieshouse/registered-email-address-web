@@ -35,6 +35,8 @@ import FormValidator from "../../../utils/common/formValidator.util";
 import formSchema from "../../../schemas/changeEmailAddress.schema";
 import { RegisteredEmailAddress } from "services/api/private-get-rea";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
+import {DateTime} from "luxon";
+import {toReadableFormat} from "../../../utils/common/date";
 
 export class ChangeEmailAddressHandler extends GenericHandler {
 
@@ -125,7 +127,8 @@ export class ChangeEmailAddressHandler extends GenericHandler {
 export const createTransaction = async (session: Session, companyNumber: string): Promise<string> => {
   let transactionId: string = "";
   try {
-    await postTransaction(session, companyNumber, DESCRIPTION, REFERENCE).then((transaction) => {
+    const dateNow = toReadableFormat(new Date().toDateString());
+    await postTransaction(session, companyNumber, DESCRIPTION + dateNow, REFERENCE).then((transaction) => {
       transactionId = transaction.id as string;
     });
     return Promise.resolve(transactionId);
