@@ -34,7 +34,7 @@ router.get(SIGN_OUT_URL, async (req: Request, res: Response, next: NextFunction)
   await handler.get(req, res).then((viewData) => {
     res.render(`${routeViews}` + SIGN_OUT_PAGE, viewData);
   }).catch(() => {
-    res.render(`${routeViews}` + THERE_IS_A_PROBLEM_PAGE, { title: "Service offline - " + REFERENCE + " - GOV.UK" });
+    res.redirect(THERE_IS_A_PROBLEM_URL);
   });
 });
 

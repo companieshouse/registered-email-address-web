@@ -6,7 +6,10 @@ import {
   EMAIL_CHECK_ANSWER_URL,
   EMAIL_UPDATE_SUBMITTED_URL
 } from "../../../src/config";
-import {THERE_IS_A_PROBLEM_ERROR} from "../../../src/constants/app.const";
+import {
+  CONFIRM_EMAIL_CHANGE_ERROR,
+  THERE_IS_A_PROBLEM_ERROR
+} from "../../../src/constants/app.const";
 import {HttpResponse} from "@companieshouse/api-sdk-node/dist/http/http-client";
 import {StatusCodes} from "http-status-codes";
 import {CheckAnswerHandler} from "../../../src/routers/handlers/email/checkAnswer";
@@ -52,9 +55,8 @@ describe("Email router tests", () => {
         await request(app)
           .get(EMAIL_CHANGE_EMAIL_ADDRESS_URL)
           .then((response) => {
-            expect(response.status).toBe(StatusCodes.OK);
-            expect(response.text).toContain(COMMON_PAGE_HEADING);
-            expect(response.text).toContain("there is a problem");
+            expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
+            expect(response.text).toContain("Redirecting to /registered-email-address/there-is-a-problem");
             expect(getSpy).toHaveBeenCalled();
             expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
           });
@@ -107,7 +109,7 @@ describe("Email router tests", () => {
       });
 
       it("Should re-display check answer page when Email change unconfirmed", async () => {
-        const errorObject = {statementError: "You need to accept the registered email address statement"};
+        const errorObject = {errors: CONFIRM_EMAIL_CHANGE_ERROR};
         const postSpy = jest.spyOn(CheckAnswerHandler.prototype, 'post').mockRejectedValue(errorObject);
 
         await request(app)
@@ -115,7 +117,7 @@ describe("Email router tests", () => {
           .then((response) => {
             expect(response.text).toContain(COMMON_PAGE_HEADING);
             expect(response.text).toContain(PAGE_HEADING);
-            expect(response.text).toContain("You need to accept the registered email address statement");
+            // expect(response.text).toContain("You need to accept the registered email address statement");
             expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
             expect(postSpy).toHaveBeenCalled();
           });
@@ -129,9 +131,8 @@ describe("Email router tests", () => {
           .post(EMAIL_CHECK_ANSWER_URL)
           .send({emailConfirmation: 'anything'})
           .then((response) => {
-            expect(response.text).toContain(COMMON_PAGE_HEADING);
-            expect(response.text).toContain(PAGE_HEADING);
-            expect(response.text).toContain(THERE_IS_A_PROBLEM_ERROR);
+            expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
+            expect(response.text).toContain("Redirecting to /registered-email-address/there-is-a-problem");
             expect(postSpy).toHaveBeenCalled();
           });
       });

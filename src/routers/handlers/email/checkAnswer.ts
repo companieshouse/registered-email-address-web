@@ -55,13 +55,16 @@ export class CheckAnswerHandler extends GenericHandler {
     const companyNumber: string | undefined = session?.getExtraData(COMPANY_NUMBER);
 
     return await createRegisteredEmailAddressResource(session, <string>transactionId, <string>companyEmail).then(async () => {
+      // REA resource created so close the transaction
       return await closeTransaction(session, <string> companyNumber, <string>transactionId).then(() => {
+        // Success!
         return Promise.resolve({
           signoutBanner: true,
           userEmail: req.session?.data.signin_info?.user_profile?.email,
           submissionID: transactionId
         });
       }).catch(() => {
+        // Failed to close the transaction
         return Promise.reject({
           errors: TRANSACTION_CLOSE_ERROR + companyNumber,
           companyEmail: companyEmail,
@@ -71,6 +74,7 @@ export class CheckAnswerHandler extends GenericHandler {
         });
       });
     }).catch((e) => {
+      // Failed to create the REA resource
       return Promise.reject({
         errors: FAILED_TO_CREATE_REA_ERROR + companyNumber,
         companyEmail: companyEmail,

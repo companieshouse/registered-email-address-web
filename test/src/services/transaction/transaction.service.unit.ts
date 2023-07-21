@@ -6,11 +6,9 @@ import { Session } from "@companieshouse/node-session-handler";
 import { createPublicOAuthApiClient } from "../../../../src/services/api/api.service";
 import { closeTransaction, postTransaction, putTransaction } from "../../../../src/services/transaction/transaction.service";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
-import { createAndLogError } from "../../../../src/utils/common/Logger";
 import { ApiResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 import { REFERENCE } from "../../../../src/config/index";
 import { StatusCodes } from 'http-status-codes';
-import { THERE_IS_A_PROBLEM_ERROR } from "../../../../src/constants/app.const";
 
 const mockCreatePublicOAuthApiClient = createPublicOAuthApiClient as jest.Mock;
 const mockPostTransaction = jest.fn();
@@ -58,11 +56,7 @@ describe("transaction service tests", () => {
       mockPostTransaction.mockResolvedValueOnce(undefined);
 
       await expect(postTransaction(session, COMPANY_NUMBER, "desc", "ref"))
-        .rejects.toBe(undefined)
-        .catch(() => {
-          expect(createAndLogError).toHaveBeenCalledWith(THERE_IS_A_PROBLEM_ERROR);
-          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining("Transaction API POST request returned no response for company number 12345678"));
-        });
+        .rejects.toBe(undefined);
     });
 
     it("Should throw an error when transaction api returns a status greater than 400", async () => {
@@ -71,11 +65,7 @@ describe("transaction service tests", () => {
       });
 
       await expect(postTransaction(session, COMPANY_NUMBER, "desc", "ref"))
-        .rejects.toBe(undefined)
-        .catch(() => {
-          expect(createAndLogError).toHaveBeenCalledWith(THERE_IS_A_PROBLEM_ERROR);
-          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`Http status code ${StatusCodes.NOT_FOUND} - Failed to post transaction for company number 12345678`));
-        });
+        .rejects.toEqual({httpStatusCode: StatusCodes.NOT_FOUND});
     });
 
     it("Should throw an error when transaction api returns no resource", async () => {
@@ -84,11 +74,7 @@ describe("transaction service tests", () => {
       });
 
       await expect(postTransaction(session, COMPANY_NUMBER, "desc", "ref"))
-        .rejects.toBe(undefined)
-        .catch(() => {
-          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(THERE_IS_A_PROBLEM_ERROR));
-          expect(createAndLogError).toBeCalledWith(expect.stringContaining("Transaction API POST request returned no resource for company number 12345678"));
-        });
+        .rejects.toEqual({httpStatusCode: StatusCodes.OK});
     });
   });
 
@@ -123,12 +109,7 @@ describe("transaction service tests", () => {
       mockPutTransaction.mockResolvedValueOnce(undefined);
 
       await expect(putTransaction(session, COMPANY_NUMBER, TRANSACTION_ID, "desc", "closed"))
-        .rejects.toBe(undefined)
-        .catch(() => {
-          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(THERE_IS_A_PROBLEM_ERROR));
-          expect(createAndLogError).toBeCalledWith(expect.stringContaining(`Transaction API PUT request returned no response for transaction id ${TRANSACTION_ID}`));
-          expect(createAndLogError).toBeCalledWith(expect.stringContaining(`company number ${COMPANY_NUMBER}`));
-        });
+        .rejects.toBe(undefined);
     });
 
     it("Should throw an error when transaction api returns a status greater than 400", async () => {
@@ -137,11 +118,7 @@ describe("transaction service tests", () => {
       });
 
       await expect(putTransaction(session, COMPANY_NUMBER, TRANSACTION_ID, "desc", "closed"))
-        .rejects.toBe(undefined)
-        .catch(() => {
-          expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(THERE_IS_A_PROBLEM_ERROR));
-          expect(createAndLogError).toBeCalledWith(`Http status code ${StatusCodes.NOT_FOUND} - Failed to put transaction for transaction id ${TRANSACTION_ID}, company number ${COMPANY_NUMBER}`);
-        });
+        .rejects.toEqual({httpStatusCode: StatusCodes.NOT_FOUND});
     });
   });
 
