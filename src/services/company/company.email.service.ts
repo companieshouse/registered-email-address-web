@@ -2,7 +2,7 @@ import { Resource } from "@companieshouse/api-sdk-node";
 import { createPrivateApiClient, RegisteredEmailAddress } from "../api/private-get-rea";
 import { CHS_API_KEY, ORACLE_QUERY_API_URL } from "../../config";
 import { logger, createAndLogError } from "../../utils/common/Logger";
-import { THERE_IS_A_PROBLEM } from "../../constants/app.const";
+import { THERE_IS_A_PROBLEM_ERROR } from "../../constants/app.const";
 import { StatusCodes } from 'http-status-codes';
 
 /**
@@ -17,15 +17,15 @@ export const getCompanyEmail = async (companyNumber: string): Promise<Registered
   const sdkResponse: Resource<RegisteredEmailAddress> = await privateApiClient.registeredEmailAddress.getRegisteredEmailAddress(companyNumber);
 
   if (!sdkResponse) {
-    throw createAndLogError( THERE_IS_A_PROBLEM, `Registered email address API for company number ${companyNumber}`);
+    throw createAndLogError( THERE_IS_A_PROBLEM_ERROR, `Registered email address API for company number ${companyNumber}`);
   }
 
   if (sdkResponse.httpStatusCode >= StatusCodes.BAD_REQUEST) {
-    throw createAndLogError( THERE_IS_A_PROBLEM, `Http status code ${sdkResponse.httpStatusCode} - Failed to get registered email address for company number ${companyNumber}`);
+    throw createAndLogError( THERE_IS_A_PROBLEM_ERROR, `Http status code ${sdkResponse.httpStatusCode} - Failed to get registered email address for company number ${companyNumber}`);
   }
 
   if (!sdkResponse.resource) {
-    throw createAndLogError( THERE_IS_A_PROBLEM, `Registered email address API returned no resource for company number ${companyNumber}`);
+    throw createAndLogError( THERE_IS_A_PROBLEM_ERROR, `Registered email address API returned no resource for company number ${companyNumber}`);
   }
 
   logger.debug(`Received registered email address ${JSON.stringify(sdkResponse)}`);

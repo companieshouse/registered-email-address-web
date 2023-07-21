@@ -8,20 +8,30 @@ import { createRequest, createResponse, MockRequest, MockResponse } from 'node-m
 import { ChangeEmailAddressHandler } from "../../../../../src/routers/handlers/email/changeEmailAddress";
 import FormValidator from "../../../../../src/utils/common/formValidator.util";
 import { Session } from "@companieshouse/node-session-handler";
-import { REGISTERED_EMAIL_ADDRESS, COMPANY_NUMBER, SUBMISSION_ID, TRANSACTION_CREATE_ERROR, NO_EMAIL_ADDRESS_SUPPLIED, EMAIL_ADDRESS_INVALID } from "../../../../../src/constants/app.const";
+import { 
+  REGISTERED_EMAIL_ADDRESS,
+  COMPANY_NUMBER, SUBMISSION_ID,
+  TRANSACTION_CREATE_ERROR,
+  NO_EMAIL_ADDRESS_SUPPLIED,
+  EMAIL_ADDRESS_INVALID,
+  UPDATE_EMAIL_ERROR_ANCHOR,
+  COMPANY_PROFILE
+} from "../../../../../src/constants/app.const";
 import { validTransactionSDKResource, transactionId } from "../../../../mocks/transaction.mock";
 import { validEmailSDKResource, EmailErrorReponse } from "../../../../mocks/company.email.mock";
-import { createApiClient } from "@companieshouse/api-sdk-node";
+import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
 import { createPublicOAuthApiClient } from "../../../../../src/services/api/api.service";
 import { createAndLogError } from "../../../../../src/utils/common/Logger";
+import {validCompanyProfile} from "../../../../../test/mocks/company.profile.mock";
 
-const COMPANY_NO: string = "1234567";
+const COMPANY_NO: string = "12345678";
 const TEST_EMAIL_EXISTING: string = "test@test.co.biz";
 const TEST_EMAIL_UPDATE: string = "new_test@test.co.biz";
-const PAGE_TITLE: string = "Update a registered email address";
 const BACK_LINK_PATH: string = "/registered-email-address/company/confirm";
 const CREATE_TRANSACTION_ERROR: string = TRANSACTION_CREATE_ERROR+COMPANY_NO;
 const INVALID_EMAIL_ADDRESS: string = "test-test.co.biz";
+const PROFILE = validCompanyProfile;
+const TEST_COMPANY_NAME: string = "TEST COMPANY";
 
 // create form validator instance
 const formValidator = new FormValidator();
@@ -82,12 +92,20 @@ describe("Registered email address update - test GET method", () => {
     //set company number in session
     request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
     request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
+    request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
 
     await changeEmailAddressHandler.get(request, response).catch((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
 
       expect(changeEmailAddressResponseJson.errors).toBeTruthy;
+      expect(changeEmailAddressResponseJson.errors.errorList).toBeTruthy;
+      expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(CREATE_TRANSACTION_ERROR);
+      expect(changeEmailAddressResponseJson.errors.errorList).toHaveLength(1);
+      expect(changeEmailAddressResponseJson.errors.errorList[0].href).toEqual(UPDATE_EMAIL_ERROR_ANCHOR);
+      expect(changeEmailAddressResponseJson.errors.errorList[0].text).toEqual(CREATE_TRANSACTION_ERROR);
       expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
+      expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
+      expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
     });
   });
 
@@ -96,13 +114,15 @@ describe("Registered email address update - test GET method", () => {
     //set email in session
     request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
     request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
+    request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
 
     await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
       expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
       expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
       expect(changeEmailAddressResponseJson.userEmail).toEqual(TEST_EMAIL_EXISTING);
-      expect(changeEmailAddressResponseJson.title).toEqual(PAGE_TITLE);
+      expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
+      expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
     });
   });
 
@@ -113,6 +133,7 @@ describe("Registered email address update - test GET method", () => {
     //set company number in session
     request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
     request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
+    request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
 
     await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
@@ -120,9 +141,10 @@ describe("Registered email address update - test GET method", () => {
       expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
       expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
       expect(changeEmailAddressResponseJson.userEmail).toEqual(TEST_EMAIL_EXISTING);
-      expect(changeEmailAddressResponseJson.title).toEqual(PAGE_TITLE);
       expect(request.session?.getExtraData(SUBMISSION_ID)).toBeTruthy;
       expect(request.session?.getExtraData(SUBMISSION_ID)).toEqual(transactionId);
+      expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
+      expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
     });
   });
 });
@@ -147,32 +169,47 @@ describe("Registered email address update - test POST method", () => {
   it("No email in POST request body - return view data error", async () => {
     //set email address in request body to empty
     request.body.changeEmailAddress = "";
-
-    await changeEmailAddressHandler.post(request, response).then((changeEmailAddressResponse) => {
-      const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
-
-      expect(changeEmailAddressResponseJson.errors).toBeTruthy;
-      expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
-      expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(NO_EMAIL_ADDRESS_SUPPLIED);
-    });
-  });
-
-  it("Updated email address supplied does not match expected patter - return view data error", async () => {
-    //set email address in request body to invalid pattern
-    request.body.changeEmailAddress = INVALID_EMAIL_ADDRESS;
+    request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
 
     await changeEmailAddressHandler.post(request, response).catch((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
 
       expect(changeEmailAddressResponseJson.errors).toBeTruthy;
+      expect(changeEmailAddressResponseJson.errors.errorList).toBeTruthy;
+      expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(NO_EMAIL_ADDRESS_SUPPLIED);
+      expect(changeEmailAddressResponseJson.errors.errorList).toHaveLength(1);
+      expect(changeEmailAddressResponseJson.errors.errorList[0].href).toEqual(UPDATE_EMAIL_ERROR_ANCHOR);
+      expect(changeEmailAddressResponseJson.errors.errorList[0].text).toEqual(NO_EMAIL_ADDRESS_SUPPLIED);
+      expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
+      expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
+      expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
+    });
+  });
+
+  it("Updated email address supplied does not match expected pattern - return view data error", async () => {
+    //set email address in request body to invalid pattern
+    request.body.changeEmailAddress = INVALID_EMAIL_ADDRESS;
+    request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
+
+    await changeEmailAddressHandler.post(request, response).catch((changeEmailAddressResponse) => {
+      const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
+
+      expect(changeEmailAddressResponseJson.errors).toBeTruthy;
+      expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(EMAIL_ADDRESS_INVALID);
+      expect(changeEmailAddressResponseJson.errors.errorList).toHaveLength(1);
+      expect(changeEmailAddressResponseJson.errors.errorList[0].href).toEqual(UPDATE_EMAIL_ERROR_ANCHOR);
+      expect(changeEmailAddressResponseJson.errors.errorList[0].text).toEqual(EMAIL_ADDRESS_INVALID);
       expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
       expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(EMAIL_ADDRESS_INVALID);
+      expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
+      expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
     });
   });
 
   it("Valid email address supplied", async () => {
     //set email address in request body to invalid pattern
     request.body.changeEmailAddress = TEST_EMAIL_UPDATE;
+    request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
 
     await changeEmailAddressHandler.post(request, response).then((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
@@ -180,8 +217,9 @@ describe("Registered email address update - test POST method", () => {
       expect(changeEmailAddressResponseJson.errors).toBeFalsy;
       expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
       expect(changeEmailAddressResponseJson.userEmail).toEqual(TEST_EMAIL_EXISTING);
-      expect(changeEmailAddressResponseJson.title).toEqual(PAGE_TITLE);
       expect(changeEmailAddressResponseJson.signoutBanner).toBeTruthy;
+      expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
+      expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
     });
   });
 });

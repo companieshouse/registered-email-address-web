@@ -6,7 +6,7 @@ import { validSDKResource } from "../../../mocks/company.profile.mock";
 import { StatusCodes } from "http-status-codes";
 jest.mock("@companieshouse/api-sdk-node");
 jest.mock("../../../../src/utils/common/Logger");
-import { THERE_IS_A_PROBLEM } from "../../../../src/constants/app.const";
+import { THERE_IS_A_PROBLEM_ERROR } from "../../../../src/constants/app.const";
 
 const mockCreateApiClient = createApiClient as jest.Mock;
 const mockGetCompanyProfile = jest.fn();
@@ -45,7 +45,7 @@ describe("Company profile service test", () => {
       await expect(getCompanyProfile(COMPANY_NUMBER))
         .rejects.toBe(undefined)
         .catch(() => {
-          expect(createAndLogError).toHaveBeenCalledWith(THERE_IS_A_PROBLEM);
+          expect(createAndLogError).toHaveBeenCalledWith(THERE_IS_A_PROBLEM_ERROR);
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining("Company profile API"));
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
         });
@@ -60,7 +60,7 @@ describe("Company profile service test", () => {
       await expect(getCompanyProfile(COMPANY_NUMBER))
         .rejects.toBe(undefined)
         .catch(() => {
-          expect(createAndLogError).toHaveBeenCalledWith(THERE_IS_A_PROBLEM);
+          expect(createAndLogError).toHaveBeenCalledWith(THERE_IS_A_PROBLEM_ERROR);
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining("Company profile API"));
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
         });
@@ -75,7 +75,7 @@ describe("Company profile service test", () => {
       await expect(getCompanyProfile(COMPANY_NUMBER))
         .rejects.toBe(undefined)
         .catch(() => {
-          expect(createAndLogError).toHaveBeenCalledWith(THERE_IS_A_PROBLEM);
+          expect(createAndLogError).toHaveBeenCalledWith(THERE_IS_A_PROBLEM_ERROR);
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${HTTP_STATUS_CODE}`));
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
         });
@@ -87,7 +87,7 @@ describe("Company profile service test", () => {
       await expect(getCompanyProfile(COMPANY_NUMBER))
         .rejects.toBe(undefined)
         .catch(() => {
-          expect(createAndLogError).toHaveBeenCalledWith(THERE_IS_A_PROBLEM);
+          expect(createAndLogError).toHaveBeenCalledWith(THERE_IS_A_PROBLEM_ERROR);
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining("no resource"));
           expect(createAndLogError).toHaveBeenCalledWith(expect.stringContaining(`${COMPANY_NUMBER}`));
         });

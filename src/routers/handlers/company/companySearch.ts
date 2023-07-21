@@ -10,7 +10,7 @@ import ValidationErrors from "../../../models/validationErrors.model";
 import CompanyNumberSanitizer from "../../../utils/company/companyNumberSanitizer";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getCompanyProfile } from "../../../services/company/company.profile.service";
-import { INVALID_COMPANY_NUMBER, THERE_IS_A_PROBLEM } from "../../../constants/app.const";
+import { INVALID_COMPANY_NUMBER, THERE_IS_A_PROBLEM_ERROR } from "../../../constants/app.const";
 
 // class constants
 const pageTitleConst: string = "Company Number";
@@ -39,10 +39,10 @@ export class CompanySearchHandler extends GenericHandler {
       return Promise.resolve(companyProfile);
     } catch (e: any) {
       const error = e as Error;
-      if (error?.name === THERE_IS_A_PROBLEM) {
+      if (error?.name === THERE_IS_A_PROBLEM_ERROR) {
         logger.info(`company confirm - oracle query service problem`);
         this.viewData.errors = {
-          companyNumber: THERE_IS_A_PROBLEM
+          companyNumber: THERE_IS_A_PROBLEM_ERROR
         };
       } else {
         logger.info(`company confirm - company profile not found`);

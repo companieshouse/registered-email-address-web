@@ -12,7 +12,7 @@ import {
 import {StatusCodes} from "http-status-codes";
 import {CompanySearchHandler} from "../../../src/routers/handlers/company/companySearch";
 import {HttpResponse} from "@companieshouse/api-sdk-node/dist/http/http-client";
-import {INVALID_COMPANY_NUMBER} from "../../../src/constants/app.const";
+import {INVALID_COMPANY_NUMBER, THERE_IS_A_PROBLEM_ERROR} from "../../../src/constants/app.const";
 import {InvalidCompanyHandler} from "../../../src/routers/handlers/company/invalidCompany";
 import {ConfirmCompanyHandler} from "../../../src/routers/handlers/company/confirm";
 import {
@@ -25,10 +25,8 @@ const okResponse: HttpResponse = {status: StatusCodes.OK};
 
 
 describe("Company router tests -", () => {
-  const ERROR_HEADING = "There is a problem with the details you gave us";
   const COMPANY_NUMBER_PAGE_TITLE = "What is the company number? – Update a registered email address – GOV.UK";
-
-
+  
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -66,7 +64,7 @@ describe("Company router tests -", () => {
         .send({companyNumber : '12345678'})
         .then((response) => {
           expect(response.text).toContain(COMPANY_NUMBER_PAGE_TITLE);
-          expect(response.text).toContain(ERROR_HEADING);
+          expect(response.text).toContain(THERE_IS_A_PROBLEM_ERROR);
           expect(response.status).toBe(StatusCodes.OK);
           expect(getSpy).toHaveBeenCalled();
           expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
@@ -162,8 +160,4 @@ describe("Company router tests -", () => {
     });
 
   });
-
-
-
-
 });

@@ -12,7 +12,7 @@ import {
   COMPANY_NUMBER,
   INVALID_COMPANY_NUMBER,
   REGISTERED_EMAIL_ADDRESS,  
-  THERE_IS_A_PROBLEM
+  THERE_IS_A_PROBLEM_ERROR
 } from "../../../constants/app.const";
 import {
   INVALID_COMPANY_NO_EMAIL_REASON,
@@ -49,10 +49,10 @@ export class ConfirmCompanyHandler extends GenericHandler {
         this.buildPageOptions(session, companyProfile);
       } catch (e) {
         const error = e as Error;
-        if (error?.name === THERE_IS_A_PROBLEM) {
+        if (error?.name === THERE_IS_A_PROBLEM_ERROR) {
           logger.info(`company confirm - oracle query service unavailable`);
           this.viewData.errors = {
-            companyNumber: THERE_IS_A_PROBLEM
+            companyNumber: THERE_IS_A_PROBLEM_ERROR
           };
         } else {
           logger.info(`company confirm - company profile not found`);
@@ -84,7 +84,7 @@ export class ConfirmCompanyHandler extends GenericHandler {
         session?.setExtraData(REGISTERED_EMAIL_ADDRESS, companyEmail.registeredEmailAddress);
       } catch (e) {
         const error = e as Error;
-        if (error?.name === THERE_IS_A_PROBLEM) {
+        if (error?.name === THERE_IS_A_PROBLEM_ERROR) {
           logger.info(`company confirm - oracle query service unavailable`);
           this.viewData.invalidCompanyReason = INVALID_COMPANY_SERVICE_UNAVAILABLE;
         } else {

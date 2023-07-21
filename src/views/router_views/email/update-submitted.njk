@@ -11,31 +11,27 @@
 {% set title = "Application submitted – Update a registered email address" %}
 
 {% block main_content %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-        <div class="govuk-panel govuk-panel--confirmation">
-            <h1 class="govuk-panel__title">
-                Registered email address update submitted
-            </h1>
-            <div class="govuk-panel__body">
-                Your reference number<br><strong>{{submissionID}}</strong>
-            </div>
+    <div class="govuk-panel govuk-panel--confirmation">
+        <h1 class="govuk-panel__title">
+            Registered email address update submitted
+        </h1>
+        <div class="govuk-panel__body">
+            Your reference number<br><strong>{{submissionID}}</strong>
         </div>
-        <p>
-            We have sent a confirmation email to <strong>{{userEmail}}</strong> which contains your reference number.
-        </p>
-        <h2 class="govuk-heading-m">
-            What happens next
-        </h2>
-        <p>
-            In the next few days, we'll send an email to <strong>{{userEmail}}</strong> to let you know if the filing has been accepted or rejected.
-        </p>
-        <p>
-            If you also need to change the email address you use to sign in to your Companies House account, you can do this in <a href="https://identity.company-information.service.gov.uk/user/account">'Your details'</a>. To change your WebFiling email address, log in to <a href="https://idam-ui.company-information.service.gov.uk/account/login/?realm=/alpha&amp;service=CHWebFiling-Login&amp;authIndexType=service&amp;authIndexValue=CHWebFiling-Login">WebFiling</a> and go to 'Manage account'.
-        </p>
-        <p class="govuk-body">
-            <a href="https://www.smartsurvey.co.uk/s/update-reg-email-addr-email-conf/" class="govuk-link">What did you think of this service?</a> (takes 30 seconds)
-        </p>
     </div>
-  </div>
+    <p>
+        We have sent a confirmation email to <strong>{{userEmail}}</strong> which contains your reference number.
+    </p>
+    <h2 class="govuk-heading-m">
+        What happens next
+    </h2>
+    <p>
+        In the next few days, we'll send an email to <strong>{{userEmail}}</strong> to let you know if the filing has been accepted or rejected.
+    </p>
+    <p>
+        If you also need to change the email address you use to sign in to your Companies House account, you can do this in <a href="https://identity.company-information.service.gov.uk/user/account" class="govuk-link" data-event-id="your-details-link">'Your details'</a>. To change your WebFiling email address, log in to <a href="https://idam-ui.company-information.service.gov.uk/account/login/?realm=/alpha&amp;service=CHWebFiling-Login&amp;authIndexType=service&amp;authIndexValue=CHWebFiling-Login" class="govuk-link" data-event-id="web-filing-link">WebFiling</a> and go to 'Manage account'.
+    </p>
+    <p class="govuk-body">
+        <a href="https://www.smartsurvey.co.uk/s/update-reg-email-addr-email-conf/" class="govuk-link" data-event-id="survey-link">What did you think of this service?</a> (takes 30 seconds)
+    </p>
 {% endblock %}

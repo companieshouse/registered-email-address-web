@@ -8,7 +8,7 @@ import { createRequest, createResponse, MockRequest, MockResponse } from 'node-m
 import { SignOutHandler } from "../../../../../src/routers/handlers/index/signout";
 import { Session } from "@companieshouse/node-session-handler";
 import { createAndLogError } from "../../../../../src/utils/common/Logger";
-import { FAILED_TO_FIND_RETURN_URL, RETURN_URL } from "../../../../../src/constants/app.const";
+import { FAILED_TO_FIND_RETURN_URL_ERROR, RETURN_URL } from "../../../../../src/constants/app.const";
 
 const TEST_BACK_LINK =  "test/any";
 
@@ -82,7 +82,7 @@ describe("Test ConfirmCompanyHandler", () => {
   it("Default signout page - no radio button selection, and no back link provided in session throw error ", async () => {
     //set Company Profile in session
     await signOutHandler.default(request, response).catch((e) => {
-      expect(e).toEqual(FAILED_TO_FIND_RETURN_URL);
+      expect(e).toEqual(FAILED_TO_FIND_RETURN_URL_ERROR);
     });
   });
 

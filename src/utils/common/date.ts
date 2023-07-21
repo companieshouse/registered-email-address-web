@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import { createAndLogError } from "../../utils/common/Logger";
-import { THERE_IS_A_PROBLEM } from "../../constants/app.const";
+import { THERE_IS_A_PROBLEM_ERROR } from "../../constants/app.const";
 
 export const toReadableFormat = (dateToConvert: string): string => {
   if (!dateToConvert) {
@@ -11,7 +11,7 @@ export const toReadableFormat = (dateToConvert: string): string => {
   const convertedDate = dateTime.toFormat("d MMMM yyyy");
 
   if (convertedDate === "Invalid DateTime") {
-    throw createAndLogError( THERE_IS_A_PROBLEM, `Unable to convert provided date ${dateToConvert}`);
+    throw createAndLogError( THERE_IS_A_PROBLEM_ERROR, `Unable to convert provided date ${dateToConvert}`);
   }
 
   return convertedDate;
@@ -30,7 +30,7 @@ export const toReadableFormatMonthYear = (monthNum: number, year: number): strin
   const convertedMonth = datetime.toFormat("MMMM");
 
   if (convertedMonth === "Invalid DateTime") {
-    throw createAndLogError( THERE_IS_A_PROBLEM, `toReadableFormatMonthYear() - Unable to convert provided month ${monthNum}`);
+    throw createAndLogError( THERE_IS_A_PROBLEM_ERROR, `toReadableFormatMonthYear() - Unable to convert provided month ${monthNum}`);
   }
 
   return `${convertedMonth} ${year}`;

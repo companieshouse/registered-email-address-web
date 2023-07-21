@@ -11,41 +11,40 @@
 {% set title = "What is the new registered email address? – Update a registered email address – GOV.UK" %}
 
 {% block main_content %}
-       <label class="govuk-label" for="change-email-address">
-        <h1 class="govuk-heading-xl">What is the new registered email address?</h1>
-       </label>
-       <div id="change-email-address-hint" class="govuk-hint">
-        The current registered email address is <b>{{companyEmailAddress}}</b>
-       </div>
-      <form method="post">
-        {{
-          govukInput({
-            describedBy: "change-email-address-hint",
-            errorMessage: {
-              text: errors.changeEmailAddress
-            } if errors.changeEmailAddress,
-            classes: "govuk-input",
-            id: "change-email-address",
-            name: "changeEmailAddress",
-            value: data.changeEmailAddress
-          })
-        }}
-
-        {{
-          govukDetails({
-            summaryHtml: '<div class="piwik-event" data-event-id="help-with-change-email-address-link"> What is the registered email address used for?</div>',
-            html: '<p>It is an email address that Companies House can use to contact the company or someone acting on its behalf.</p><p>In future we will start using it to send important information that relates to your company, for example filing reminders or warnings about missed deadlines.</p><p>It will not be shown on the public register.</p>'
-          })
-        }}
-
-        {{
-          govukButton({
-            text: 'Continue',
-            attributes: {
-              'id': 'submit',
-              'data-event-id' : 'new-registered-email-address-continue-button'
-            }
-          })
-        }}
-      </form>
+    <label class="govuk-label" for="change-email-address">
+    <span class="govuk-caption-m">{{companyName}} ({{companyNumber}})</span>
+    <h1 class="govuk-heading-xl">What is the new registered email address?</h1>
+    </label>
+    <div id="change-email-address-hint" class="govuk-hint">
+      The current registered email address is <b>{{companyEmailAddress}}</b>
+    </div>
+    <form method="post">
+      {{
+        govukInput({
+          describedBy: "change-email-address-hint",
+          errorMessage: {
+            text: errors.changeEmailAddress
+          } if errors.changeEmailAddress,
+          classes: "govuk-input",
+          id: "change-email-address",
+          name: "changeEmailAddress",
+          value: data.changeEmailAddress
+        })
+      }}
+      {{
+        govukDetails({
+          summaryHtml: '<div class="piwik-event" data-event-id="help-with-change-email-address-link"> What is the registered email address used for?</div>',
+          html: '<p>It is an email address that Companies House can use to contact the company or someone acting on its behalf.</p><p>In future we will start using it to send important information that relates to your company, for example new legislative requirements or warnings about missed deadlines.</p><p>It will not be shown on the public register.</p>'
+        })
+      }}
+      {{
+        govukButton({
+          text: 'Continue',
+          attributes: {
+            'id': 'submit',
+            'data-event-id' : 'new-registered-email-address-continue-button'
+          }
+        })
+      }}
+    </form>
 {% endblock %}
