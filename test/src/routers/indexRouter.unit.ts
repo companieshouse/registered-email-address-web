@@ -6,7 +6,8 @@ import {
   COMPANY_NUMBER_URL,
   SIGN_OUT_URL,
   ACCOUNTS_SIGNOUT_PATH,
-  ACCESSIBILITY_STATEMENT_URL, SERVICE_UNAVAILABLE_URL
+  ACCESSIBILITY_STATEMENT_URL,
+  THERE_IS_A_PROBLEM_URL
 } from "../../../src/config";
 import {StatusCodes} from "http-status-codes";
 import {HomeHandler} from "../../../src/routers/handlers/index/home";
@@ -123,11 +124,11 @@ describe("Index router tests -", () => {
     });
   });
 
-  describe("Service Unavailable tests -", () => {
-    const PAGE_TITLE = "Sorry, the service is unavailable";
+  describe("There is a problem tests -", () => {
+    const PAGE_TITLE = "Sorry, there is a problem with the service";
     it("GET request to render Service Unavailable page ", async () => {
       await request(app)
-        .get( SERVICE_UNAVAILABLE_URL)
+        .get( THERE_IS_A_PROBLEM_URL)
         .then((response) => {
           expect(response.text).toContain(PAGE_TITLE);
           expect(response.status).toBe(StatusCodes.OK);

@@ -15,7 +15,7 @@ export const session = new Session();
 const NUMBER = "1234567";
 const EMAIL = "test@test.co.biz";
 const URL = "test/return-url";
-const PROFILE = validCompanyProfile
+const PROFILE = validCompanyProfile;
 
 
 // tell the mock what to return
@@ -23,8 +23,8 @@ mockSessionMiddleware.mockImplementation((req: Request, res: Response, next: Nex
   req.session = session;
   req.session.data.extra_data[COMPANY_NUMBER] = NUMBER;
   req.session.data.extra_data[REGISTERED_EMAIL_ADDRESS] = EMAIL;
-  req.session.data.extra_data[RETURN_URL] = URL
-  req.session.data.extra_data[COMPANY_PROFILE] = PROFILE
+  req.session.data.extra_data[RETURN_URL] = URL;
+  req.session.data.extra_data[COMPANY_PROFILE] = PROFILE;
   next();
 });
 

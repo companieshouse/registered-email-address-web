@@ -1,28 +1,25 @@
 jest.mock("../../src/services/company/company.email.service");
-jest.mock("../../src/services/api/private-get-rea/privateApiClient");
 
 import { Resource } from "@companieshouse/api-sdk-node";
 import { RegisteredEmailAddress } from "../../src/services/api/private-get-rea";
-import { StatusCodes } from 'http-status-codes';
-import { HttpResponse } from "@companieshouse/api-sdk-node/dist/http/http-client";
 import { ApiErrorResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
+import { StatusCodes } from 'http-status-codes';
 
-const validEmail: string = "test@test.co.biz";
-const email: RegisteredEmailAddress = {
-  registeredEmailAddress: validEmail
+const email: string = "test@test.co.biz";
+
+const validEmail: RegisteredEmailAddress = {
+  registeredEmailAddress: email
 };
 
 export const validEmailSDKResource: Resource<RegisteredEmailAddress> = {
   httpStatusCode: StatusCodes.OK,
-  resource: email
+  resource: validEmail
 };
-const OK_RESPONSE_BODY: any = {"registered_email_address": `${validEmail}`};
 
-export const queryReponse: HttpResponse = {
-  status: StatusCodes.OK,
-  body: OK_RESPONSE_BODY
+export const EmailNotFoundReponse: ApiErrorResponse = {
+  httpStatusCode: StatusCodes.NOT_FOUND
 };
 
 export const EmailErrorReponse: ApiErrorResponse = {
-    httpStatusCode: StatusCodes.INTERNAL_SERVER_ERROR
+  httpStatusCode: StatusCodes.INTERNAL_SERVER_ERROR
 };

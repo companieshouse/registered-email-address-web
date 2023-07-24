@@ -17,7 +17,7 @@ import {
   INVALID_URL,
   NUMBER_URL,
   REA_HOME_PAGE,
-  SERVICE_UNAVAILABLE_URL
+  THERE_IS_A_PROBLEM_URL
 } from "../config";
 
 import { COMPANY_PROFILE, COMPANY_NUMBER, INVALID_COMPANY_REASON } from "../constants/app.const";
@@ -38,14 +38,10 @@ router.post(NUMBER_URL, async (req: Request, res: Response, next: NextFunction) 
   const formValidator = new FormValidator();
   const companyNumberSanitizer = new CompanyNumberSanitizer();
   await new CompanySearchHandler(formValidator, companyNumberSanitizer).post(req, res).then((data) => {
-    // eslint-disable-next-line no-prototype-builtins
-    if (Object.prototype.hasOwnProperty.call(data, errorsConst)) {
-      res.render(`${routeViews}` + COMPANY_SEARCH_PAGE, data);
-    } else {
-      // eslint-disable-next-line no-unused-expressions
-      req.session?.setExtraData(COMPANY_PROFILE, data);
-      res.redirect(COMPANY_CONFIRM_URL);
-    }
+    req.session?.setExtraData(COMPANY_PROFILE, data);
+    res.redirect(COMPANY_CONFIRM_URL);
+  }).catch((data) => {
+    res.render(`${routeViews}` + COMPANY_SEARCH_PAGE, data);
   });
 });
 
@@ -68,7 +64,7 @@ router.post(CONFIRM_URL, async (req: Request, res: Response, next: NextFunction)
   await new ConfirmCompanyHandler().post(req, res).then((data) => {
     if (Object.prototype.hasOwnProperty.call(data, invalidCompanyReason)) {
       if (data.invalidCompanyReason === INVALID_COMPANY_SERVICE_UNAVAILABLE) {
-        res.redirect(SERVICE_UNAVAILABLE_URL);
+        res.redirect(THERE_IS_A_PROBLEM_URL);
       } else {
         req.session?.setExtraData(INVALID_COMPANY_REASON, data.invalidCompanyReason);
         res.redirect(INVALID_COMPANY_URL);

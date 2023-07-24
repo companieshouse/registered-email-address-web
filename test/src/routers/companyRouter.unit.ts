@@ -6,7 +6,8 @@ import {
   COMPANY_NUMBER_URL,
   EMAIL_CHANGE_EMAIL_ADDRESS_URL,
   INVALID_COMPANY_URL,
-  SERVICE_UNAVAILABLE_URL
+  THERE_IS_A_PROBLEM_PAGE,
+  THERE_IS_A_PROBLEM_URL
 } from "../../../src/config";
 import {StatusCodes} from "http-status-codes";
 import {CompanySearchHandler} from "../../../src/routers/handlers/company/companySearch";
@@ -56,7 +57,7 @@ describe("Company router tests -", () => {
 
     it("Post Request to company Number URL should ERROR", async () => {
       const getSpy = jest.spyOn(CompanySearchHandler.prototype, 'post')
-        .mockResolvedValue( {errors : {companyNumber : INVALID_COMPANY_NUMBER }});
+        .mockRejectedValue( {errors : {companyNumber : INVALID_COMPANY_NUMBER }});
 
       await request(app)
         .post(COMPANY_NUMBER_URL)
@@ -122,7 +123,7 @@ describe("Company router tests -", () => {
       await request(app)
         .post(COMPANY_CONFIRM_URL)
         .then((response) => {
-          expect(response.text).toContain(SERVICE_UNAVAILABLE_URL);
+          expect(response.text).toContain(THERE_IS_A_PROBLEM_URL);
           expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
           expect(getSpy).toHaveBeenCalled();
           expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
@@ -159,8 +160,4 @@ describe("Company router tests -", () => {
     });
 
   });
-
-
-
-
 });
