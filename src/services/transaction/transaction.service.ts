@@ -30,7 +30,7 @@ export const postTransaction = async (session: Session, companyNumber: string, d
     return Promise.reject(sdkResponse);
   }
 
-  if (!sdkResponse.httpStatusCode || sdkResponse.httpStatusCode !== StatusCodes.OK) {
+  if (!sdkResponse.httpStatusCode || sdkResponse.httpStatusCode !== StatusCodes.CREATED) {
     logger.error(`Http status code ${sdkResponse.httpStatusCode} - Failed to post transaction for company number ${companyNumber}`);
     return Promise.reject(sdkResponse);
   }
@@ -84,7 +84,7 @@ export const putTransaction = async (session: Session,
     return Promise.reject(sdkResponse);
   }
 
-  if (!sdkResponse.httpStatusCode || sdkResponse.httpStatusCode !== StatusCodes.OK) {
+  if (!sdkResponse.httpStatusCode || sdkResponse.httpStatusCode !== StatusCodes.NO_CONTENT) {
     logger.error(`Http status code ${sdkResponse.httpStatusCode} - Failed to put transaction for transaction id ${transactionId}, company number ${companyNumber}`);
     return Promise.reject(sdkResponse);
   }
@@ -93,5 +93,5 @@ export const putTransaction = async (session: Session,
 
   logger.debug(`Received transaction ${JSON.stringify(sdkResponse)}`);
 
-  return castedSdkResponse;
+  return Promise.resolve(castedSdkResponse);
 };

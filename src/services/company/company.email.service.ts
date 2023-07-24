@@ -10,26 +10,29 @@ import { StatusCodes } from 'http-status-codes';
 *
 * @param companyNumber the company number to look up
 */
-export const getCompanyEmail = async (companyNumber: string): Promise<RegisteredEmailAddress> => {
+export const getCompanyEmail = async (companyNumber: string): Promise<Resource<RegisteredEmailAddress>> => {
   const privateApiClient = createPrivateApiClient(CHS_API_KEY, undefined, ORACLE_QUERY_API_URL );
 
   logger.debug(`Looking for registered email address with company number ${companyNumber}`);
   const sdkResponse: Resource<RegisteredEmailAddress> = await privateApiClient.registeredEmailAddress.getRegisteredEmailAddress(companyNumber);
 
   if (!sdkResponse) {
-    throw createAndLogError( THERE_IS_A_PROBLEM_ERROR, `Registered email address API for company number ${companyNumber}`);
+    logger.error( `Registered email address API for company number ${companyNumber}`);
+    return Promise.reject(sdkResponse);
   }
 
   if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
-    throw createAndLogError( THERE_IS_A_PROBLEM_ERROR, `Http status code ${sdkResponse.httpStatusCode} - Failed to get registered email address for company number ${companyNumber}`);
+    logger.error( `Http status code ${sdkResponse.httpStatusCode} - Failed to get registered email address for company number ${companyNumber}`);
+    return Promise.reject(sdkResponse);
   }
 
   if (!sdkResponse.resource) {
-    throw createAndLogError( THERE_IS_A_PROBLEM_ERROR, `Registered email address API returned no resource for company number ${companyNumber}`);
+    logger.error( `Registered email address API returned no resource for company number ${companyNumber}`);
+    return Promise.reject(sdkResponse);
   }
 
-  logger.debug(`Received registered email address ${JSON.stringify(sdkResponse)}`);
+  logger.debug(`Received registered email address ${JSON.stringify(sdkResponse)}`); 
 
-  return sdkResponse.resource;
+  return Promise.resolve(sdkResponse);
 };
 

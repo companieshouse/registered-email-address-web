@@ -16,6 +16,10 @@ export const validEmailSDKResource: Resource<RegisteredEmailAddress> = {
   resource: validEmail
 };
 
+export const EmailNotFoundReponse: ApiErrorResponse = {
+  httpStatusCode: StatusCodes.NOT_FOUND
+};
+
 export const EmailErrorReponse: ApiErrorResponse = {
   httpStatusCode: StatusCodes.INTERNAL_SERVER_ERROR
 };

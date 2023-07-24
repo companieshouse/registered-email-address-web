@@ -2,9 +2,12 @@ import {Request, Response} from "express";
 import { GenericHandler } from "./../generic";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile";
 import { Session } from "@companieshouse/node-session-handler";
+import { Resource } from "@companieshouse/api-sdk-node";
 import { getCompanyProfile } from "../../../services/company/company.profile.service";
+import { RegisteredEmailAddress } from "../../../services/api/private-get-rea";
 import { buildAddress, formatForDisplay } from "../../../services/company/confirm.company.service";
 import { getCompanyEmail } from "../../../services/company/company.email.service";
+
 import {logger} from "../../../utils/common/Logger";
 
 import {
@@ -23,6 +26,7 @@ import {
   VALID_COMPANY_TYPES
 } from "../../../constants/validation.const";
 import { COMPANY_NUMBER_URL } from "../../../config";
+import { StatusCodes } from "http-status-codes";
 
 
 export class ConfirmCompanyHandler extends GenericHandler {
@@ -81,10 +85,16 @@ export class ConfirmCompanyHandler extends GenericHandler {
         logger.info(`company confirm - checking company email`);
         const companyEmail = await getCompanyEmail(companyProfile.companyNumber);
         logger.info(`company confirm - company email found: ${companyEmail}`);
-        session?.setExtraData(REGISTERED_EMAIL_ADDRESS, companyEmail.registeredEmailAddress);
+        session?.setExtraData(REGISTERED_EMAIL_ADDRESS, companyEmail.resource);
       } catch (e) {
-        logger.info(`company confirm - oracle query service failure`);
-        this.viewData.invalidCompanyReason = INVALID_COMPANY_SERVICE_UNAVAILABLE;
+        const sdkResponse = e as Resource<RegisteredEmailAddress>;
+        if (sdkResponse.httpStatusCode === StatusCodes.NOT_FOUND) {
+          logger.error(`company confirm - email address not found`);
+          this.viewData.invalidCompanyReason = INVALID_COMPANY_NO_EMAIL_REASON;
+        } else {
+          logger.error(`company confirm - oracle query service failure`);
+          this.viewData.invalidCompanyReason = INVALID_COMPANY_SERVICE_UNAVAILABLE;
+        }
       }
     }
     return Promise.resolve(this.viewData);

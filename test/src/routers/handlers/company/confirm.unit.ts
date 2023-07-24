@@ -12,7 +12,7 @@ import { REGISTERED_EMAIL_ADDRESS } from "../../../../../src/constants/app.const
 import {createApiClient} from "@companieshouse/api-sdk-node";
 import { createPrivateApiClient } from "../../../../../src/services/api/private-get-rea";
 import { CompanyProfileErrorResponse, validSDKResource} from "../../../../mocks/company.profile.mock";
-import { validEmailSDKResource, EmailErrorReponse} from "../../../../mocks/company.email.mock";
+import { validEmailSDKResource, EmailErrorReponse, EmailNotFoundReponse} from "../../../../mocks/company.email.mock";
 import { createAndLogError } from "../../../../../src/utils/common/Logger";
 import * as constants from "../../../../../src/constants/app.const";
 import * as validationConstants from "../../../../../src/constants/validation.const";
@@ -139,7 +139,7 @@ describe("Test ConfirmCompanyHandler", () => {
     const invalidCompany = {type : "invalid-company-type"};
     request.session?.setExtraData(constants.COMPANY_PROFILE, invalidCompany);
 
-    await confirmCompanyHandler.post(request, response).then((confirmCompanyResponse) => {
+    await confirmCompanyHandler.post(request, response).catch((confirmCompanyResponse) => {
       const confirmCompanyResponseJson = JSON.parse(JSON.stringify(confirmCompanyResponse));
       expect(confirmCompanyResponseJson.invalidCompanyReason).toEqual(validationConstants.INVALID_COMPANY_TYPE_REASON);
     });
@@ -152,7 +152,7 @@ describe("Test ConfirmCompanyHandler", () => {
       companyStatus : "invalid-company-staus"};
     request.session?.setExtraData(constants.COMPANY_PROFILE, invalidCompany);
 
-    await confirmCompanyHandler.post(request, response).then((confirmCompanyResponse) => {
+    await confirmCompanyHandler.post(request, response).catch((confirmCompanyResponse) => {
       const confirmCompanyResponseJson = JSON.parse(JSON.stringify(confirmCompanyResponse));
       expect(confirmCompanyResponseJson.invalidCompanyReason).toEqual(validationConstants.INVALID_COMPANY_STATUS_REASON);
     });
@@ -160,7 +160,7 @@ describe("Test ConfirmCompanyHandler", () => {
 
   it("POST Request in ConfirmCompanyHandler - Company has no registered email addres", async () => {
     //mock the email response
-    mockGetCompanyEmail.mockResolvedValueOnce(clone(EmailErrorReponse));
+    mockGetCompanyEmail.mockRejectedValueOnce(clone(EmailNotFoundReponse));
 
     //set Company Profile in session    
     const invalidCompany = {

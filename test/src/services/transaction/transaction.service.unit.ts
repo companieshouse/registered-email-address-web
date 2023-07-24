@@ -38,7 +38,7 @@ describe("transaction service tests", () => {
   describe("postTransaction tests", () => {
     it("Should successfully post a transaction", async() => {
       mockPostTransaction.mockResolvedValueOnce({
-        httpStatusCode: StatusCodes.OK,
+        httpStatusCode: StatusCodes.CREATED,
         resource: {
           reference: "ref",
           companyNumber: COMPANY_NUMBER,
@@ -85,7 +85,7 @@ describe("transaction service tests", () => {
         headers: {
           "X-Payment-Required": "http://payment"
         },
-        httpStatusCode: StatusCodes.OK,
+        httpStatusCode: StatusCodes.NO_CONTENT,
         resource: {
           reference: EXPECTED_REF,
           companyNumber: COMPANY_NUMBER,
@@ -126,7 +126,7 @@ describe("transaction service tests", () => {
     it("Expected data should exist in close transaction response", async () => {
       const apiResponse = `"httpStatusCode": ${StatusCodes.OK}, "resource": {"companyNumber": "12345678", "description": "desc", "reference": "UpdateRegisteredEmailAddressReference", "status": "closed"}}`;
       mockPutTransaction.mockResolvedValueOnce({
-        httpStatusCode: StatusCodes.OK,
+        httpStatusCode: StatusCodes.NO_CONTENT,
         resource: {
           reference: EXPECTED_REF,
           companyNumber: COMPANY_NUMBER,
@@ -137,7 +137,7 @@ describe("transaction service tests", () => {
 
       const expectedAPIResponse = await closeTransaction(session, COMPANY_NUMBER, TRANSACTION_ID);
 
-      expect(expectedAPIResponse.httpStatusCode).toBe(StatusCodes.OK);
+      expect(expectedAPIResponse.httpStatusCode).toBe(StatusCodes.NO_CONTENT);
       expect(expectedAPIResponse.resource?.companyNumber).toBe(COMPANY_NUMBER);
       expect(expectedAPIResponse.resource?.reference).toBe(REFERENCE);
     });
