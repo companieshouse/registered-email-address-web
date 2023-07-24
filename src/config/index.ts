@@ -40,7 +40,7 @@ export const LOG_LEVEL = getEnvironmentValue("LOG_LEVEL", "DEBUG");
 export const API_URL = getEnvironmentValue("API_URL", "http://api.chs.local:4001");
 export const ACCOUNT_URL = getEnvironmentValue("ACCOUNT_URL", "http://account.chs.local");
 
-export const DESCRIPTION = "Registered Email Address update made ";
+export const DESCRIPTION = "Update Registered Email Address Transaction";
 export const REFERENCE = "UpdateRegisteredEmailAddressReference";
 export const STATIC_SUBMISSION_ID = "72hw92jw992km90mw9002m22";
 export const ORACLE_QUERY_API_URL = getEnvironmentValue("ORACLE_QUERY_API_URL", "http://api.chs.local:4001");

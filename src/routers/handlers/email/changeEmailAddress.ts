@@ -17,7 +17,7 @@ import {
   TRANSACTION_CREATE_ERROR,
   UPDATE_EMAIL_ERROR_KEY,
   UPDATE_EMAIL_ERROR_ANCHOR,
-  COMPANY_PROFILE, TRANSACTION_DESCRIPTION_ID
+  COMPANY_PROFILE
 } from "../../../constants/app.const";
 
 import {
@@ -61,10 +61,9 @@ export class ChangeEmailAddressHandler extends GenericHandler {
       this.viewData.companyName = companyProfile.companyName.toUpperCase();
       this.viewData.companyNumber = companyProfile.companyNumber;
       // create transaction record
-      await createTransaction(session, companyNumber).then((data: any) => {
+      await createTransaction(session, companyNumber).then((transactionId) => {
         // get transaction record data
-        req.session?.setExtraData(SUBMISSION_ID, data.transactionId);
-        req.session?.setExtraData(TRANSACTION_DESCRIPTION_ID, data.transactionDescription);
+        req.session?.setExtraData(SUBMISSION_ID, transactionId);
       }).catch(() => {
         logger.error(TRANSACTION_CREATE_ERROR + companyNumber);
         this.viewData.errors = formatValidationError(
@@ -125,14 +124,13 @@ export class ChangeEmailAddressHandler extends GenericHandler {
 }
 
 // create transaction record
-export const createTransaction = async (session: Session, companyNumber: string): Promise<Object> => {
+export const createTransaction = async (session: Session, companyNumber: string): Promise<string> => {
+  let transactionId: string = "";
   try {
-    const data: any = {transactionDescription: DESCRIPTION + toReadableFormat(new Date().toDateString())};
-    await postTransaction(session, companyNumber, data.transactionDescription, REFERENCE).then((transaction) => {
-      data.transactionId = transaction.id;
-      return Promise.resolve(data);
+    await postTransaction(session, companyNumber, DESCRIPTION, REFERENCE).then((transaction) => {
+      transactionId = transaction.id as string;
     });
-    return Promise.resolve(data);
+    return Promise.resolve(transactionId);
   } catch (e) {
     logger.error( `update registered email address: ${StatusCodes.INTERNAL_SERVER_ERROR} - error while create transaction record for ${companyNumber}`);
     return Promise.reject(`${StatusCodes.INTERNAL_SERVER_ERROR}`);

@@ -26,7 +26,6 @@ mockCreatePublicOAuthApiClient.mockReturnValue({
 let session: any;
 const TRANSACTION_ID = "2222";
 const COMPANY_NUMBER = "12345678";
-const TRANSACTION_DESCRIPTION = "anything";
 const EXPECTED_REF = REFERENCE;
 
 describe("transaction service tests", () => {
@@ -136,7 +135,7 @@ describe("transaction service tests", () => {
         }
       } as ApiResponse<Transaction>);
 
-      const expectedAPIResponse = await closeTransaction(session, COMPANY_NUMBER, TRANSACTION_ID, TRANSACTION_DESCRIPTION);
+      const expectedAPIResponse = await closeTransaction(session, COMPANY_NUMBER, TRANSACTION_ID);
 
       expect(expectedAPIResponse.httpStatusCode).toBe(StatusCodes.NO_CONTENT);
       expect(expectedAPIResponse.resource?.companyNumber).toBe(COMPANY_NUMBER);
