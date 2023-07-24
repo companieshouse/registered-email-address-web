@@ -3,13 +3,11 @@ import {GenericHandler} from "../generic";
 import {Session} from "@companieshouse/node-session-handler";
 import {logger} from "../../../utils/common/Logger";
 import {
-  COMPANY_NUMBER,
   COMPANY_PROFILE,
   CONFIRM_EMAIL_CHANGE_ERROR,
   FAILED_TO_CREATE_REA_ERROR,
   NEW_EMAIL_ADDRESS,
   SUBMISSION_ID,
-  THERE_IS_A_PROBLEM_ERROR,
   TRANSACTION_CLOSE_ERROR,
   TRANSACTION_DESCRIPTION_ID
 } from "../../../constants/app.const";
@@ -17,7 +15,7 @@ import {EMAIL_CHANGE_EMAIL_ADDRESS_URL} from "../../../config";
 import {createRegisteredEmailAddressResource} from "../../../services/email/createRegisteredEmailAddressResource";
 import {closeTransaction} from "../../../services/transaction/transaction.service";
 import {CompanyProfile} from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
-import {formatValidationError} from "../../../utils/formatValidationErrors";
+import {formatValidationError} from "../../../utils/error/formatValidationErrors";
 
 export class CheckAnswerHandler extends GenericHandler {
 

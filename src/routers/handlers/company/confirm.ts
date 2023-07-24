@@ -85,7 +85,7 @@ export class ConfirmCompanyHandler extends GenericHandler {
         logger.info(`company confirm - checking company email`);
         const companyEmail = await getCompanyEmail(companyProfile.companyNumber);
         logger.info(`company confirm - company email found: ${companyEmail}`);
-        session?.setExtraData(REGISTERED_EMAIL_ADDRESS, companyEmail.resource);
+        session?.setExtraData(REGISTERED_EMAIL_ADDRESS, companyEmail.resource?.registeredEmailAddress);
       } catch (e) {
         const sdkResponse = e as Resource<RegisteredEmailAddress>;
         if (sdkResponse.httpStatusCode === StatusCodes.NOT_FOUND) {
