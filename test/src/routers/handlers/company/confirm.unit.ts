@@ -174,10 +174,10 @@ describe("Test ConfirmCompanyHandler", () => {
     await confirmCompanyHandler.post(request, response)
       .then((confirmCompanyResponse) => {
         const confirmCompanyResponseJson = JSON.parse(JSON.stringify(confirmCompanyResponse));
-        expect(confirmCompanyResponseJson.invalidCompanyReason).toEqual(validationConstants.INVALID_COMPANY_NO_EMAIL_REASON);
+        expect(confirmCompanyResponseJson.invalidCompanyReason).toEqual(validationConstants.INVALID_COMPANY_SERVICE_UNAVAILABLE);
       })
       .catch((e) => {
-        expect(e).toEqual(validationConstants.INVALID_COMPANY_NO_EMAIL_REASON);
+        expect(e).toEqual(validationConstants.INVALID_COMPANY_SERVICE_UNAVAILABLE);
       });
   });
 

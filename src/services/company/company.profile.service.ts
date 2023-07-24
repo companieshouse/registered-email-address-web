@@ -20,7 +20,7 @@ export const getCompanyProfile = async (companyNumber: string): Promise<CompanyP
     throw createAndLogError( THERE_IS_A_PROBLEM_ERROR, `Company profile API for company number ${companyNumber}`);
   }
 
-  if (sdkResponse.httpStatusCode >= StatusCodes.BAD_REQUEST) {
+  if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
     throw createAndLogError( THERE_IS_A_PROBLEM_ERROR, `Http status code ${sdkResponse.httpStatusCode} - Failed to get company profile for company number ${companyNumber}`);
   }
 

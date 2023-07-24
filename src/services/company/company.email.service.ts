@@ -20,7 +20,7 @@ export const getCompanyEmail = async (companyNumber: string): Promise<Registered
     throw createAndLogError( THERE_IS_A_PROBLEM_ERROR, `Registered email address API for company number ${companyNumber}`);
   }
 
-  if (sdkResponse.httpStatusCode >= StatusCodes.BAD_REQUEST) {
+  if (sdkResponse.httpStatusCode !== StatusCodes.OK) {
     throw createAndLogError( THERE_IS_A_PROBLEM_ERROR, `Http status code ${sdkResponse.httpStatusCode} - Failed to get registered email address for company number ${companyNumber}`);
   }
 

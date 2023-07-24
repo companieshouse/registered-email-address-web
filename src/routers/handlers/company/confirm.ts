@@ -83,14 +83,8 @@ export class ConfirmCompanyHandler extends GenericHandler {
         logger.info(`company confirm - company email found: ${companyEmail}`);
         session?.setExtraData(REGISTERED_EMAIL_ADDRESS, companyEmail.registeredEmailAddress);
       } catch (e) {
-        const error = e as Error;
-        if (error?.name === THERE_IS_A_PROBLEM_ERROR) {
-          logger.info(`company confirm - oracle query service unavailable`);
-          this.viewData.invalidCompanyReason = INVALID_COMPANY_SERVICE_UNAVAILABLE;
-        } else {
-          logger.info(`company confirm - company email not found`);
-          this.viewData.invalidCompanyReason = INVALID_COMPANY_NO_EMAIL_REASON;
-        }
+        logger.info(`company confirm - oracle query service failure`);
+        this.viewData.invalidCompanyReason = INVALID_COMPANY_SERVICE_UNAVAILABLE;
       }
     }
     return Promise.resolve(this.viewData);
