@@ -50,9 +50,9 @@ export const postTransaction = async (session: Session, companyNumber: string, d
 /**
  * Close transaction
  */
-export const closeTransaction = async (session: Session, companyNumber: string, transactionId: string): Promise<ApiResponse<Transaction>> => {
-  const apiResponse: ApiResponse<Transaction> = await putTransaction(session, companyNumber, transactionId, DESCRIPTION, transactionStatuses.CLOSED).catch((sdkResponse) => {
-    return Promise.reject(sdkResponse);
+export const closeTransaction = async (session: Session, companyNumber: string, transactionId: string, transactionDescription: string): Promise<ApiResponse<Transaction>> => {
+  const apiResponse: ApiResponse<Transaction> = await putTransaction(session, companyNumber, transactionId, transactionDescription, transactionStatuses.CLOSED).catch((sdkResponse) => {
+    return Promise.reject(sdkResponse);    
   });
   return Promise.resolve(apiResponse);
 };

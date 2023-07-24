@@ -8,7 +8,8 @@ import {
   FAILED_TO_CREATE_REA_ERROR,
   NEW_EMAIL_ADDRESS,
   SUBMISSION_ID,
-  TRANSACTION_CLOSE_ERROR
+  TRANSACTION_CLOSE_ERROR,
+  TRANSACTION_DESCRIPTION_ID
 } from "../../../constants/app.const";
 import {EMAIL_CHANGE_EMAIL_ADDRESS_URL} from "../../../config";
 import {createRegisteredEmailAddressResource} from "../../../services/email/createRegisteredEmailAddressResource";
@@ -50,6 +51,7 @@ export class CheckAnswerHandler extends GenericHandler {
     const companyProfile: CompanyProfile | undefined = session.getExtraData(COMPANY_PROFILE);
     const companyNumber = companyProfile?.companyNumber;
     const companyName = companyProfile?.companyName.toUpperCase();
+    const transactionDescription: | undefined = session.getExtraData(TRANSACTION_DESCRIPTION_ID);
 
     if (emailConfirmation === undefined) {
       return Promise.reject({
@@ -68,7 +70,7 @@ export class CheckAnswerHandler extends GenericHandler {
 
     return await createRegisteredEmailAddressResource(session, <string>transactionId, <string>companyEmail).then(async () => {
       // REA resource created so close the transaction
-      return await closeTransaction(session, <string> companyNumber, <string>transactionId).then(() => {
+      return await closeTransaction(session, <string> companyNumber, <string>transactionId, <any>transactionDescription).then(() => {
         // Success!
         return Promise.resolve({
           signoutBanner: true,
