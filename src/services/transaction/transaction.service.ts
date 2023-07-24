@@ -47,10 +47,9 @@ export const postTransaction = async (session: Session, companyNumber: string, d
 /**
  * Close transaction
  */
-export const closeTransaction = async (session: Session, companyNumber: string, transactionId: string): Promise<ApiResponse<Transaction>> => {
-    const dateNow = DateTime.fromJSDate(new Date()).toFormat("d MMMM yyyy");
-    const apiResponse: ApiResponse<Transaction> = await putTransaction(session, companyNumber, transactionId, DESCRIPTION + dateNow, transactionStatuses.CLOSED);
-    return Promise.resolve(apiResponse);
+export const closeTransaction = async (session: Session, companyNumber: string, transactionId: string, transactionDescription:string): Promise<ApiResponse<Transaction>> => {
+  const apiResponse: ApiResponse<Transaction> = await putTransaction(session, companyNumber, transactionId, transactionDescription, transactionStatuses.CLOSED);
+  return Promise.resolve(apiResponse);
 };
 
 /**

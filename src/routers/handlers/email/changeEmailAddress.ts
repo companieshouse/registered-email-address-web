@@ -18,7 +18,7 @@ import {
   SOMETHING_HAS_GONE_WRONG,
   UPDATE_EMAIL_ERROR_KEY,
   UPDATE_EMAIL_ERROR_ANCHOR,
-  COMPANY_PROFILE
+  COMPANY_PROFILE, TRANSACTION_DESCRIPTION_ID
 } from "../../../constants/app.const";
 
 import {
@@ -64,8 +64,9 @@ export class ChangeEmailAddressHandler extends GenericHandler {
       // create transaction record
       try {
         // get transaction record data
-        await createTransaction(session, companyNumber).then((transactionId) => {
-          req.session?.setExtraData(SUBMISSION_ID, transactionId);
+        await createTransaction(session, companyNumber).then((data:any) => {
+          req.session?.setExtraData(SUBMISSION_ID, data.transactionId);
+          req.session?.setExtraData(TRANSACTION_DESCRIPTION_ID, data.transactionDescription);
         });
       } catch (e) {
         this.viewData.errors = formatValidationError(
@@ -125,14 +126,15 @@ export class ChangeEmailAddressHandler extends GenericHandler {
 }
 
 // create transaction record
-export const createTransaction = async (session: Session, companyNumber: string): Promise<string> => {
+export const createTransaction = async (session: Session, companyNumber: string): Promise<Object> => {
   let transactionId: string = "";
   try {
-    const dateNow = toReadableFormat(new Date().toDateString());
-    await postTransaction(session, companyNumber, DESCRIPTION + dateNow, REFERENCE).then((transaction) => {
-      transactionId = transaction.id as string;
+    const data: any = {transactionDescription: DESCRIPTION + toReadableFormat(new Date().toDateString())};
+    await postTransaction(session, companyNumber, data.transactionDescription , REFERENCE).then((transaction) => {
+      data.transactionId = transaction.id;
+      return Promise.resolve(data);
     });
-    return Promise.resolve(transactionId);
+    return Promise.resolve(data);
   } catch (e) {
     throw createAndLogError(
       SOMETHING_HAS_GONE_WRONG,

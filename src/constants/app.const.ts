@@ -14,6 +14,7 @@ export const REGISTERED_EMAIL_ADDRESS: string =  "registeredEmailAddress";
 export const NEW_EMAIL_ADDRESS: string =  "newEmailAddress";
 export const INVALID_COMPANY_REASON: string =  "invalidCompanyReason";
 export const SUBMISSION_ID: string =  "submissionID";
+export const TRANSACTION_DESCRIPTION_ID: string =  "transactionDescription";
 
 export const USER_EMAIL: string =  "userEmail";
 
