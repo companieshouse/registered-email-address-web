@@ -10,7 +10,7 @@ import ValidationErrors from "../../../models/validationErrors.model";
 import CompanyNumberSanitizer from "../../../utils/company/companyNumberSanitizer";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { getCompanyProfile } from "../../../services/company/company.profile.service";
-import { INVALID_COMPANY_NUMBER, SERVICE_UNAVAILABLE } from "../../../constants/app.const";
+import { INVALID_COMPANY_NUMBER, THERE_IS_A_PROBLEM_ERROR } from "../../../constants/app.const";
 
 // class constants
 const pageTitleConst: string = "Company Number";
@@ -32,17 +32,17 @@ export class CompanySearchHandler extends GenericHandler {
     const errors: Optional<ValidationErrors> = this.validator.validate(body, formSchema);
     if (errors) {
       this.viewData.errors = errors;
-      return this.viewData;
+      return Promise.reject(this.viewData);
     }
     try {
       const companyProfile: CompanyProfile = await getCompanyProfile(companyNumber);
-      return companyProfile;
+      return Promise.resolve(companyProfile);
     } catch (e: any) {
       const error = e as Error;
-      if (error?.name === SERVICE_UNAVAILABLE) {
-        logger.info(`company confirm - oracle query service unavailable`);
+      if (error?.name === THERE_IS_A_PROBLEM_ERROR) {
+        logger.info(`company confirm - oracle query service problem`);
         this.viewData.errors = {
-          companyNumber: SERVICE_UNAVAILABLE
+          companyNumber: THERE_IS_A_PROBLEM_ERROR
         };
       } else {
         logger.info(`company confirm - company profile not found`);
@@ -50,7 +50,7 @@ export class CompanySearchHandler extends GenericHandler {
           companyNumber: INVALID_COMPANY_NUMBER
         };
       }
-      return this.viewData;
+      return Promise.reject(this.viewData);
     }
   }
 }

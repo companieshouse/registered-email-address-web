@@ -1,5 +1,6 @@
 jest.mock("@companieshouse/api-sdk-node");
 jest.mock("../../../../../src/services/api/api.service");
+jest.mock("../../../../../src/services/api/private-get-rea");
 jest.mock("../../../../../src/utils/common/Logger");
 
 import "reflect-metadata";
@@ -9,8 +10,9 @@ import { ConfirmCompanyHandler } from "../../../../../src/routers/handlers/compa
 import { Session } from "@companieshouse/node-session-handler";
 import { REGISTERED_EMAIL_ADDRESS } from "../../../../../src/constants/app.const";
 import {createApiClient} from "@companieshouse/api-sdk-node";
+import { createPrivateApiClient } from "../../../../../src/services/api/private-get-rea";
 import { CompanyProfileErrorResponse, validSDKResource} from "../../../../mocks/company.profile.mock";
-import { queryReponse, EmailErrorReponse} from "../../../../mocks/company.email.mock";
+import { validEmailSDKResource, EmailErrorReponse, EmailNotFoundReponse} from "../../../../mocks/company.email.mock";
 import { createAndLogError } from "../../../../../src/utils/common/Logger";
 import * as constants from "../../../../../src/constants/app.const";
 import * as validationConstants from "../../../../../src/constants/validation.const";
@@ -26,16 +28,21 @@ let confirmCompanyHandler: ConfirmCompanyHandler;
 const mockGetCompanyProfile = jest.fn();
 
 // mocking block - company email
-const mockGetCompanyEmailResponse = jest.fn();
+const mockGetCompanyEmail = jest.fn();
 
 // mocking block - ApiClient
 const mockCreateApiClient = createApiClient as jest.Mock;
 mockCreateApiClient.mockReturnValue({
   companyProfile: {
     getCompanyProfile: mockGetCompanyProfile
-  },
-  apiClient: {
-    httpGet: mockGetCompanyEmailResponse
+  }
+});
+
+// mocking block - PrivateApiClient
+const mockCreatePrivateApiClient = createPrivateApiClient as jest.Mock;
+mockCreatePrivateApiClient.mockReturnValue({
+  registeredEmailAddress: {
+    getCompanyEmail: mockGetCompanyEmail
   }
 });
 
@@ -115,10 +122,11 @@ describe("Test ConfirmCompanyHandler", () => {
   });
 
   it("POST Request in ConfirmCompanyHandler - Company is Valid add email to Session Extra Data", async () => {
-    mockGetCompanyEmailResponse.mockResolvedValueOnce(clone(queryReponse));
+    mockGetCompanyEmail.mockResolvedValueOnce(clone(validEmailSDKResource));
 
-    //set Company Profile in session
+    //set Company Profile and number in session
     request.session?.setExtraData(constants.COMPANY_PROFILE, validSDKResource.resource);
+    request.session?.setExtraData(constants.COMPANY_NUMBER, validSDKResource.resource?.companyNumber);
 
     await confirmCompanyHandler.post(request, response).then(() => {
       expect(request.session?.getExtraData(constants.REGISTERED_EMAIL_ADDRESS)).toBeTruthy;
@@ -131,7 +139,7 @@ describe("Test ConfirmCompanyHandler", () => {
     const invalidCompany = {type : "invalid-company-type"};
     request.session?.setExtraData(constants.COMPANY_PROFILE, invalidCompany);
 
-    await confirmCompanyHandler.post(request, response).then((confirmCompanyResponse) => {
+    await confirmCompanyHandler.post(request, response).catch((confirmCompanyResponse) => {
       const confirmCompanyResponseJson = JSON.parse(JSON.stringify(confirmCompanyResponse));
       expect(confirmCompanyResponseJson.invalidCompanyReason).toEqual(validationConstants.INVALID_COMPANY_TYPE_REASON);
     });
@@ -144,7 +152,7 @@ describe("Test ConfirmCompanyHandler", () => {
       companyStatus : "invalid-company-staus"};
     request.session?.setExtraData(constants.COMPANY_PROFILE, invalidCompany);
 
-    await confirmCompanyHandler.post(request, response).then((confirmCompanyResponse) => {
+    await confirmCompanyHandler.post(request, response).catch((confirmCompanyResponse) => {
       const confirmCompanyResponseJson = JSON.parse(JSON.stringify(confirmCompanyResponse));
       expect(confirmCompanyResponseJson.invalidCompanyReason).toEqual(validationConstants.INVALID_COMPANY_STATUS_REASON);
     });
@@ -152,7 +160,7 @@ describe("Test ConfirmCompanyHandler", () => {
 
   it("POST Request in ConfirmCompanyHandler - Company has no registered email addres", async () => {
     //mock the email response
-    mockGetCompanyEmailResponse.mockResolvedValueOnce(clone(EmailErrorReponse));
+    mockGetCompanyEmail.mockRejectedValueOnce(clone(EmailNotFoundReponse));
 
     //set Company Profile in session    
     const invalidCompany = {
@@ -161,11 +169,16 @@ describe("Test ConfirmCompanyHandler", () => {
       companyNumber : "12345678"
     };
     request.session?.setExtraData(constants.COMPANY_PROFILE, invalidCompany);
+    request.session?.setExtraData(constants.COMPANY_NUMBER, validSDKResource.resource?.companyNumber);
 
-    await confirmCompanyHandler.post(request, response).then((confirmCompanyResponse) => {
-      const confirmCompanyResponseJson = JSON.parse(JSON.stringify(confirmCompanyResponse));
-      expect(confirmCompanyResponseJson.invalidCompanyReason).toEqual(validationConstants.INVALID_COMPANY_NO_EMAIL_REASON);
-    });
+    await confirmCompanyHandler.post(request, response)
+      .then((confirmCompanyResponse) => {
+        const confirmCompanyResponseJson = JSON.parse(JSON.stringify(confirmCompanyResponse));
+        expect(confirmCompanyResponseJson.invalidCompanyReason).toEqual(validationConstants.INVALID_COMPANY_SERVICE_UNAVAILABLE);
+      })
+      .catch((e) => {
+        expect(e).toEqual(validationConstants.INVALID_COMPANY_SERVICE_UNAVAILABLE);
+      });
   });
 
 });

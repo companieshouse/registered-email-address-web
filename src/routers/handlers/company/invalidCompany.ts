@@ -2,7 +2,15 @@ import { Request, Response } from "express";
 import { GenericHandler } from "./../generic";
 import { Session } from "@companieshouse/node-session-handler";
 import { logger } from "../../../utils/common/Logger";
-import * as validationConfig from "../../../constants/validation.const";
+import {
+  COMPANY_NAME_PLACEHOLDER,
+  invalidCompanyTypePage,
+  invalidCompanyStatusPage,
+  invalidCompanyNoEmailPage,
+  INVALID_COMPANY_NO_EMAIL_REASON,
+  INVALID_COMPANY_STATUS_REASON,
+  INVALID_COMPANY_TYPE_REASON
+} from "../../../constants/validation.const";
 
 
 export class InvalidCompanyHandler extends GenericHandler {
@@ -16,14 +24,14 @@ export class InvalidCompanyHandler extends GenericHandler {
     const session: Session = req.session as Session;
     let invalidPageType: any;
     switch(session.data.extra_data?.invalidCompanyReason) {
-        case validationConfig.INVALID_COMPANY_TYPE_REASON:
-          invalidPageType = validationConfig.invalidCompanyTypePage;
+        case INVALID_COMPANY_TYPE_REASON:
+          invalidPageType = invalidCompanyTypePage;
           break;
-        case validationConfig.INVALID_COMPANY_STATUS_REASON:
-          invalidPageType = validationConfig.invalidCompanyStatusPage;
+        case INVALID_COMPANY_STATUS_REASON:
+          invalidPageType = invalidCompanyStatusPage;
           break;
-        case validationConfig.INVALID_COMPANY_NO_EMAIL_REASON:
-          invalidPageType = validationConfig.invalidCompanyNoEmailPage;
+        case INVALID_COMPANY_NO_EMAIL_REASON:
+          invalidPageType = invalidCompanyNoEmailPage;
           break;
     }
     this.buildPage(invalidPageType, session.data.extra_data.companyProfile.companyName);
@@ -33,6 +41,6 @@ export class InvalidCompanyHandler extends GenericHandler {
 
   buildPage(pageInformation: any, companyName: string) {
     this.viewData.pageHeader = pageInformation.pageHeader;
-    this.viewData.pageBody = pageInformation.pageBody.replace(new RegExp(validationConfig.COMPANY_NAME_PLACEHOLDER, "g"), companyName);
+    this.viewData.pageBody = pageInformation.pageBody.replace(new RegExp(COMPANY_NAME_PLACEHOLDER, "g"), companyName);
   }
 }

@@ -15,10 +15,9 @@ import {
   NEW_EMAIL_ADDRESS,
   REGISTERED_EMAIL_ADDRESS,
   TRANSACTION_CREATE_ERROR,
-  SOMETHING_HAS_GONE_WRONG,
   UPDATE_EMAIL_ERROR_KEY,
   UPDATE_EMAIL_ERROR_ANCHOR,
-  COMPANY_PROFILE
+  COMPANY_PROFILE, TRANSACTION_DESCRIPTION_ID
 } from "../../../constants/app.const";
 
 import {
@@ -62,20 +61,19 @@ export class ChangeEmailAddressHandler extends GenericHandler {
       this.viewData.companyName = companyProfile.companyName.toUpperCase();
       this.viewData.companyNumber = companyProfile.companyNumber;
       // create transaction record
-      try {
+      await createTransaction(session, companyNumber).then((data: any) => {
         // get transaction record data
-        await createTransaction(session, companyNumber).then((transactionId) => {
-          req.session?.setExtraData(SUBMISSION_ID, transactionId);
-        });
-      } catch (e) {
+        req.session?.setExtraData(SUBMISSION_ID, data.transactionId);
+        req.session?.setExtraData(TRANSACTION_DESCRIPTION_ID, data.transactionDescription);
+      }).catch(() => {
+        logger.error(TRANSACTION_CREATE_ERROR + companyNumber);
         this.viewData.errors = formatValidationError(
           UPDATE_EMAIL_ERROR_KEY,
           UPDATE_EMAIL_ERROR_ANCHOR,
           TRANSACTION_CREATE_ERROR+companyNumber
         );
-        return this.viewData;
-      }
-      return Promise.resolve(this.viewData);
+        return Promise.reject(this.viewData);
+      });
     } else {
       logger.info(`company confirm - company email not found`);
       this.viewData.errors = formatValidationError(
@@ -83,7 +81,9 @@ export class ChangeEmailAddressHandler extends GenericHandler {
         UPDATE_EMAIL_ERROR_ANCHOR,
         NO_EMAIL_ADDRESS_FOUND
       );
+      return Promise.reject(this.viewData);
     }
+
     return Promise.resolve(this.viewData);
   }
 
@@ -106,7 +106,7 @@ export class ChangeEmailAddressHandler extends GenericHandler {
         UPDATE_EMAIL_ERROR_ANCHOR,
         errors[UPDATE_EMAIL_ERROR_KEY]
       );
-      return this.viewData;
+      return Promise.reject(this.viewData);
     }
 
     //check: email format invalid
@@ -116,7 +116,7 @@ export class ChangeEmailAddressHandler extends GenericHandler {
         UPDATE_EMAIL_ERROR_ANCHOR,
         EMAIL_ADDRESS_INVALID
       );
-      return Promise.resolve(this.viewData);
+      return Promise.reject(this.viewData);
     } else {
       req.session?.setExtraData(NEW_EMAIL_ADDRESS, req.body.changeEmailAddress);
     }
@@ -125,18 +125,16 @@ export class ChangeEmailAddressHandler extends GenericHandler {
 }
 
 // create transaction record
-export const createTransaction = async (session: Session, companyNumber: string): Promise<string> => {
-  let transactionId: string = "";
+export const createTransaction = async (session: Session, companyNumber: string): Promise<Object> => {
   try {
-    const dateNow = toReadableFormat(new Date().toDateString());
-    await postTransaction(session, companyNumber, DESCRIPTION + dateNow, REFERENCE).then((transaction) => {
-      transactionId = transaction.id as string;
+    const data: any = {transactionDescription: DESCRIPTION + toReadableFormat(new Date().toDateString())};
+    await postTransaction(session, companyNumber, data.transactionDescription, REFERENCE).then((transaction) => {
+      data.transactionId = transaction.id;
+      return Promise.resolve(data);
     });
-    return Promise.resolve(transactionId);
+    return Promise.resolve(data);
   } catch (e) {
-    throw createAndLogError(
-      SOMETHING_HAS_GONE_WRONG,
-      `update registered email address: ${StatusCodes.INTERNAL_SERVER_ERROR} - error while create transaction record for ${companyNumber}`
-    );
+    logger.error( `update registered email address: ${StatusCodes.INTERNAL_SERVER_ERROR} - error while create transaction record for ${companyNumber}`);
+    return Promise.reject(`${StatusCodes.INTERNAL_SERVER_ERROR}`);
   }
 };

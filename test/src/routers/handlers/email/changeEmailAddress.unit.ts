@@ -18,11 +18,12 @@ import {
   COMPANY_PROFILE
 } from "../../../../../src/constants/app.const";
 import { validTransactionSDKResource, transactionId } from "../../../../mocks/transaction.mock";
-import { queryReponse, EmailErrorReponse } from "../../../../mocks/company.email.mock";
+import { validEmailSDKResource, EmailErrorReponse } from "../../../../mocks/company.email.mock";
 import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
 import { createPublicOAuthApiClient } from "../../../../../src/services/api/api.service";
 import { createAndLogError } from "../../../../../src/utils/common/Logger";
 import {validCompanyProfile} from "../../../../../test/mocks/company.profile.mock";
+import { StatusCodes } from "http-status-codes";
 
 const COMPANY_NO: string = "12345678";
 const TEST_EMAIL_EXISTING: string = "test@test.co.biz";
@@ -94,7 +95,7 @@ describe("Registered email address update - test GET method", () => {
     request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
     request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
 
-    await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {
+    await changeEmailAddressHandler.get(request, response).catch((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
 
       expect(changeEmailAddressResponseJson.errors).toBeTruthy;
@@ -110,6 +111,7 @@ describe("Registered email address update - test GET method", () => {
   });
 
   it("Registered email address update - company email in session", async () => {
+    validTransactionSDKResource.httpStatusCode = StatusCodes.CREATED;
     mockPostTransactionResponse.mockResolvedValueOnce(clone(validTransactionSDKResource));
     //set email in session
     request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
@@ -128,8 +130,9 @@ describe("Registered email address update - test GET method", () => {
 
   it("Valid transaction created", async () => {
     // build required transaction response for test
+    validTransactionSDKResource.httpStatusCode = StatusCodes.CREATED;
     mockPostTransactionResponse.mockResolvedValueOnce(clone(validTransactionSDKResource));
-    mockGetCompanyEmailResponse.mockResolvedValueOnce(clone(queryReponse));
+    mockGetCompanyEmailResponse.mockResolvedValueOnce(clone(validEmailSDKResource));
     //set company number in session
     request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
     request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
@@ -171,7 +174,7 @@ describe("Registered email address update - test POST method", () => {
     request.body.changeEmailAddress = "";
     request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
 
-    await changeEmailAddressHandler.post(request, response).then((changeEmailAddressResponse) => {
+    await changeEmailAddressHandler.post(request, response).catch((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
 
       expect(changeEmailAddressResponseJson.errors).toBeTruthy;
@@ -191,7 +194,7 @@ describe("Registered email address update - test POST method", () => {
     request.body.changeEmailAddress = INVALID_EMAIL_ADDRESS;
     request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
 
-    await changeEmailAddressHandler.post(request, response).then((changeEmailAddressResponse) => {
+    await changeEmailAddressHandler.post(request, response).catch((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
 
       expect(changeEmailAddressResponseJson.errors).toBeTruthy;

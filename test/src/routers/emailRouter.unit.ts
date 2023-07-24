@@ -1,8 +1,15 @@
 import mocks from "../../mocks/all.middleware.mock";
 import request from "supertest";
 import app from "../../../src/app";
-import {EMAIL_CHANGE_EMAIL_ADDRESS_URL, EMAIL_CHECK_ANSWER_URL, EMAIL_UPDATE_SUBMITTED_URL} from "../../../src/config";
-import {THERE_IS_A_PROBLEM_ERROR} from "../../../src/constants/app.const";
+import {
+  EMAIL_CHANGE_EMAIL_ADDRESS_URL,
+  EMAIL_CHECK_ANSWER_URL,
+  EMAIL_UPDATE_SUBMITTED_URL
+} from "../../../src/config";
+import {
+  CONFIRM_EMAIL_CHANGE_ERROR,
+  FAILED_TO_CREATE_REA_ERROR
+} from "../../../src/constants/app.const";
 import {HttpResponse} from "@companieshouse/api-sdk-node/dist/http/http-client";
 import {StatusCodes} from "http-status-codes";
 import {CheckAnswerHandler} from "../../../src/routers/handlers/email/checkAnswer";
@@ -41,16 +48,15 @@ describe("Email router tests", () => {
           });
       });
 
-      it("Should navigate back to company search page if unexpected data", async () => {
+      it("Should navigate back to there is a problem page if unexpected data", async () => {
         const errorObject = {errors: "anything"};
-        const getSpy = jest.spyOn(ChangeEmailAddressHandler.prototype, 'get').mockResolvedValue(errorObject);
+        const getSpy = jest.spyOn(ChangeEmailAddressHandler.prototype, 'get').mockRejectedValue(errorObject);
 
         await request(app)
           .get(EMAIL_CHANGE_EMAIL_ADDRESS_URL)
           .then((response) => {
-            expect(response.status).toBe(StatusCodes.OK);
-            expect(response.text).toContain(COMMON_PAGE_HEADING);
-            expect(response.text).toContain("What is the company number?");
+            expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
+            expect(response.text).toContain("Redirecting to /registered-email-address/there-is-a-problem");
             expect(getSpy).toHaveBeenCalled();
             expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
           });
@@ -58,7 +64,7 @@ describe("Email router tests", () => {
 
       it("Should re-display change email page when Email not entered", async () => {
         const errorObject = {errors: {changeEmailAddress: "You need to accept the registered email address statement"}};
-        const postSpy = jest.spyOn(ChangeEmailAddressHandler.prototype, 'post').mockResolvedValue(errorObject);
+        const postSpy = jest.spyOn(ChangeEmailAddressHandler.prototype, 'post').mockRejectedValue(errorObject);
 
         await request(app)
           .post(EMAIL_CHANGE_EMAIL_ADDRESS_URL)
@@ -104,14 +110,15 @@ describe("Email router tests", () => {
 
       it("Should re-display check answer page when Email change unconfirmed", async () => {
         const errorObject = {
+          statementError: CONFIRM_EMAIL_CHANGE_ERROR,
           errors: {
             errorList: [{
               href: "emailConfirmation",
               text: "wrong deliberately"
             }]
-          }, statementError: "You need to accept the registered email address statement"
+          }
         };
-        const postSpy = jest.spyOn(CheckAnswerHandler.prototype, 'post').mockResolvedValue(errorObject);
+        const postSpy = jest.spyOn(CheckAnswerHandler.prototype, 'post').mockRejectedValue(errorObject);
 
         await request(app)
           .post(EMAIL_CHECK_ANSWER_URL)
@@ -126,16 +133,15 @@ describe("Email router tests", () => {
       });
 
       it("Should fail gracefully on unexpected errors", async () => {
-        const errorObject = {errors: "anything"};
-        const postSpy = jest.spyOn(CheckAnswerHandler.prototype, 'post').mockResolvedValue(errorObject);
+        const errorObject = {statementError: FAILED_TO_CREATE_REA_ERROR};
+        const postSpy = jest.spyOn(CheckAnswerHandler.prototype, 'post').mockRejectedValue(errorObject);
 
         await request(app)
           .post(EMAIL_CHECK_ANSWER_URL)
           .send({emailConfirmation: 'anything'})
           .then((response) => {
-            expect(response.text).toContain(COMMON_PAGE_HEADING);
-            expect(response.text).toContain(PAGE_HEADING);
-            expect(response.text).toContain(THERE_IS_A_PROBLEM_ERROR);
+            expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
+            expect(response.text).toContain("Redirecting to /registered-email-address/there-is-a-problem");
             expect(postSpy).toHaveBeenCalled();
           });
       });

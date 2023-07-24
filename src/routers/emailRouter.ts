@@ -7,14 +7,19 @@ import {CheckAnswerHandler} from "./handlers/email/checkAnswer";
 import {
   CHANGE_EMAIL_ADDRESS_URL,
   CHECK_ANSWER_URL,
-  COMPANY_SEARCH_PAGE,
-  EMAIL_CHECK_ANSWER_URL, EMAIL_UPDATE_SUBMITTED_URL,
-  UPDATE_SUBMITTED,
+  EMAIL_CHECK_ANSWER_URL,
+  THERE_IS_A_PROBLEM_URL,
+  EMAIL_UPDATE_SUBMITTED_URL,
+  UPDATE_SUBMITTED
 } from "../config";
-import {requestFailed} from "../utils/error/errorHandler";
+
+import {
+  TRANSACTION_CLOSE_ERROR,
+  FAILED_TO_CREATE_REA_ERROR
+} from "../constants/app.const";
 
 const router: Router = Router();
-const companyRouterViews: string = "router_views/company/";
+const indexRouterViews: string = "router_views/index/";
 const emailRouterViews: string = "router_views/email/";
 
 // GET: /change-email-address
@@ -25,12 +30,9 @@ router.get(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: N
     req.session?.data.signin_info?.user_profile?.email
   );
   await handler.get(req, res).then((viewData) => {
-    if (requestFailed(viewData)) {
-      // TODO: go to "something has gone" wrong page
-      res.render(`${companyRouterViews}` + COMPANY_SEARCH_PAGE, viewData);
-    } else {
-      res.render(`${emailRouterViews}` + CHANGE_EMAIL_ADDRESS_URL, viewData);
-    }
+    res.render(`${emailRouterViews}` + CHANGE_EMAIL_ADDRESS_URL, viewData);
+  }).catch((viewData) => {
+    res.redirect(THERE_IS_A_PROBLEM_URL);
   });
 });
 
@@ -42,12 +44,10 @@ router.post(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: 
     req.session?.data.signin_info?.user_profile?.email
   );
   await handler.post(req, res).then((viewData) => {
-    if (requestFailed(viewData)) {
-      res.render(`${emailRouterViews}` + CHANGE_EMAIL_ADDRESS_URL, viewData);
-    } else {
-      res.redirect(EMAIL_CHECK_ANSWER_URL);
-    }
-  });
+    res.redirect(EMAIL_CHECK_ANSWER_URL);
+  }).catch((viewData) => {
+    res.render(`${emailRouterViews}` + CHANGE_EMAIL_ADDRESS_URL, viewData);
+  });  
 });
 
 // GET: /check-your-answers
@@ -61,11 +61,17 @@ router.get(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunct
 // POST: /check-your-answers
 router.post(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunction) => {
   await new CheckAnswerHandler().post(req, res)
-    .then((viewData) => {
-      if (requestFailed(viewData)) {
-        res.render(`${emailRouterViews}` + CHECK_ANSWER_URL, viewData);
-      } else {
-        res.redirect(EMAIL_UPDATE_SUBMITTED_URL);
+    .then(() => {
+      res.redirect(EMAIL_UPDATE_SUBMITTED_URL);
+    }).catch((viewData) => {
+      switch (viewData.statementError) {
+          case FAILED_TO_CREATE_REA_ERROR:
+          case TRANSACTION_CLOSE_ERROR:
+            res.redirect(THERE_IS_A_PROBLEM_URL);
+            break;
+          default:
+            res.render(`${emailRouterViews}` + CHECK_ANSWER_URL, viewData);
+            break;
       }
     });
 });

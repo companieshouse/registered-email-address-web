@@ -45,6 +45,8 @@
             ]
         }) }}
 
+        {{ summaryHtml.content|safe }}
+        {{ html.content|safe }}
         {{ govukDetails({
             summaryHtml: '<div class="piwik-event" data-event-id="what-does-appropriate-email-mean-dropdown">What does appropriate email address mean?</div>',
             html: '<p>An email address is an appropriate email address if, in the ordinary course of events, emails sent to it by the registrar would be expected to come to the attention of a person acting on behalf of the company.</p>'

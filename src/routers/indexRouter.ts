@@ -1,49 +1,65 @@
 import { Request, Response, Router, NextFunction, response } from "express";
 import { HomeHandler } from "./handlers/index/home";
 import { SignOutHandler, getReturnPageFromSession } from "./handlers/index/signout";
-import * as config from "../config/index";
+import {
+  ACCESSIBILITY_STATEMENT_PAGE,
+  ACCESSIBILITY_STATEMENT_URL,
+  ACCOUNTS_SIGNOUT_PATH,
+  COMPANY_NUMBER_URL,
+  HOME_PAGE,
+  HOME_URL,
+  REFERENCE,
+  SIGN_OUT_PAGE,
+  SIGN_OUT_URL,
+  THERE_IS_A_PROBLEM_PAGE,
+  THERE_IS_A_PROBLEM_URL
+} from "../config";
 
 const router: Router = Router();
 const routeViews: string = "router_views/index/";
 
-router.get(config.HOME_URL, async (req: Request, res: Response, next: NextFunction) => {
+router.get(HOME_URL, async (req: Request, res: Response, next: NextFunction) => {
   const handler = new HomeHandler();
   const viewData = await handler.get(req, res);
-  res.render(`${routeViews}` + config.HOME_PAGE, viewData);
+  res.render(`${routeViews}` + HOME_PAGE, viewData);
 });
 
-router.post(config.HOME_URL, (req: Request, res: Response, next: NextFunction) => {
-  res.redirect(config.COMPANY_NUMBER_URL);
+router.post(HOME_URL, (req: Request, res: Response, next: NextFunction) => {
+  const handler = new HomeHandler();
+  res.redirect(COMPANY_NUMBER_URL);
 });
 
-router.get(config.SIGN_OUT_URL, async (req: Request, res: Response, next: NextFunction) => {
+router.get(SIGN_OUT_URL, async (req: Request, res: Response, next: NextFunction) => {
   const handler = new SignOutHandler();
-  const viewData = await handler.get(req, res);
-  res.render(`${routeViews}` + config.SIGN_OUT_PAGE, viewData);
+  await handler.get(req, res).then((viewData) => {
+    res.render(`${routeViews}` + SIGN_OUT_PAGE, viewData);
+  }).catch(() => {
+    res.redirect(THERE_IS_A_PROBLEM_URL);
+  });
 });
 
-router.post(config.SIGN_OUT_URL, async (req: Request, res: Response, next: NextFunction) => {
+router.post(SIGN_OUT_URL, async (req: Request, res: Response, next: NextFunction) => {
   const handler = new SignOutHandler();
   switch (req.body.signout) {
       case "yes": {
-        return res.redirect(config.ACCOUNTS_SIGNOUT_PATH);
+        return res.redirect(ACCOUNTS_SIGNOUT_PATH);
       }
       case "no": {
         return res.redirect(getReturnPageFromSession(req));
       }
       default: {
         const viewData = await handler.default(req, res);
-        res.render(`${routeViews}` + config.SIGN_OUT_PAGE, viewData);
+        res.render(`${routeViews}` + SIGN_OUT_PAGE, viewData);
       }
   }
 });
 
-router.get(config.ACCESSIBILITY_STATEMENT_URL, async (req: Request, res: Response, next: NextFunction) => {
-  res.render(`${routeViews}` + config.ACCESSIBILITY_STATEMENT_PAGE);
+router.get(ACCESSIBILITY_STATEMENT_URL, async (req: Request, res: Response, next: NextFunction) => {
+  res.render(`${routeViews}` + ACCESSIBILITY_STATEMENT_PAGE);
 });
 
-router.get(config.SERVICE_UNAVAILABLE_URL, async (req: Request, res: Response, next: NextFunction) => {
-  res.render(`${routeViews}` + config.SERVICE_UNAVAILABLE_PAGE, { title: "Service offline - " + config.REFERENCE + " - GOV.UK" });
+router.get(THERE_IS_A_PROBLEM_URL, async (req: Request, res: Response, next: NextFunction) => {
+  res.render(`${routeViews}` + THERE_IS_A_PROBLEM_PAGE, { title: "Service offline - " + REFERENCE + " - GOV.UK" });
 });
 
 export default router;

@@ -1,17 +1,14 @@
 import { Resource } from "@companieshouse/api-sdk-node";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
-import { createAndLogError, logger } from "../../utils/common/Logger";
-import { SOMETHING_HAS_GONE_WRONG, SERVICE_UNAVAILABLE } from "../../constants/app.const";
+import { logger } from "../../utils/common/Logger";
 import { createPublicOAuthApiClient } from "../api/api.service";
 import { Session } from "@companieshouse/node-session-handler";
 import ApiClient from "@companieshouse/api-sdk-node/dist/client";
 import { ApiErrorResponse, ApiResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
+import { StatusCodes } from "http-status-codes";
 
-import {
-  DESCRIPTION,
-  REFERENCE,
-  transactionStatuses
-} from "../../config";
+import {DESCRIPTION, REFERENCE, transactionStatuses} from "../../config";
+import {DateTime} from "luxon";
 
 /**
  * Post transaction
@@ -29,29 +26,34 @@ export const postTransaction = async (session: Session, companyNumber: string, d
   const sdkResponse: Resource<Transaction> | ApiErrorResponse = await apiClient.transaction.postTransaction(transaction);
 
   if (!sdkResponse) {
-    throw createAndLogError( SERVICE_UNAVAILABLE, `Transaction API POST request returned no response for company number ${companyNumber}`);
+    logger.error(`Transaction API POST request returned no response for company number ${companyNumber}`);
+    return Promise.reject(sdkResponse);
   }
 
-  if (!sdkResponse.httpStatusCode || sdkResponse.httpStatusCode >= 400) {
-    throw createAndLogError( SOMETHING_HAS_GONE_WRONG, `Http status code ${sdkResponse.httpStatusCode} - Failed to post transaction for company number ${companyNumber}`);
+  if (!sdkResponse.httpStatusCode || sdkResponse.httpStatusCode !== StatusCodes.CREATED) {
+    logger.error(`Http status code ${sdkResponse.httpStatusCode} - Failed to post transaction for company number ${companyNumber}`);
+    return Promise.reject(sdkResponse);
   }
 
   const castedSdkResponse: Resource<Transaction> = sdkResponse as Resource<Transaction>;
 
   if (!castedSdkResponse.resource) {
-    throw createAndLogError( SOMETHING_HAS_GONE_WRONG, `Transaction API POST request returned no resource for company number ${companyNumber}`);
+    logger.error(`Transaction API POST request returned no resource for company number ${companyNumber}`);
+    return Promise.reject(sdkResponse);
   }
 
   logger.debug(`Received transaction ${JSON.stringify(sdkResponse)}`);
 
-  return castedSdkResponse.resource;
+  return Promise.resolve(castedSdkResponse.resource);
 };
 
 /**
  * Close transaction
  */
-export const closeTransaction = async (session: Session, companyNumber: string, transactionId: string): Promise<ApiResponse<Transaction>> => {
-  const apiResponse: ApiResponse<Transaction> = await putTransaction(session, companyNumber, transactionId, DESCRIPTION, transactionStatuses.CLOSED);
+export const closeTransaction = async (session: Session, companyNumber: string, transactionId: string, transactionDescription: string): Promise<ApiResponse<Transaction>> => {
+  const apiResponse: ApiResponse<Transaction> = await putTransaction(session, companyNumber, transactionId, transactionDescription, transactionStatuses.CLOSED).catch((sdkResponse) => {
+    return Promise.reject(sdkResponse);    
+  });
   return Promise.resolve(apiResponse);
 };
 
@@ -77,16 +79,18 @@ export const putTransaction = async (session: Session,
   const sdkResponse: ApiResponse<Transaction> | ApiErrorResponse = await apiClient.transaction.putTransaction(transaction);
 
   if (!sdkResponse) {
-    throw createAndLogError( SERVICE_UNAVAILABLE, `Transaction API PUT request returned no response for transaction id ${transactionId}, company number ${companyNumber}`);
+    logger.error(`Transaction API PUT request returned no response for transaction id ${transactionId}, company number ${companyNumber}`);
+    return Promise.reject(sdkResponse);
   }
 
-  if (!sdkResponse.httpStatusCode || sdkResponse.httpStatusCode >= 400) {
-    throw createAndLogError( SOMETHING_HAS_GONE_WRONG, `Http status code ${sdkResponse.httpStatusCode} - Failed to put transaction for transaction id ${transactionId}, company number ${companyNumber}`);
+  if (!sdkResponse.httpStatusCode || sdkResponse.httpStatusCode !== StatusCodes.NO_CONTENT) {
+    logger.error(`Http status code ${sdkResponse.httpStatusCode} - Failed to put transaction for transaction id ${transactionId}, company number ${companyNumber}`);
+    return Promise.reject(sdkResponse);
   }
 
   const castedSdkResponse: ApiResponse<Transaction> = sdkResponse as ApiResponse<Transaction>;
 
   logger.debug(`Received transaction ${JSON.stringify(sdkResponse)}`);
 
-  return castedSdkResponse;
+  return Promise.resolve(castedSdkResponse);
 };

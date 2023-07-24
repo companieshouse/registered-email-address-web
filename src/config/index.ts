@@ -55,20 +55,14 @@ export const COMPANY_CONFIRM_PAGE = "company/confirm";
 export const EMAIL_CHANGE_EMAIL_ADDRESS = "email/change-email-address";
 export const EMAIL_CHECK_ANSWER = "email/check-your-answer";
 export const EMAIL_UPDATE_SUBMITTED = "email/update-submitted";
-export const VIEW_COMPANY_INFORMATION_PAGE = "view-company-information";
-export const CONFIRM_COMPANY_PAGE = "confirm-company";
 export const COMPANY_INVALID_PAGE = "invalid";
-export const CHANGE_EMAIL_ADDRESS_PAGE = "change-email-address";
-export const CHECK_YOUR_ANSWERS_PAGE = "email/check-your-answer";
 export const SIGN_OUT_PAGE = `signout`;
 export const ACCESSIBILITY_STATEMENT_PAGE = "accessibility-statement";
-export const SERVICE_UNAVAILABLE_PAGE = "service-unavailable";
+export const THERE_IS_A_PROBLEM_PAGE = "there-is-a-problem";
 
 
 // ROUTING PATHS
 export const HOME_URL = `${REA_HOME_PAGE}`;
-export const REGISTER_AN_EMAIL_ADDRESS_URL = `${HOME_URL}/`;
-export const COMPANY_AUTH_PROTECTED = `/email/`;
 export const COMPANY_BASE_URL = `${REA_HOME_PAGE}/company`;
 export const EMAIL_BASE_URL = `${REA_HOME_PAGE}/email`;
 export const NUMBER_URL = "/number";
@@ -83,11 +77,9 @@ export const SIGN_OUT_URL = `${HOME_URL}/${SIGN_OUT_PAGE}`;
 export const ACCOUNTS_SIGNOUT_PATH = `${ACCOUNT_URL}/signout`;
 export const COMPANY_NUMBER_URL = `${HOME_URL}/${COMPANY_NUMBER_PAGE}`;
 export const COMPANY_CONFIRM_URL = `${HOME_URL}/${COMPANY_CONFIRM_PAGE}`;
-export const VIEW_COMPANY_INFORMATION_URI = `${HOME_URL}/${VIEW_COMPANY_INFORMATION_PAGE}`;
-export const CONFIRM_COMPANY_URL = `${HOME_URL}/${CONFIRM_COMPANY_PAGE}`;
 export const INVALID_COMPANY_URL = `${COMPANY_BASE_URL}/${COMPANY_INVALID_PAGE}`;
 export const EMAIL_CHANGE_EMAIL_ADDRESS_URL = `${HOME_URL}/${EMAIL_CHANGE_EMAIL_ADDRESS}`;
 export const EMAIL_CHECK_ANSWER_URL = `${HOME_URL}/${EMAIL_CHECK_ANSWER}`;
 export const ACCESSIBILITY_STATEMENT_URL = `${HOME_URL}/${ACCESSIBILITY_STATEMENT_PAGE}`;
 export const EMAIL_UPDATE_SUBMITTED_URL = `${HOME_URL}/${EMAIL_UPDATE_SUBMITTED}`;
-export const SERVICE_UNAVAILABLE_URL = `${HOME_URL}/${SERVICE_UNAVAILABLE_PAGE}`;
+export const THERE_IS_A_PROBLEM_URL = `${HOME_URL}/${THERE_IS_A_PROBLEM_PAGE}`;

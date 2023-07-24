@@ -8,7 +8,8 @@ import {
   FAILED_TO_CREATE_REA_ERROR,
   NEW_EMAIL_ADDRESS,
   SUBMISSION_ID,
-  TRANSACTION_CLOSE_ERROR
+  TRANSACTION_CLOSE_ERROR,
+  TRANSACTION_DESCRIPTION_ID
 } from "../../../constants/app.const";
 import {EMAIL_CHANGE_EMAIL_ADDRESS_URL} from "../../../config";
 import {createRegisteredEmailAddressResource} from "../../../services/email/createRegisteredEmailAddressResource";
@@ -31,14 +32,14 @@ export class CheckAnswerHandler extends GenericHandler {
     const companyNumber = companyProfile?.companyNumber;
     const companyName = companyProfile?.companyName.toUpperCase();
 
-    return {
+    return Promise.resolve ({
       companyEmail: companyEmail,
       companyName: companyName,
       companyNumber: companyNumber,
       backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
       signoutBanner: true,
       userEmail: req.session?.data.signin_info?.user_profile?.email
-    };
+    });
   }
 
   async post(req: Request, response: Response): Promise<any> {
@@ -50,9 +51,10 @@ export class CheckAnswerHandler extends GenericHandler {
     const companyProfile: CompanyProfile | undefined = session.getExtraData(COMPANY_PROFILE);
     const companyNumber = companyProfile?.companyNumber;
     const companyName = companyProfile?.companyName.toUpperCase();
+    const transactionDescription: | undefined = session.getExtraData(TRANSACTION_DESCRIPTION_ID);
 
     if (emailConfirmation === undefined) {
-      return {
+      return Promise.reject({
         statementError: CONFIRM_EMAIL_CHANGE_ERROR,
         errors: formatValidationError("emailConfirmation", "#emailConfirmation", CONFIRM_EMAIL_CHANGE_ERROR),
         companyEmail: companyEmail,
@@ -61,42 +63,27 @@ export class CheckAnswerHandler extends GenericHandler {
         backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
         signoutBanner: true,
         userEmail: req.session?.data.signin_info?.user_profile?.email
-      };
+      });
     }
 
     const transactionId: string | undefined = session?.getExtraData(SUBMISSION_ID);
 
-    return await createRegisteredEmailAddressResource(session, <string>transactionId, <string>companyEmail)
-      .then(async () => {
-        return await closeTransaction(session, <string>companyNumber, <string>transactionId)
-          .then(() => {
-            return {
-              backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
-              signoutBanner: true,
-              userEmail: req.session?.data.signin_info?.user_profile?.email,
-              submissionID: transactionId
-            };
-          }).catch((err) => {
-            return {
-              errors: TRANSACTION_CLOSE_ERROR + companyNumber,
-              companyEmail: companyEmail,
-              companyName: companyName,
-              companyNumber: companyNumber,
-              backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
-              signoutBanner: true,
-              userEmail: req.session?.data.signin_info?.user_profile?.email
-            };
-          });
-      }).catch((e) => {
-        return {
-          errors: FAILED_TO_CREATE_REA_ERROR + companyNumber,
-          companyEmail: companyEmail,
-          companyName: companyName,
-          companyNumber: companyNumber,
-          backUri: EMAIL_CHANGE_EMAIL_ADDRESS_URL,
+    return await createRegisteredEmailAddressResource(session, <string>transactionId, <string>companyEmail).then(async () => {
+      // REA resource created so close the transaction
+      return await closeTransaction(session, <string> companyNumber, <string>transactionId, <any>transactionDescription).then(() => {
+        // Success!
+        return Promise.resolve({
           signoutBanner: true,
-          userEmail: req.session?.data.signin_info?.user_profile?.email
-        };
+          userEmail: req.session?.data.signin_info?.user_profile?.email,
+          submissionID: transactionId
+        });
+      }).catch(() => {
+        // Failed to close the transaction
+        return Promise.reject({ statementError: TRANSACTION_CLOSE_ERROR });
       });
+    }).catch((e) => {
+      // Failed to create the REA resource
+      return Promise.reject({ statementError: FAILED_TO_CREATE_REA_ERROR });
+    });
   }
 }

@@ -82,7 +82,7 @@ describe("Request to enter company number - test GET method", () => {
   it("Request to enter company number - request for company profile Error", async () => {
     mockGetCompanyProfile.mockResolvedValueOnce(clone(CompanyProfileErrorResponse));
     request._setBody({companyNumber :  '12345678'});
-    await companySearchHandler.post(request, response).then((searchCompanyNumbersResponse) => {
+    await companySearchHandler.post(request, response).catch((searchCompanyNumbersResponse) => {
       const searchCompanyNumbersResponseJson = JSON.parse(JSON.stringify(searchCompanyNumbersResponse));
       expect(searchCompanyNumbersResponseJson.backUri).toEqual('/registered-email-address');
       expect(searchCompanyNumbersResponseJson.signoutBanner).toEqual(true);
