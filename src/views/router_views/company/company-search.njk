@@ -8,8 +8,6 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 
-{% set title = "What is the company number? – Update a registered email address – GOV.UK" %}
-
 {% block main_content %}
        <label class="govuk-label" for="company-number">
         <h1 class="govuk-heading-xl">What is the company number?</h1>
@@ -26,7 +24,7 @@
               text: errors.companyNumber
             } if errors.companyNumber,
             classes: "govuk-input--width-10",
-            id: "company-number",
+            id: "companyNumber",
             name: "companyNumber",
             value: data.companyNumber
           })

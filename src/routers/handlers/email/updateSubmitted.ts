@@ -11,10 +11,13 @@ import {
   SUBMISSION_ID
 } from "../../../constants/app.const";
 
+const PAGE_TITLE = "Application submitted – Update a registered email address";
+
 export class UpdateSubmittedHandler extends GenericHandler {
 
   constructor () {
     super();
+    this.viewData.title = PAGE_TITLE;
   }
   
   async get (req: Request, response: Response): Promise<Object> {

@@ -5,8 +5,7 @@ import { InvalidCompanyHandler } from "./handlers/company/invalidCompany";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import * as config from "../config/index";
 import { logger } from "../utils/common/Logger";
-import FormValidator from "../utils/common/formValidator.util";
-import CompanyNumberSanitizer from "../utils/company/companyNumberSanitizer";
+
 import {
   COMPANY_CONFIRM_URL,
   COMPANY_INVALID_PAGE,
@@ -16,7 +15,6 @@ import {
   INVALID_COMPANY_URL,
   INVALID_URL,
   NUMBER_URL,
-  REA_HOME_PAGE,
   THERE_IS_A_PROBLEM_URL
 } from "../config";
 
@@ -29,15 +27,15 @@ const routeViews: string = "router_views/company/";
 const errorsConst: string = "errors";
 const invalidCompanyReason: string = "invalidCompanyReason";
 
-router.get(NUMBER_URL, (req: Request, res: Response, next: NextFunction) => {
+router.get(NUMBER_URL, async (req: Request, res: Response, next: NextFunction) => {
   logger.info(`GET request to enter company number`);
-  res.render(`${routeViews}` + COMPANY_SEARCH_PAGE, { backUri: REA_HOME_PAGE, userEmail: req.session?.data.signin_info?.user_profile?.email, signoutBanner: true });
+  await new CompanySearchHandler().get(req, res).then((data) => {
+    res.render(`${routeViews}` + COMPANY_SEARCH_PAGE, data);
+  });
 });
 
 router.post(NUMBER_URL, async (req: Request, res: Response, next: NextFunction) => {
-  const formValidator = new FormValidator();
-  const companyNumberSanitizer = new CompanyNumberSanitizer();
-  await new CompanySearchHandler(formValidator, companyNumberSanitizer).post(req, res).then((data) => {
+  await new CompanySearchHandler().post(req, res).then((data) => {
     req.session?.setExtraData(COMPANY_PROFILE, data);
     res.redirect(COMPANY_CONFIRM_URL);
   }).catch((data) => {

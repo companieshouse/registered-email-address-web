@@ -48,7 +48,7 @@ describe("Index router tests -", () => {
   });
 
   describe("signout tests -", () => {
-    const PAGE_HEADING = "Are you sure you want to sign out? - Update a registered email address – GOV.UK";
+    const PAGE_HEADING = "Are you sure you want to sign out? – Update a registered email address – GOV.UK";
     const ERROR_HEADING = "There is a problem";
     const URL = "test/return-url";
 

@@ -57,7 +57,9 @@ describe("Company router tests -", () => {
 
     it("Post Request to company Number URL should ERROR", async () => {
       const getSpy = jest.spyOn(CompanySearchHandler.prototype, 'post')
-        .mockRejectedValue( {errors : {companyNumber : INVALID_COMPANY_NUMBER }});
+        .mockRejectedValue( {errors : {companyNumber : INVALID_COMPANY_NUMBER },
+          title : "What is the company number?" }
+        );
 
       await request(app)
         .post(COMPANY_NUMBER_URL)
@@ -78,7 +80,7 @@ describe("Company router tests -", () => {
 
     it("Get Request to confirm URL should render company search Page", async () => {
       const getSpy = jest.spyOn(ConfirmCompanyHandler.prototype, 'get')
-        .mockResolvedValue({companyProfile : {companyNumber: 12345678}});
+        .mockResolvedValue({title : "Confirm this is the correct company", companyProfile : {companyNumber: 12345678}});
 
       await request(app)
         .get(COMPANY_CONFIRM_URL)
@@ -92,7 +94,7 @@ describe("Company router tests -", () => {
 
     it("Get Request to confirm URL should Error", async () => {
       const getSpy = jest.spyOn(ConfirmCompanyHandler.prototype, 'get')
-        .mockResolvedValue({errors : {companyNumber : INVALID_COMPANY_NUMBER }});
+        .mockResolvedValue({title : "What is the company number?", errors : {companyNumber : INVALID_COMPANY_NUMBER }});
 
       await request(app)
         .get(COMPANY_CONFIRM_URL)
@@ -149,7 +151,7 @@ describe("Company router tests -", () => {
     const PAGE_TITLE = "Invalid Company – Update a registered email address – GOV.UK";
 
     it("Get Request to invalid URL should render company invalid Page", async () => {
-      const getSpy = jest.spyOn(InvalidCompanyHandler.prototype, 'get').mockResolvedValue({});
+      const getSpy = jest.spyOn(InvalidCompanyHandler.prototype, 'get').mockResolvedValue({title : "Invalid Company"});
       await request(app)
         .get(INVALID_COMPANY_URL)
         .then((response) => {

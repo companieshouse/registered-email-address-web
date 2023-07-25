@@ -43,7 +43,7 @@ describe("Test ConfirmCompanyHandler", () => {
     //set Company Profile in session
     await homeHandler.get(request, response).then((homeResponse) => {
       const homeResponseJson = JSON.parse(JSON.stringify(homeResponse));
-      expect(homeResponseJson.title).toEqual("Update a registered email address");
+      expect(homeResponseJson.title).toEqual("Start");
       expect(homeResponseJson.signoutBanner).toEqual(false);
 
     });

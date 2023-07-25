@@ -53,7 +53,7 @@ const clone = (objectToClone: any): any => {
 describe("Request to enter company number - test GET method", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    companySearchHandler = new CompanySearchHandler(formValidator, companyNumberSanitizer);
+    companySearchHandler = new CompanySearchHandler();
     // session instance
     session = new Session();
     // mock request/responses
@@ -86,7 +86,7 @@ describe("Request to enter company number - test GET method", () => {
       const searchCompanyNumbersResponseJson = JSON.parse(JSON.stringify(searchCompanyNumbersResponse));
       expect(searchCompanyNumbersResponseJson.backUri).toEqual('/registered-email-address');
       expect(searchCompanyNumbersResponseJson.signoutBanner).toEqual(true);
-      expect(searchCompanyNumbersResponseJson.errors.companyNumber).toEqual('You must enter a valid company number');
+      expect(searchCompanyNumbersResponseJson.errors.errorList[0].text).toEqual('There is a problem');
     });
   });
 
