@@ -39,5 +39,4 @@ export const createPrivateApiClient = (apiKey?: string, oauthToken?: string, bas
 // exports used by private sdk to provide private services without the need to duplicate configs or http client logic
 export { IHttpClient, HttpClientOptions, RequestClient, API_URL, ACCOUNT_URL, Resource };
 
-export * from "./types";
 export * from "./service";

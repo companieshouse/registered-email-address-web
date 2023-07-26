@@ -3,12 +3,13 @@ jest.mock("../../../../src/services/api/private-get-rea");
 jest.mock("../../../../src/utils/common/Logger");
 
 import { getCompanyEmail } from "../../../../src/services/company/company.email.service";
-import { RegisteredEmailAddress, createPrivateApiClient } from "../../../../src/services/api/private-get-rea";
+import { createPrivateApiClient } from "../../../../src/services/api/private-get-rea";
 import { Resource } from "@companieshouse/api-sdk-node";
 import { createAndLogError  } from "../../../../src/utils/common/Logger";
 import { validEmailSDKResource } from "../../../mocks/company.email.mock";
 import { StatusCodes } from 'http-status-codes';
 import { THERE_IS_A_PROBLEM_ERROR } from "../../../../src/constants/app.const";
+import { RegisteredEmailAddress } from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
 
 const mockCreatePrivateApiClient = createPrivateApiClient as jest.Mock;
 const mockGetRegisteredEmailAddress = jest.fn();

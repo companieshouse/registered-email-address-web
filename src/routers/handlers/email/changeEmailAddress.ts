@@ -33,7 +33,7 @@ import { StatusCodes } from 'http-status-codes';
 import Optional from "../../../models/optional";
 import FormValidator from "../../../utils/common/formValidator.util";
 import formSchema from "../../../schemas/changeEmailAddress.schema";
-import { RegisteredEmailAddress } from "services/api/private-get-rea";
+import {RegisteredEmailAddress} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import {DateTime} from "luxon";
 import {toReadableFormat} from "../../../utils/common/date";
