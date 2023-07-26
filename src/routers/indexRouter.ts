@@ -5,14 +5,14 @@ import {
   ACCESSIBILITY_STATEMENT_PAGE,
   ACCESSIBILITY_STATEMENT_URL,
   ACCOUNTS_SIGNOUT_PATH,
-  COMPANY_NUMBER_URL,
   HOME_PAGE,
   HOME_URL,
   REFERENCE,
   SIGN_OUT_PAGE,
   SIGN_OUT_URL,
   THERE_IS_A_PROBLEM_PAGE,
-  THERE_IS_A_PROBLEM_URL
+  THERE_IS_A_PROBLEM_URL,
+  COMPANY_NUMBER_URL
 } from "../config";
 
 const router: Router = Router();
@@ -25,7 +25,6 @@ router.get(HOME_URL, async (req: Request, res: Response, next: NextFunction) => 
 });
 
 router.post(HOME_URL, (req: Request, res: Response, next: NextFunction) => {
-  const handler = new HomeHandler();
   res.redirect(COMPANY_NUMBER_URL);
 });
 
