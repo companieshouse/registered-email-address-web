@@ -12,7 +12,7 @@ export const createRegisteredEmailAddress = async (session: Session, transaction
     const registeredEmailAddress: RegisteredEmailAddress = {registeredEmailAddress: companyEmail};
 
     logger.debug(`Creating registered email address Address with company number ${companyNumber}`);
-    const sdkResponse: Resource<RegisteredEmailAddress> | ApiErrorResponse = await apiClient.registeredEmailAddressService.createRegisteredEmailAddressResource(transactionId, registeredEmailAddress);
+    const sdkResponse: Resource<RegisteredEmailAddress> | ApiErrorResponse = await apiClient.registeredEmailAddressService.postRegisteredEmailAddress(transactionId, registeredEmailAddress);
 
     if (!sdkResponse) {
         logger.error(`Create registered email API POST request returned no response for company number ${companyNumber}`);
