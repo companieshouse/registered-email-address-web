@@ -69,12 +69,12 @@ process.on("unhandledRejection", (err: any) => {
   logger.error(`${err.name} - unhandledRejection: ${err.message} - ${err.stack}`);
   process.exit(1);
 });
+
 // Apply middleware
 app.use(cookieParser());
 app.use(`${config.HOME_URL}*`, sessionMiddleware);
 
 // Login redirect
-app.use(cookieParser());
 const userAuthRegex = new RegExp(`^${config.HOME_URL}/.+`);
 app.use(userAuthRegex, authenticationMiddleware);
 
