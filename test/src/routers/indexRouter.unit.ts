@@ -3,7 +3,6 @@ import request from "supertest";
 import app from "../../../src/app";
 import {
   HOME_URL,
-  COMPANY_NUMBER_URL,
   SIGN_OUT_URL,
   ACCOUNTS_SIGNOUT_PATH,
   ACCESSIBILITY_STATEMENT_URL,
@@ -12,6 +11,8 @@ import {
 import {StatusCodes} from "http-status-codes";
 import {HomeHandler} from "../../../src/routers/handlers/index/home";
 import {SignOutHandler} from "../../../src/routers/handlers/index/signout";
+
+const COMPANY_NUMBER_REDIRECT: string = "Found. Redirecting to /registered-email-address/company/number";
 
 describe("Index router tests -", () => {
   const PAGE_HEADING = "Update a registered email address";
@@ -39,7 +40,7 @@ describe("Index router tests -", () => {
       await request(app)
         .post(HOME_URL)
         .then((response) => {
-          expect(response.text).toContain(COMPANY_NUMBER_URL);
+          expect(response.text).toContain(COMPANY_NUMBER_REDIRECT);
           expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
           expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalledTimes(0);
         });
