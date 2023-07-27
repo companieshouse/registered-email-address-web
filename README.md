@@ -14,10 +14,11 @@ To checkout and build the service:
 1. Clone [Docker CHS Development](https://github.com/companieshouse/docker-chs-development) and follow the steps in the README. 
 2. Run ./bin/chs-dev modules enable registered-email-address
 3. Run ./bin/chs-dev services enable transactions-api
-4. Run ./bin/chs-dev development enable registered-email-address-web (this will allow you to make changes).
-5. Run docker using "tilt up" in the docker-chs-development directory.
-6. Use spacebar in the command line to open tilt window - wait for officer-filing-web to become green.
-7. Open your browser and go to page http://chs.local/registered-email-address
+4. Run ./bin/chs-dev services enable company-lookup-web-ch-gov-uk
+5. Run ./bin/chs-dev development enable registered-email-address-web (this will allow you to make changes).
+6. Run docker using "tilt up" in the docker-chs-development directory.
+7. Use spacebar in the command line to open tilt window - wait for officer-filing-web to become green.
+8. Open your browser and go to page http://chs.local/registered-email-address
 
 NOTE: when testing, you will need a company that already has a registered-email-address that will be returned by the private oracle-query-api
 
