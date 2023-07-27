@@ -11,7 +11,7 @@ import {
   TRANSACTION_CLOSE_ERROR
 } from "../../../constants/app.const";
 import {EMAIL_CHANGE_EMAIL_ADDRESS_URL} from "../../../config";
-import {postRegisteredEmailAddress} from "../../../services/email/postRegisteredEmailAddress";
+import {postRegisteredEmailAddress} from "../../../services/email/email.registered.service";
 import {closeTransaction} from "../../../services/transaction/transaction.service";
 import {CompanyProfile} from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import {formatValidationError} from "../../../utils/error/formatValidationErrors";
