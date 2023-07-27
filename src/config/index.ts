@@ -49,7 +49,7 @@ export const VALID_EMAIL_REGEX_PATTERN = ".+[@].+[.].+";
 // TEMPLATES
 export const HOME_PAGE = "home";
 export const REA_HOME_PAGE = "/registered-email-address";
-export const COMPANY_SEARCH_PAGE = "company-search";
+export const COMPANY_LOOKUP_PAGE  = "/company-lookup";
 export const COMPANY_NUMBER_PAGE = "company/number";
 export const COMPANY_CONFIRM_PAGE = "company/confirm";
 export const EMAIL_CHANGE_EMAIL_ADDRESS = "email/change-email-address";
@@ -83,3 +83,4 @@ export const EMAIL_CHECK_ANSWER_URL = `${HOME_URL}/${EMAIL_CHECK_ANSWER}`;
 export const ACCESSIBILITY_STATEMENT_URL = `${HOME_URL}/${ACCESSIBILITY_STATEMENT_PAGE}`;
 export const EMAIL_UPDATE_SUBMITTED_URL = `${HOME_URL}/${EMAIL_UPDATE_SUBMITTED}`;
 export const THERE_IS_A_PROBLEM_URL = `${HOME_URL}/${THERE_IS_A_PROBLEM_PAGE}`;
+export const COMPANY_LOOKUP_URL = `${COMPANY_LOOKUP_PAGE}/search?forward=${COMPANY_CONFIRM_URL}?companyNumber={companyNumber}`;

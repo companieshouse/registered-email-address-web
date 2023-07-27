@@ -45,7 +45,6 @@ app.set("view engine", "njk");
 
 // Serve static files
 app.use(express.static(path.join(__dirname, "/../assets/public")));
-// app.use("/assets", express.static("./../node_modules/govuk-frontend/govuk/assets"));
 
 njk.addGlobal("cdnUrlCss", CDN_URL_CSS);
 njk.addGlobal("cdnUrlJs", CDN_URL_JS);
@@ -95,7 +94,6 @@ app.use(companyAuthRegex, companyAuthenticationMiddleware);
 
 // Channel all requests through router dispatch
 routerDispatch(app);
-
 
 app.use(pageNotFound);
 

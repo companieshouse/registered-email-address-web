@@ -4,11 +4,9 @@
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
-{% set title = "Check your answer before submitting this filing" %}
-
 {% block main_content %}
     <span class="govuk-caption-m">{{ companyName }} ({{ companyNumber }})</span>
-    <h1 class="govuk-heading-xl">{{ title }}</h1>
+    <h1 class="govuk-heading-xl">Check your answer before submitting this filing</h1>
     <dl class="govuk-summary-list govuk-!-margin-bottom-9">
         <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">

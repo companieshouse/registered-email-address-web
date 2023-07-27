@@ -3,10 +3,14 @@ import { GenericHandler } from "../generic";
 import { Session } from "@companieshouse/node-session-handler";
 import { FAILED_TO_FIND_RETURN_URL_ERROR, RETURN_URL} from "../../../constants/app.const";
 import { logger } from "../../../utils/common/Logger";
+
+const PAGE_TITLE = "Are you sure you want to sign out?";
+
 export class SignOutHandler extends GenericHandler {
 
   constructor () {
     super();
+    this.viewData.title = PAGE_TITLE;
   }
 
   get (req: Request, response: Response): Promise<Object> {

@@ -1,6 +1,6 @@
 {% if backUri %}
+<div class="govuk-!-margin-bottom-5">
   {% block backLink %}
-   <div class="govuk-!-margin-top-4">
     {{
       govukBackLink({
         text: "Back",
@@ -10,6 +10,6 @@
         }
       })
     }}
-    </div>
   {% endblock %}
+ </div>
 {% endif %}

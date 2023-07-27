@@ -17,11 +17,8 @@ export const RETURN_URL: string =  'returnToUrl';
 export const SUBMISSION_ID: string =  "submissionID";
 
 export const NOT_SIGNED_IN_ERROR: string = "User not signed in, returning to home page";
-export const WHAT_IS_COMPANY_NUMBER: string = "What is the company number?";
 export const THERE_IS_A_PROBLEM_ERROR: string =  "There is a problem";
 export const INVALID_COMPANY_NUMBER: string =  "You must enter a valid company number";
-export const SERVICE_UNAVAILABLE: string =  "Service unavailable";
-export const SOMETHING_HAS_GONE_WRONG: string =  "Something has gone wrong";
 export const NO_EMAIL_ADDRESS_FOUND: string =  "No email address for company number";
 export const EMAIL_ADDRESS_INVALID: string =  "Enter an email address in the correct format, like name@example.com";
 export const NO_EMAIL_ADDRESS_SUPPLIED: string =  "Enter the registered email address";

@@ -8,11 +8,11 @@ import { Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from 'node-mocks-http';
 import { ConfirmCompanyHandler } from "../../../../../src/routers/handlers/company/confirm";
 import { Session } from "@companieshouse/node-session-handler";
-import { REGISTERED_EMAIL_ADDRESS } from "../../../../../src/constants/app.const";
+import { REGISTERED_EMAIL_ADDRESS, INVALID_COMPANY_NUMBER } from "../../../../../src/constants/app.const";
 import {createApiClient} from "@companieshouse/api-sdk-node";
 import { createPrivateApiClient } from "../../../../../src/services/api/private-get-rea";
 import { CompanyProfileErrorResponse, validSDKResource} from "../../../../mocks/company.profile.mock";
-import { validEmailSDKResource, EmailErrorReponse, EmailNotFoundReponse} from "../../../../mocks/company.email.mock";
+import { validEmailSDKResource, EmailNotFoundReponse} from "../../../../mocks/company.email.mock";
 import { createAndLogError } from "../../../../../src/utils/common/Logger";
 import * as constants from "../../../../../src/constants/app.const";
 import * as validationConstants from "../../../../../src/constants/validation.const";
@@ -20,6 +20,7 @@ import * as validationConstants from "../../../../../src/constants/validation.co
 
 // Testing Const
 const TEST_EMAIL_EXISTING: string = "test@test.co.biz";
+const COMPANY_NUMBER_BACKLINK: string = "/registered-email-address/company/number";
 
 // default handler instance
 let confirmCompanyHandler: ConfirmCompanyHandler;
@@ -74,9 +75,8 @@ describe("Test ConfirmCompanyHandler", () => {
     //set email in session
     request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
   });
-  
 
-  it("Get Request in ConfirmCompanyHandlerr - Get Confirm Company Screen Successful", async () => {
+  it("Get Request in ConfirmCompanyHandler - Get Confirm Company Screen Successful", async () => {
     //set Company Profile in session
     request.session?.setExtraData(constants.COMPANY_PROFILE, validSDKResource.resource);
     await confirmCompanyHandler.get(request, response).then((confirmCompanyResponse) => {
@@ -86,7 +86,7 @@ describe("Test ConfirmCompanyHandler", () => {
       expect(confirmCompanyResponseJson.company.companyStatus).toEqual('Active');
       expect(confirmCompanyResponseJson.company.type).toEqual('Private limited company');
       expect(confirmCompanyResponseJson.company.registeredOfficeAddress).toBeTruthy();
-      expect(confirmCompanyResponseJson.backUri).toEqual('/registered-email-address/company/number');
+      expect(confirmCompanyResponseJson.backUri).toEqual(COMPANY_NUMBER_BACKLINK);
     });
   });
 
@@ -104,7 +104,7 @@ describe("Test ConfirmCompanyHandler", () => {
       expect(confirmCompanyResponseJson.company.companyStatus).toEqual('Active');
       expect(confirmCompanyResponseJson.company.type).toEqual('Private limited company');
       expect(confirmCompanyResponseJson.company.registeredOfficeAddress).toBeTruthy();
-      expect(confirmCompanyResponseJson.backUri).toEqual('/registered-email-address/company/number');
+      expect(confirmCompanyResponseJson.backUri).toEqual(COMPANY_NUMBER_BACKLINK);
     });
   });
 
@@ -117,7 +117,7 @@ describe("Test ConfirmCompanyHandler", () => {
 
     await confirmCompanyHandler.get(request, response).then((confirmCompanyResponse) => {
       const confirmCompanyResponseJson = JSON.parse(JSON.stringify(confirmCompanyResponse));
-      expect(confirmCompanyResponseJson.errors.companyNumber).toEqual('You must enter a valid company number');
+      expect(confirmCompanyResponseJson.errors.companyNumber).toEqual(INVALID_COMPANY_NUMBER);
     });
   });
 

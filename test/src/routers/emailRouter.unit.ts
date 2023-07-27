@@ -92,10 +92,11 @@ describe("Email router tests", () => {
     });
 
     describe("Check your answer tests", () => {
-      const PAGE_HEADING = "Check your answer before submitting this filing";
+      const PAGE_HEADING = "Check your answer before submitting this filing – Update a registered email address – GOV.UK";
 
       it("Should navigate to confirm email page", async () => {
-        const getSpy = jest.spyOn(CheckAnswerHandler.prototype, 'get').mockResolvedValue(clone(okResponse));
+        const getSpy = jest.spyOn(CheckAnswerHandler.prototype, 'get')
+          .mockResolvedValue({title : "Check your answer before submitting this filing" });
 
         await request(app)
           .get(EMAIL_CHECK_ANSWER_URL)
@@ -116,7 +117,8 @@ describe("Email router tests", () => {
               href: "emailConfirmation",
               text: "wrong deliberately"
             }]
-          }
+          },
+          title : "Check your answer before submitting this filing"
         };
         const postSpy = jest.spyOn(CheckAnswerHandler.prototype, 'post').mockRejectedValue(errorObject);
 
@@ -165,7 +167,7 @@ describe("Email router tests", () => {
     const PAGE_HEADING = "Application submitted – Update a registered email address";
 
     it("Should navigate to update submitted page", async () => {
-      const getSpy = jest.spyOn(UpdateSubmittedHandler.prototype, 'get').mockResolvedValue(clone(okResponse));
+      const getSpy = jest.spyOn(UpdateSubmittedHandler.prototype, 'get').mockResolvedValue({title : "Application submitted"});
 
       await request(app)
         .get(EMAIL_UPDATE_SUBMITTED_URL)
