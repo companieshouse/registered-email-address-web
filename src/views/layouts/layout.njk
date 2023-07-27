@@ -80,6 +80,7 @@
   {% if signoutBanner %}
     {% if userEmail %}
       <script src="//{{ cdnHost }}/javascripts/app/session-timeout.js"></script>
+      {# <script>$.timeoutDialog ({ timeout: 30, countdown: 15 })</script> #}
     {% endif %}
   {% endif %}
   <script src="//{{ cdnHost }}/javascripts/govuk-frontend/v4.6.0/govuk-frontend-4.6.0.min.js"></script>

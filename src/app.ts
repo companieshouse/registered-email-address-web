@@ -4,12 +4,23 @@ import nunjucks from "nunjucks";
 import path from "path";
 import { logger } from "./utils/common/Logger";
 import routerDispatch from "./router.dispatch";
-import * as config from "./config";
 import {authenticationMiddleware} from "./middleware/authentication.middleware";
 import {companyAuthenticationMiddleware} from "./middleware/company.authentication.middleware";
 import cookieParser from "cookie-parser";
 import {sessionMiddleware} from "./middleware/session.middleware";
 import {pageNotFound} from "./utils/error/error";
+
+import {
+  APPLICATION_NAME,
+  CDN_URL_CSS,
+  CDN_URL_JS,
+  CDN_HOST,
+  CHS_URL,
+  EMAIL_BASE_URL,
+  HOME_URL,
+  PIWIK_URL,
+  PIWIK_SITE_ID
+} from "./config";
 
 const app = express();
 
@@ -36,15 +47,15 @@ app.set("view engine", "njk");
 app.use(express.static(path.join(__dirname, "/../assets/public")));
 // app.use("/assets", express.static("./../node_modules/govuk-frontend/govuk/assets"));
 
-njk.addGlobal("cdnUrlCss", config.CDN_URL_CSS);
-njk.addGlobal("cdnUrlJs", config.CDN_URL_JS);
-njk.addGlobal("cdnHost", config.CDN_HOST);
-njk.addGlobal("chsUrl", config.CHS_URL);
+njk.addGlobal("cdnUrlCss", CDN_URL_CSS);
+njk.addGlobal("cdnUrlJs", CDN_URL_JS);
+njk.addGlobal("cdnHost", CDN_HOST);
+njk.addGlobal("chsUrl", CHS_URL);
 
 
-njk.addGlobal("PIWIK_URL", config.PIWIK_URL);
-njk.addGlobal("PIWIK_SITE_ID", config.PIWIK_SITE_ID);
-njk.addGlobal("SERVICE_NAME", config.APPLICATION_NAME);
+njk.addGlobal("PIWIK_URL", PIWIK_URL);
+njk.addGlobal("PIWIK_SITE_ID", PIWIK_SITE_ID);
+njk.addGlobal("SERVICE_NAME", APPLICATION_NAME);
 // If app is behind a front-facing proxy, and to use the X-Forwarded-* headers to determine the connection and the IP address of the client
 app.enable("trust proxy");
 
@@ -72,14 +83,14 @@ process.on("unhandledRejection", (err: any) => {
 
 // Apply middleware
 app.use(cookieParser());
-app.use(`${config.HOME_URL}*`, sessionMiddleware);
+app.use(`${HOME_URL}*`, sessionMiddleware);
 
 // Login redirect
-const userAuthRegex = new RegExp(`^${config.HOME_URL}/.+`);
+const userAuthRegex = new RegExp(`^${HOME_URL}/.+`);
 app.use(userAuthRegex, authenticationMiddleware);
 
 // Company Auth redirect
-const companyAuthRegex = new RegExp(`^${config.EMAIL_BASE_URL}/.+`);
+const companyAuthRegex = new RegExp(`^${EMAIL_BASE_URL}/.+`);
 app.use(companyAuthRegex, companyAuthenticationMiddleware);
 
 // Channel all requests through router dispatch
