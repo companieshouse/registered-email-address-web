@@ -3,16 +3,13 @@ import request from "supertest";
 import app from "../../../src/app";
 import {
   COMPANY_CONFIRM_URL,
-  COMPANY_NUMBER_URL,
   EMAIL_CHANGE_EMAIL_ADDRESS_URL,
   INVALID_COMPANY_URL,
-  THERE_IS_A_PROBLEM_PAGE,
   THERE_IS_A_PROBLEM_URL
 } from "../../../src/config";
 import {StatusCodes} from "http-status-codes";
-import {CompanySearchHandler} from "../../../src/routers/handlers/company/companySearch";
 import {HttpResponse} from "@companieshouse/api-sdk-node/dist/http/http-client";
-import {INVALID_COMPANY_NUMBER, THERE_IS_A_PROBLEM_ERROR} from "../../../src/constants/app.const";
+import {INVALID_COMPANY_NUMBER} from "../../../src/constants/app.const";
 import {InvalidCompanyHandler} from "../../../src/routers/handlers/company/invalidCompany";
 import {ConfirmCompanyHandler} from "../../../src/routers/handlers/company/confirm";
 import {
@@ -25,60 +22,17 @@ const okResponse: HttpResponse = {status: StatusCodes.OK};
 
 
 describe("Company router tests -", () => {
-  const COMPANY_NUMBER_PAGE_TITLE = "What is the company number? – Update a registered email address – GOV.UK";
-  
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe("Company Number Page tests -", () => {
-    it("Get Request to company Number URL should company search Page", async () => {
-      await request(app)
-        .get(COMPANY_NUMBER_URL)
-        .then((response) => {
-          expect(response.text).toContain(COMPANY_NUMBER_PAGE_TITLE);
-          expect(response.status).toBe(StatusCodes.OK);
-          expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
-        });
-    });
-
-    it("Post Request to company Number URL should redirect to confirm page", async () => {
-      const getSpy = jest.spyOn(CompanySearchHandler.prototype, 'post').mockResolvedValue(okResponse);
-
-      await request(app)
-        .post(COMPANY_NUMBER_URL)
-        .send({companyNumber : '12345678'})
-        .then((response) => {
-          expect(response.text).toContain(COMPANY_CONFIRM_URL);
-          expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
-          expect(getSpy).toHaveBeenCalled();
-        });
-    });
-
-    it("Post Request to company Number URL should ERROR", async () => {
-      const getSpy = jest.spyOn(CompanySearchHandler.prototype, 'post')
-        .mockRejectedValue( {errors : {companyNumber : INVALID_COMPANY_NUMBER },
-          title : "What is the company number?" }
-        );
-
-      await request(app)
-        .post(COMPANY_NUMBER_URL)
-        .send({companyNumber : '12345678'})
-        .then((response) => {
-          expect(response.text).toContain(COMPANY_NUMBER_PAGE_TITLE);
-          expect(response.text).toContain(THERE_IS_A_PROBLEM_ERROR);
-          expect(response.status).toBe(StatusCodes.OK);
-          expect(getSpy).toHaveBeenCalled();
-          expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
-        });
-    });
-  });
-
-
   describe("Confirm Company Page tests -", () => {
     const PAGE_TITLE = "Confirm this is the correct company – Update a registered email address – GOV.UK";
+    const ERROR_PAGE_TITLE = "What is the company number? – Update a registered email address – GOV.UK";
 
-    it("Get Request to confirm URL should render company search Page", async () => {
+
+    it("Get Request to confirm URL should render company confirmation Page", async () => {
       const getSpy = jest.spyOn(ConfirmCompanyHandler.prototype, 'get')
         .mockResolvedValue({title : "Confirm this is the correct company", companyProfile : {companyNumber: 12345678}});
 
@@ -99,7 +53,7 @@ describe("Company router tests -", () => {
       await request(app)
         .get(COMPANY_CONFIRM_URL)
         .then((response) => {
-          expect(response.text).toContain(COMPANY_NUMBER_PAGE_TITLE);
+          expect(response.text).toContain(ERROR_PAGE_TITLE);
           expect(response.status).toBe(StatusCodes.OK);
           expect(getSpy).toHaveBeenCalled();
           expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();

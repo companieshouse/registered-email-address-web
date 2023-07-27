@@ -84,7 +84,6 @@ app.use(companyAuthRegex, companyAuthenticationMiddleware);
 // Channel all requests through router dispatch
 routerDispatch(app);
 
-
 app.use(pageNotFound);
 
 export default app;
