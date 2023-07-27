@@ -19,7 +19,6 @@ import {
 } from "../constants/app.const";
 
 const router: Router = Router();
-const indexRouterViews: string = "router_views/index/";
 const emailRouterViews: string = "router_views/email/";
 
 // GET: /change-email-address

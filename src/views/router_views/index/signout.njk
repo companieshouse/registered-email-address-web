@@ -3,9 +3,6 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 
-
-{% set title = " Are you sure you want to sign out? - Update a registered email address – GOV.UK " %}
-
 {% block main_content %}
 {% if noInputSelectedError %}
 {% set detailsErrorMsg = {

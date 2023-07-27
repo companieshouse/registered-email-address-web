@@ -2,11 +2,13 @@ import { Request, Response } from "express";
 import { GenericHandler } from "./../generic";
 import { logger } from "../../../utils/common/Logger";
 
+const PAGE_TITLE = "Start";
+
 export class HomeHandler extends GenericHandler {
 
   constructor () {
     super();
-    this.viewData.title = "Update a registered email address";
+    this.viewData.title = PAGE_TITLE;
     this.viewData.signoutBanner = false;
   }
 
