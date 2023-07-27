@@ -22,18 +22,19 @@ const okResponse: HttpResponse = {status: StatusCodes.OK};
 
 
 describe("Company router tests -", () => {
-  const COMPANY_NUMBER_PAGE_TITLE = "What is the company number? – Update a registered email address – GOV.UK";
-  
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   describe("Confirm Company Page tests -", () => {
     const PAGE_TITLE = "Confirm this is the correct company – Update a registered email address – GOV.UK";
+    const ERROR_PAGE_TITLE = "What is the company number? – Update a registered email address – GOV.UK";
+
 
     it("Get Request to confirm URL should render company confirmation Page", async () => {
       const getSpy = jest.spyOn(ConfirmCompanyHandler.prototype, 'get')
-        .mockResolvedValue({companyProfile : {companyNumber: 12345678}});
+        .mockResolvedValue({title : "Confirm this is the correct company", companyProfile : {companyNumber: 12345678}});
 
       await request(app)
         .get(COMPANY_CONFIRM_URL)
@@ -47,12 +48,12 @@ describe("Company router tests -", () => {
 
     it("Get Request to confirm URL should Error", async () => {
       const getSpy = jest.spyOn(ConfirmCompanyHandler.prototype, 'get')
-        .mockResolvedValue({errors : {companyNumber : INVALID_COMPANY_NUMBER }});
+        .mockResolvedValue({title : "What is the company number?", errors : {companyNumber : INVALID_COMPANY_NUMBER }});
 
       await request(app)
         .get(COMPANY_CONFIRM_URL)
         .then((response) => {
-          expect(response.text).toContain(PAGE_TITLE);
+          expect(response.text).toContain(ERROR_PAGE_TITLE);
           expect(response.status).toBe(StatusCodes.OK);
           expect(getSpy).toHaveBeenCalled();
           expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
@@ -104,7 +105,7 @@ describe("Company router tests -", () => {
     const PAGE_TITLE = "Invalid Company – Update a registered email address – GOV.UK";
 
     it("Get Request to invalid URL should render company invalid Page", async () => {
-      const getSpy = jest.spyOn(InvalidCompanyHandler.prototype, 'get').mockResolvedValue({});
+      const getSpy = jest.spyOn(InvalidCompanyHandler.prototype, 'get').mockResolvedValue({title : "Invalid Company"});
       await request(app)
         .get(INVALID_COMPANY_URL)
         .then((response) => {

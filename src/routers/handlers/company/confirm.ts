@@ -28,11 +28,13 @@ import {
 import { COMPANY_NUMBER_URL } from "../../../config";
 import { StatusCodes } from "http-status-codes";
 
+const PAGE_TITLE = "Confirm this is the correct company";
 
 export class ConfirmCompanyHandler extends GenericHandler {
 
   constructor() {
     super();
+    this.viewData.title = PAGE_TITLE;
   }
 
   async get(req: Request, response: Response): Promise<Object> {

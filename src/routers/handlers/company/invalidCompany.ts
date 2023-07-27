@@ -12,12 +12,15 @@ import {
   INVALID_COMPANY_TYPE_REASON
 } from "../../../constants/validation.const";
 
+const PAGE_TITLE = "Invalid Company";
 
 export class InvalidCompanyHandler extends GenericHandler {
 
   constructor () {
     super();
     this.viewData.signoutBanner = false;
+    this.viewData.title = PAGE_TITLE;
+
   }
   async get (req: Request, res: Response): Promise<Object> {
     logger.info(`GET request to serve company Invalid Company`);

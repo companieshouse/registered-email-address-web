@@ -35,8 +35,8 @@ import FormValidator from "../../../utils/common/formValidator.util";
 import formSchema from "../../../schemas/changeEmailAddress.schema";
 import {RegisteredEmailAddress} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
-import {DateTime} from "luxon";
-import {toReadableFormat} from "../../../utils/common/date";
+
+const PAGE_TITLE = "What is the new registered email address?";
 
 export class ChangeEmailAddressHandler extends GenericHandler {
 
@@ -45,6 +45,7 @@ export class ChangeEmailAddressHandler extends GenericHandler {
     this.viewData.backUri = COMPANY_BASE_URL+CONFIRM_URL;
     if (userEmail !== undefined) {
       this.viewData.userEmail = userEmail;
+      this.viewData.title = PAGE_TITLE;
     }
   }
 
@@ -100,6 +101,7 @@ export class ChangeEmailAddressHandler extends GenericHandler {
 
     //check: no email supplied
     if (errors) {
+      this.viewData.title = "Error: " + PAGE_TITLE;
       this.viewData.errors = formatValidationError(
         UPDATE_EMAIL_ERROR_KEY,
         UPDATE_EMAIL_ERROR_ANCHOR,
@@ -110,6 +112,8 @@ export class ChangeEmailAddressHandler extends GenericHandler {
 
     //check: email format invalid
     if (!validateEmailString(companyEmailAddressGiven)) {
+      this.viewData.title = "Error: " + PAGE_TITLE;
+
       this.viewData.errors = formatValidationError(
         UPDATE_EMAIL_ERROR_KEY,
         UPDATE_EMAIL_ERROR_ANCHOR,
