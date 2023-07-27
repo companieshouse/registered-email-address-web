@@ -11,23 +11,23 @@ export const postRegisteredEmailAddress = async (session: Session, transactionId
     const apiClient: ApiClient = createPublicOAuthApiClient(session);
     const registeredEmailAddress: RegisteredEmailAddress = {registeredEmailAddress: companyEmail};
 
-    logger.debug(`Creating registered email address Address with company number ${companyNumber}`);
+    logger.debug(`Creating Registered Email address Address with company number ${companyNumber}`);
     const sdkResponse: Resource<RegisteredEmailAddress> | ApiErrorResponse = await apiClient.registeredEmailAddressService.postRegisteredEmailAddress(transactionId, registeredEmailAddress);
 
     if (!sdkResponse) {
-        logger.error(`Create registered email API POST request returned no response for company number ${companyNumber}`);
+        logger.error(`Create Registered Email API POST request returned no response for company number ${companyNumber}`);
         return Promise.reject(sdkResponse);
     }
 
     if (!sdkResponse.httpStatusCode || sdkResponse.httpStatusCode !== StatusCodes.CREATED) {
-        logger.error(`Http status code ${sdkResponse.httpStatusCode} - Failed to Create Registered Email for company number ${companyNumber}`);
+        logger.error(`Http status code ${sdkResponse.httpStatusCode} - Failed to create Registered Email for company number ${companyNumber}`);
         return Promise.reject(sdkResponse);
     }
 
     const castedSdkResponse: Resource<RegisteredEmailAddress> = sdkResponse as Resource<RegisteredEmailAddress>;
 
     if (!castedSdkResponse.resource) {
-        logger.error(`Create registered email API POST request returned no resource for company number ${companyNumber}`);
+        logger.error(`Create Registered Email API POST request returned no resource for company number ${companyNumber}`);
         return Promise.reject(sdkResponse);
     }
 
