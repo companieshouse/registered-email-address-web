@@ -63,7 +63,7 @@ describe("Registered Email service test", () => {
         });
 
         it("Should throw an error if no response resource returned from SDK", async () => {
-            const mockedResponse = {httpStatusCode: StatusCodes.UNPROCESSABLE_ENTITY};
+            const mockedResponse = {httpStatusCode: StatusCodes.CREATED};
             mockPostTransaction.mockResolvedValueOnce(mockedResponse);
 
             await expect(postRegisteredEmailAddress(session, TRANSACTION_ID, COMPANY_NUMBER, EMAIL_ADDRESS_TO_REGISTER))

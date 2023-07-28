@@ -15,9 +15,10 @@ export const NEW_EMAIL_ADDRESS: string =  "newEmailAddress";
 export const INVALID_COMPANY_REASON: string =  "invalidCompanyReason";
 export const RETURN_URL: string =  'returnToUrl';
 export const SUBMISSION_ID: string =  "submissionID";
+
+export const NOT_SIGNED_IN_ERROR: string = "User not signed in, returning to home page";
 export const THERE_IS_A_PROBLEM_ERROR: string =  "There is a problem";
 export const INVALID_COMPANY_NUMBER: string =  "You must enter a valid company number";
-export const COMPANY_NUMBER_NOT_FOUND: string =  "Company number not found";
 export const NO_EMAIL_ADDRESS_FOUND: string =  "No email address for company number";
 export const EMAIL_ADDRESS_INVALID: string =  "Enter an email address in the correct format, like name@example.com";
 export const NO_EMAIL_ADDRESS_SUPPLIED: string =  "Enter the registered email address";
@@ -29,7 +30,5 @@ export const FAILED_TO_FIND_RETURN_URL_ERROR: string = "Unable to find return pa
 export const PRIVATE_API_ERROR: string =  "You cannot set both api key and oauth token to create a client. Please use one or the other";
 
 // erroring constants
-export const INVALID_COMPANY_NUMBER_ERROR_KEY: string =  "companyNumber";
-export const INVALID_COMPANY_NUMBER_ERROR_ANCHOR: string =  "#companyNumber";
 export const UPDATE_EMAIL_ERROR_KEY: string =  "changeEmailAddress";
 export const UPDATE_EMAIL_ERROR_ANCHOR: string =  "#change-email-address";

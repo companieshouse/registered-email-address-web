@@ -16,7 +16,7 @@ import {closeTransaction} from "../../../services/transaction/transaction.servic
 import {CompanyProfile} from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import {formatValidationError} from "../../../utils/error/formatValidationErrors";
 
-const PAGE_TITLE = "Check your answer before submitting your application";
+const PAGE_TITLE = "Check your answer";
 
 export class CheckAnswerHandler extends GenericHandler {
 

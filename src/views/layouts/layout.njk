@@ -16,6 +16,7 @@
 
 {% block head %}
   <!--[if !IE 8]><!-->
+  <link href="//{{ cdnHost }}/stylesheets/session-timeout.css" rel="stylesheet" />
   <link href="//{{ cdnHost }}/stylesheets/govuk-frontend/v4.6.0/govuk-frontend-4.6.0.min.css" rel="stylesheet"/>
   <link href="//{{ cdnHost }}/stylesheets/services/dissolution/application.css" rel="stylesheet"/>
   <!--<![endif]-->
@@ -75,7 +76,13 @@
 
 {% block bodyEnd %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
-  <script src="//{{ cdnHost }}/javascripts/govuk-frontend/v3.11.0/govuk-frontend-3.11.0.min.js"></script>
+  {% if signoutBanner %}
+    {% if userEmail %}
+      <script src="//{{ cdnHost }}/javascripts/app/session-timeout.js"></script>
+      {# <script>$.timeoutDialog ({ timeout: 30, countdown: 15 })</script> #}
+    {% endif %}
+  {% endif %}
+  <script src="//{{ cdnHost }}/javascripts/govuk-frontend/v4.6.0/govuk-frontend-4.6.0.min.js"></script>
   <script nonce={{ nonce | dump | safe }}>window.GOVUKFrontend.initAll()</script>
   <script src="//{{ cdnHost}}/javascripts/app/piwik-enable.js"></script>
   <script src="//{{ cdnHost }}/javascripts/app/cookie-consent/cookie-consent-1.0.0.js"></script>
