@@ -11,7 +11,7 @@ import {
   TRANSACTION_CLOSE_ERROR
 } from "../../../constants/app.const";
 import {EMAIL_CHANGE_EMAIL_ADDRESS_URL} from "../../../config";
-import {createRegisteredEmailAddressResource} from "../../../services/email/createRegisteredEmailAddressResource";
+import {postRegisteredEmailAddress} from "../../../services/email/email.registered.service";
 import {closeTransaction} from "../../../services/transaction/transaction.service";
 import {CompanyProfile} from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import {formatValidationError} from "../../../utils/error/formatValidationErrors";
@@ -66,7 +66,7 @@ export class CheckAnswerHandler extends GenericHandler {
 
     const transactionId: string | undefined = session?.getExtraData(SUBMISSION_ID);
 
-    return await createRegisteredEmailAddressResource(session, <string>transactionId, <string>companyEmail).then(async () => {
+    return await postRegisteredEmailAddress(session, <string>transactionId, <string>companyNumber, <string>companyEmail).then(async () => {
       // REA resource created so close the transaction
       return await closeTransaction(session, <string> companyNumber, <string>transactionId).then(() => {
         // Success!

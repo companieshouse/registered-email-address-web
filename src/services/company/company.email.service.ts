@@ -1,9 +1,10 @@
 import { Resource } from "@companieshouse/api-sdk-node";
-import { createPrivateApiClient, RegisteredEmailAddress } from "../api/private-get-rea";
+import { createPrivateApiClient } from "../api/private-get-rea";
 import { CHS_API_KEY, ORACLE_QUERY_API_URL } from "../../config";
 import { logger, createAndLogError } from "../../utils/common/Logger";
 import { THERE_IS_A_PROBLEM_ERROR } from "../../constants/app.const";
 import { StatusCodes } from 'http-status-codes';
+import {RegisteredEmailAddress} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
 
 /**
 * Get the registered email address for a company - private API
@@ -31,7 +32,7 @@ export const getCompanyEmail = async (companyNumber: string): Promise<Resource<R
     return Promise.reject(sdkResponse);
   }
 
-  logger.debug(`Received registered email address ${JSON.stringify(sdkResponse)}`); 
+  logger.debug(`Received registered email address ${JSON.stringify(sdkResponse)}`);
 
   return Promise.resolve(sdkResponse);
 };

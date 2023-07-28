@@ -4,9 +4,9 @@ import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/compa
 import { Session } from "@companieshouse/node-session-handler";
 import { Resource } from "@companieshouse/api-sdk-node";
 import { getCompanyProfile } from "../../../services/company/company.profile.service";
-import { RegisteredEmailAddress } from "../../../services/api/private-get-rea";
 import { buildAddress, formatForDisplay } from "../../../services/company/confirm.company.service";
 import { getCompanyEmail } from "../../../services/company/company.email.service";
+import {RegisteredEmailAddress} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
 
 import {logger} from "../../../utils/common/Logger";
 
@@ -14,7 +14,7 @@ import {
   COMPANY_PROFILE,
   COMPANY_NUMBER,
   INVALID_COMPANY_NUMBER,
-  REGISTERED_EMAIL_ADDRESS,  
+  REGISTERED_EMAIL_ADDRESS,
   THERE_IS_A_PROBLEM_ERROR
 } from "../../../constants/app.const";
 import {

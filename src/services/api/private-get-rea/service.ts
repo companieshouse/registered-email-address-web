@@ -1,21 +1,25 @@
-import { IHttpClient } from "@companieshouse/api-sdk-node/dist/http";
-import { RegisteredEmailAddress, RegisteredEmailAddressResource} from "./types";
+import {IHttpClient} from "@companieshouse/api-sdk-node/dist/http";
 import Resource from "@companieshouse/api-sdk-node/dist/services/resource";
-import { createPrivateApiClient } from "./index";
-import { CHS_API_KEY, ORACLE_QUERY_API_URL } from "../../../config";
+import {createPrivateApiClient} from "./index";
+import {CHS_API_KEY, ORACLE_QUERY_API_URL} from "../../../config";
+import {
+  RegisteredEmailAddress,
+  RegisteredEmailAddressResource
+} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
 
 /**
  * https://developer.companieshouse.gov.uk/api/docs/company/company_number/company_number.html
  */
 export default class RegisteredEmailAddressService {
-  constructor (private readonly client: IHttpClient) { }
+  constructor(private readonly client: IHttpClient) {
+  }
 
   /**
-    * Get the profile for a company.
-    *
-    * @param number the company number to look up
-    */
-  public async getRegisteredEmailAddress (number: string): Promise<Resource<RegisteredEmailAddress>> {
+     * Get the registered email address for a company.
+     *
+     * @param number the company number to look up
+     */
+  public async getRegisteredEmailAddress(number: string): Promise<Resource<RegisteredEmailAddress>> {
     // build client object
     const client = createPrivateApiClient(
       CHS_API_KEY,

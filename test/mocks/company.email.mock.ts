@@ -1,7 +1,7 @@
 jest.mock("../../src/services/company/company.email.service");
 
 import { Resource } from "@companieshouse/api-sdk-node";
-import { RegisteredEmailAddress } from "../../src/services/api/private-get-rea";
+import {RegisteredEmailAddress} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
 import { ApiErrorResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 import { StatusCodes } from 'http-status-codes';
 
