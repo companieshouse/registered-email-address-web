@@ -47,28 +47,27 @@ describe("Registered Email service test", () => {
         });
 
         it("Should throw an error when no registered email api response", async () => {
-            mockPostTransaction.mockResolvedValueOnce(undefined);
+            const mockedResponse = undefined;
+            mockPostTransaction.mockResolvedValueOnce(mockedResponse);
 
             await expect(postRegisteredEmailAddress(session, TRANSACTION_ID, COMPANY_NUMBER, EMAIL_ADDRESS_TO_REGISTER))
-                .rejects.toBe(undefined);
+                .rejects.toBe(mockedResponse);
         });
 
         it("Should throw an error if SERVICE UNAVAILABLE returned from SDK", async () => {
-            mockPostTransaction.mockResolvedValueOnce({
-                httpStatusCode: StatusCodes.SERVICE_UNAVAILABLE
-            } as Resource<RegisteredEmailAddress>);
+            const mockedResponse = {httpStatusCode: StatusCodes.SERVICE_UNAVAILABLE};
+            mockPostTransaction.mockResolvedValueOnce(mockedResponse as Resource<RegisteredEmailAddress>);
 
             await expect(postRegisteredEmailAddress(session, TRANSACTION_ID, COMPANY_NUMBER, EMAIL_ADDRESS_TO_REGISTER))
-                .rejects.toEqual({"httpStatusCode": 503});
+                .rejects.toEqual(mockedResponse);
         });
 
         it("Should throw an error if no response resource returned from SDK", async () => {
-            mockPostTransaction.mockResolvedValueOnce({
-                httpStatusCode: StatusCodes.CREATED
-            });
+            const mockedResponse = {httpStatusCode: StatusCodes.UNPROCESSABLE_ENTITY};
+            mockPostTransaction.mockResolvedValueOnce(mockedResponse);
 
             await expect(postRegisteredEmailAddress(session, TRANSACTION_ID, COMPANY_NUMBER, EMAIL_ADDRESS_TO_REGISTER))
-                .rejects.toEqual({httpStatusCode: StatusCodes.CREATED});
+                .rejects.toEqual(mockedResponse);
         });
     });
 });
