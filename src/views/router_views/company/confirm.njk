@@ -4,21 +4,14 @@
 
 {% block main_content %}
       <h1 class="govuk-heading-xl">Confirm this is the correct company</h1>
+      <h1 class="govuk-heading-l">{{company.companyName}}</h1>
+
       <form action="" method="post">
 
         {{ govukSummaryList({
           rows: [
-          {
-            key: {
-              text: "Company name"
-            },
-            value: {
-              text: company.companyName
-            }
-          },
             {
               key: {
-                classes: "govuk-!-width-full",
                 text: "Company number"
               },
               value: {
