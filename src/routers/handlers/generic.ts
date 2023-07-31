@@ -4,6 +4,7 @@ import { BaseHttpController } from "inversify-express-utils";
 import "reflect-metadata";
 
 import errorManifest from "../../utils/error/errorManifest";
+import { SESSION_COUNTDOWN, SESSION_TIMEOUT } from "../../config";
 
 export abstract class GenericHandler extends BaseHttpController {
 
@@ -15,6 +16,8 @@ export abstract class GenericHandler extends BaseHttpController {
     this.errorManifest = errorManifest;
     this.viewData = {};
     this.viewData.signoutBanner = true;
+    this.viewData.sessionTimeout = SESSION_TIMEOUT;
+    this.viewData.sessionCountdown = SESSION_COUNTDOWN;
   }
 
   processHandlerException (err: any): Object {
