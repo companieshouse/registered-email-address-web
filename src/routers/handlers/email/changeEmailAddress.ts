@@ -91,6 +91,8 @@ export class ChangeEmailAddressHandler extends GenericHandler {
     logger.info(`POST request to serve change registered email address page`);
 
     const session: Session = req.session as Session;
+
+    this.viewData.companyEmailAddress = session.getExtraData(REGISTERED_EMAIL_ADDRESS);
     const companyProfile: CompanyProfile | undefined = session.getExtraData(COMPANY_PROFILE);
     this.viewData.companyName = companyProfile?.companyName.toUpperCase();
     this.viewData.companyNumber = companyProfile?.companyNumber;
