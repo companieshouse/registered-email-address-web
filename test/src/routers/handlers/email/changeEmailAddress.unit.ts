@@ -107,6 +107,7 @@ describe("Registered email address update - test GET method", () => {
       expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
       expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
       expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
+      expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
     });
   });
 
@@ -125,6 +126,7 @@ describe("Registered email address update - test GET method", () => {
       expect(changeEmailAddressResponseJson.userEmail).toEqual(TEST_EMAIL_EXISTING);
       expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
       expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
+      expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
     });
   });
 
@@ -148,6 +150,8 @@ describe("Registered email address update - test GET method", () => {
       expect(request.session?.getExtraData(SUBMISSION_ID)).toEqual(transactionId);
       expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
       expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
+      expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+
     });
   });
 });
@@ -173,6 +177,7 @@ describe("Registered email address update - test POST method", () => {
     //set email address in request body to empty
     request.body.changeEmailAddress = "";
     request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
+    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
 
     await changeEmailAddressHandler.post(request, response).catch((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
@@ -186,6 +191,7 @@ describe("Registered email address update - test POST method", () => {
       expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
       expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
       expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
+      expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
     });
   });
 
@@ -193,6 +199,7 @@ describe("Registered email address update - test POST method", () => {
     //set email address in request body to invalid pattern
     request.body.changeEmailAddress = INVALID_EMAIL_ADDRESS;
     request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
+    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
 
     await changeEmailAddressHandler.post(request, response).catch((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
@@ -206,6 +213,7 @@ describe("Registered email address update - test POST method", () => {
       expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(EMAIL_ADDRESS_INVALID);
       expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
       expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
+      expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
     });
   });
 
@@ -213,6 +221,7 @@ describe("Registered email address update - test POST method", () => {
     //set email address in request body to invalid pattern
     request.body.changeEmailAddress = TEST_EMAIL_UPDATE;
     request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
+    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
 
     await changeEmailAddressHandler.post(request, response).then((changeEmailAddressResponse) => {
       const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
@@ -223,6 +232,7 @@ describe("Registered email address update - test POST method", () => {
       expect(changeEmailAddressResponseJson.signoutBanner).toBeTruthy;
       expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
       expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
+      expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
     });
   });
 });
