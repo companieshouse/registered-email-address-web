@@ -16,6 +16,7 @@ import {
   CDN_URL_JS,
   CDN_HOST,
   CHS_URL,
+  COMPANY_BASE_URL,
   EMAIL_BASE_URL,
   HOME_URL,
   PIWIK_URL,
@@ -84,8 +85,8 @@ process.on("unhandledRejection", (err: any) => {
 app.use(cookieParser());
 app.use(`${HOME_URL}*`, sessionMiddleware);
 
-// Login redirect
-const userAuthRegex = new RegExp(`^${HOME_URL}/.+`);
+// Login redirect for company and email paths only
+const userAuthRegex = new RegExp(`^(${COMPANY_BASE_URL})|(${EMAIL_BASE_URL}).+`);
 app.use(userAuthRegex, authenticationMiddleware);
 
 // Company Auth redirect
