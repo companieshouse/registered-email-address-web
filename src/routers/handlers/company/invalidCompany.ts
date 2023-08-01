@@ -18,7 +18,7 @@ export class InvalidCompanyHandler extends GenericHandler {
 
   constructor () {
     super();
-    this.viewData.signoutBanner = false;
+    this.viewData.signoutBanner = true;
     this.viewData.title = PAGE_TITLE;
 
   }
