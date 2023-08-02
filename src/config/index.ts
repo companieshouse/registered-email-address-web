@@ -39,8 +39,8 @@ export const PIWIK_UPDATE_START_GOAL_ID = getEnvironmentValue("PIWIK_UPDATE_STAR
 export const LOG_LEVEL = getEnvironmentValue("LOG_LEVEL", "DEBUG");
 export const API_URL = getEnvironmentValue("API_URL", "http://api.chs.local:4001");
 export const ACCOUNT_URL = getEnvironmentValue("ACCOUNT_URL", "http://account.chs.local");
-export const SESSION_TIMEOUT = getEnvironmentValue("SESSION_TIMEOUT", undefined);
-export const SESSION_COUNTDOWN = getEnvironmentValue("SESSION_COUNTDOWN", undefined);
+export const SESSION_TIMEOUT = getEnvironmentValue("SESSION_TIMEOUT");
+export const SESSION_COUNTDOWN = getEnvironmentValue("SESSION_COUNTDOWN");
 
 export const DESCRIPTION = "Update Registered Email Address Transaction";
 export const REFERENCE = "UpdateRegisteredEmailAddressReference";

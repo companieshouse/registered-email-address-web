@@ -1,12 +1,3 @@
-import * as config from "../config/index";
-
-export const REA_SESSION_KEY: string =  "registered-email-address";
-export const APP_NAME: string =  "registered-email-address-web";
-export const COMPANY_NOT_ACTIVE_ERROR_MSG: string =  "The company is not currently active and cannot be closed.";
-export const PAGE_TITLE_SUFFIX: string =  `${config.APPLICATION_NAME} - GOV.UK`;
-export const BANNER_FEEDBACK_LINK: string =  "https://www.smartsurvey.co.uk/s/closing-a-company-feedback";
-export const CONFIRMATION_FEEDBACK_LINK: string =  "https://www.smartsurvey.co.uk/s/closing-a-company-confirmation";
-
 // session.extra_data
 export const COMPANY_PROFILE: string =  "companyProfile";
 export const COMPANY_NUMBER: string =  "companyNumber";
@@ -16,7 +7,7 @@ export const INVALID_COMPANY_REASON: string =  "invalidCompanyReason";
 export const RETURN_URL: string =  'returnToUrl';
 export const SUBMISSION_ID: string =  "submissionID";
 
-export const NOT_SIGNED_IN_ERROR: string = "User not signed in, returning to home page";
+
 export const THERE_IS_A_PROBLEM_ERROR: string =  "There is a problem";
 export const INVALID_COMPANY_NUMBER: string =  "You must enter a valid company number";
 export const NO_EMAIL_ADDRESS_FOUND: string =  "No email address for company number";
@@ -32,3 +23,5 @@ export const PRIVATE_API_ERROR: string =  "You cannot set both api key and oauth
 // erroring constants
 export const UPDATE_EMAIL_ERROR_KEY: string =  "changeEmailAddress";
 export const UPDATE_EMAIL_ERROR_ANCHOR: string =  "#change-email-address";
+export const CHECK_ANSWER_ERROR_KEY: string =  "emailConfirmation";
+export const CHECK_ANSWER_ERROR_ANCHOR: string =  "#emailConfirmation";

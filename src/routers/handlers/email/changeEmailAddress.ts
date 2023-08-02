@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import { inject } from "inversify";
 import { Session } from "@companieshouse/node-session-handler";
-import { logger, createAndLogError } from "../../../utils/common/Logger";
+import { logger } from "../../../utils/common/Logger";
 import { validateEmailString } from "../../../utils/email/validateEmailString";
 import { postTransaction } from "../../../services/transaction/transaction.service";
 import { formatValidationError } from "../../../utils/error/formatValidationErrors";

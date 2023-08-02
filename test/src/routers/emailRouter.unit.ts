@@ -48,7 +48,7 @@ describe("Email router tests", () => {
           });
       });
 
-      it("Should navigate back to there is a problem page if unexpected data", async () => {
+      it("Should navigate to error page on incomplete data", async () => {
         const errorObject = {errors: "anything"};
         const getSpy = jest.spyOn(ChangeEmailAddressHandler.prototype, 'get').mockRejectedValue(errorObject);
 
