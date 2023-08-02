@@ -3,33 +3,35 @@ jest.mock("../../../../../src/services/api/api.service");
 jest.mock("../../../../../src/utils/common/Logger");
 
 import "reflect-metadata";
-import { Request, Response } from "express";
-import { createRequest, createResponse, MockRequest, MockResponse } from 'node-mocks-http';
-import { ChangeEmailAddressHandler } from "../../../../../src/routers/handlers/email/changeEmailAddress";
+import {Request, Response} from "express";
+import {createRequest, createResponse, MockRequest, MockResponse} from 'node-mocks-http';
+import {ChangeEmailAddressHandler} from "../../../../../src/routers/handlers/email/changeEmailAddress";
 import FormValidator from "../../../../../src/utils/common/formValidator.util";
-import { Session } from "@companieshouse/node-session-handler";
-import { 
-  REGISTERED_EMAIL_ADDRESS,
-  COMPANY_NUMBER, SUBMISSION_ID,
-  TRANSACTION_CREATE_ERROR,
-  NO_EMAIL_ADDRESS_SUPPLIED,
+import {Session} from "@companieshouse/node-session-handler";
+import {
+  COMPANY_NUMBER,
+  COMPANY_PROFILE,
   EMAIL_ADDRESS_INVALID,
-  UPDATE_EMAIL_ERROR_ANCHOR,
-  COMPANY_PROFILE
+  NO_EMAIL_ADDRESS_FOUND,
+  NO_EMAIL_ADDRESS_SUPPLIED,
+  REGISTERED_EMAIL_ADDRESS,
+  SUBMISSION_ID,
+  TRANSACTION_CREATE_ERROR,
+  UPDATE_EMAIL_ERROR_ANCHOR
 } from "../../../../../src/constants/app.const";
-import { validTransactionSDKResource, transactionId } from "../../../../mocks/transaction.mock";
-import { validEmailSDKResource, EmailErrorReponse } from "../../../../mocks/company.email.mock";
-import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
-import { createPublicOAuthApiClient } from "../../../../../src/services/api/api.service";
-import { createAndLogError } from "../../../../../src/utils/common/Logger";
-import {validCompanyProfile} from "../../../../../test/mocks/company.profile.mock";
-import { StatusCodes } from "http-status-codes";
+import {transactionId, validTransactionSDKResource} from "../../../../mocks/transaction.mock";
+import {EmailErrorReponse, validEmailSDKResource} from "../../../../mocks/company.email.mock";
+import {createApiClient} from "@companieshouse/api-sdk-node";
+import {createPublicOAuthApiClient} from "../../../../../src/services/api/api.service";
+import {createAndLogError} from "../../../../../src/utils/common/Logger";
+import {validCompanyProfile} from "../../../../mocks/company.profile.mock";
+import {StatusCodes} from "http-status-codes";
 
 const COMPANY_NO: string = "12345678";
 const TEST_EMAIL_EXISTING: string = "test@test.co.biz";
 const TEST_EMAIL_UPDATE: string = "new_test@test.co.biz";
 const BACK_LINK_PATH: string = "/registered-email-address/company/confirm";
-const CREATE_TRANSACTION_ERROR: string = TRANSACTION_CREATE_ERROR+COMPANY_NO;
+const CREATE_TRANSACTION_ERROR: string = TRANSACTION_CREATE_ERROR + COMPANY_NO;
 const INVALID_EMAIL_ADDRESS: string = "test-test.co.biz";
 const PROFILE = validCompanyProfile;
 const TEST_COMPANY_NAME: string = "TEST COMPANY";
@@ -130,6 +132,25 @@ describe("Registered email address update - test GET method", () => {
     });
   });
 
+  it("Registered email address update - company email not in session", async () => {
+    validTransactionSDKResource.httpStatusCode = StatusCodes.CREATED;
+    mockPostTransactionResponse.mockResolvedValueOnce(clone(validTransactionSDKResource));
+    request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
+    request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
+
+    await changeEmailAddressHandler.get(request, response).catch((changeEmailAddressResponse) => {
+      const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
+
+      expect(changeEmailAddressResponseJson.errors).toBeTruthy;
+      expect(changeEmailAddressResponseJson.errors.errorList).toBeTruthy;
+      expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(NO_EMAIL_ADDRESS_FOUND);
+      expect(changeEmailAddressResponseJson.errors.errorList).toHaveLength(1);
+      expect(changeEmailAddressResponseJson.errors.errorList[0].href).toEqual(UPDATE_EMAIL_ERROR_ANCHOR);
+      expect(changeEmailAddressResponseJson.errors.errorList[0].text).toEqual(NO_EMAIL_ADDRESS_FOUND);
+      expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
+    });
+  });
+
   it("Valid transaction created", async () => {
     // build required transaction response for test
     validTransactionSDKResource.httpStatusCode = StatusCodes.CREATED;
@@ -151,7 +172,6 @@ describe("Registered email address update - test GET method", () => {
       expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
       expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
       expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
-
     });
   });
 });

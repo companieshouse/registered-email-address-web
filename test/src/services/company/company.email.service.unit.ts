@@ -1,15 +1,14 @@
+import {CompanyProfile} from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
+import {getCompanyEmail} from "../../../../src/services/company/company.email.service";
+import {createPrivateApiClient} from "../../../../src/services/api/private-get-rea";
+import {Resource} from "@companieshouse/api-sdk-node";
+import {validEmailSDKResource} from "../../../mocks/company.email.mock";
+import {StatusCodes} from 'http-status-codes';
+import {RegisteredEmailAddress} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
+
 jest.mock("@companieshouse/api-sdk-node");
 jest.mock("../../../../src/services/api/private-get-rea");
 jest.mock("../../../../src/utils/common/Logger");
-
-import { getCompanyEmail } from "../../../../src/services/company/company.email.service";
-import { createPrivateApiClient } from "../../../../src/services/api/private-get-rea";
-import { Resource } from "@companieshouse/api-sdk-node";
-import { createAndLogError  } from "../../../../src/utils/common/Logger";
-import { validEmailSDKResource } from "../../../mocks/company.email.mock";
-import { StatusCodes } from 'http-status-codes';
-import { THERE_IS_A_PROBLEM_ERROR } from "../../../../src/constants/app.const";
-import { RegisteredEmailAddress } from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
 
 const mockCreatePrivateApiClient = createPrivateApiClient as jest.Mock;
 const mockGetRegisteredEmailAddress = jest.fn();
@@ -40,14 +39,14 @@ describe("Company email address service test", () => {
       expect(returnedEmail?.resource?.registeredEmailAddress).toEqual(TEST_EMAIL);
     });
 
-    it("Should throw an error if no response returned from SDK", async () => {
+    it("Should return an error if no response returned from SDK", async () => {
       mockGetRegisteredEmailAddress.mockResolvedValueOnce(undefined);
 
       await expect(getCompanyEmail(COMPANY_NUMBER))
         .rejects.toBe(undefined);
     });
 
-    it (`Should throw an error if NOT FOUND returned from SDK`, async () => {
+    it(`Should return an error if NOT FOUND returned from SDK`, async () => {
       const HTTP_STATUS_CODE = StatusCodes.NOT_FOUND;
       mockGetRegisteredEmailAddress.mockResolvedValueOnce({
         httpStatusCode: HTTP_STATUS_CODE
@@ -57,7 +56,17 @@ describe("Company email address service test", () => {
         .rejects.toEqual({httpStatusCode: StatusCodes.NOT_FOUND});
     });
 
-    it (`Should return the received error code if response status >= ${StatusCodes.BAD_REQUEST}`, async () => {
+    it("Should return an error if SERVICE UNAVAILABLE returned from SDK", async () => {
+      const HTTP_STATUS_CODE = StatusCodes.SERVICE_UNAVAILABLE;
+      mockGetRegisteredEmailAddress.mockResolvedValueOnce({
+        httpStatusCode: HTTP_STATUS_CODE
+      } as Resource<CompanyProfile>);
+
+      await expect(getCompanyEmail(COMPANY_NUMBER))
+        .rejects.toEqual({httpStatusCode: StatusCodes.SERVICE_UNAVAILABLE});
+    });
+
+    it(`Should return the received error code if response status >= ${StatusCodes.BAD_REQUEST}`, async () => {
       const HTTP_STATUS_CODE = StatusCodes.BAD_REQUEST;
       mockGetRegisteredEmailAddress.mockResolvedValueOnce({
         httpStatusCode: HTTP_STATUS_CODE
@@ -67,12 +76,14 @@ describe("Company email address service test", () => {
         .rejects.toEqual({httpStatusCode: StatusCodes.BAD_REQUEST});
     });
 
-    it("Should throw an error if no response resource returned from SDK", async () => {
-      console.log("Should throw an error if no response resource returned from SDK");
-      mockGetRegisteredEmailAddress.mockResolvedValueOnce({} as Resource<RegisteredEmailAddress>);
+    it("Should return an error if no response resource returned from SDK", async () => {
+      const HTTP_STATUS_CODE = StatusCodes.OK;
+      mockGetRegisteredEmailAddress.mockResolvedValueOnce({
+        httpStatusCode: HTTP_STATUS_CODE
+      } as Resource<RegisteredEmailAddress>);
 
       await expect(getCompanyEmail(COMPANY_NUMBER))
-        .rejects.toEqual({});
+        .rejects.toEqual({httpStatusCode: StatusCodes.OK});
     });
   });
 });

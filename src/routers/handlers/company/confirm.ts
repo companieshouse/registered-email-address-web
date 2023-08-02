@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import { GenericHandler } from "./../generic";
+import { GenericHandler } from "../generic";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile";
 import { Session } from "@companieshouse/node-session-handler";
 import { Resource } from "@companieshouse/api-sdk-node";
