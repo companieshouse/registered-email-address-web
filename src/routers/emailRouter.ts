@@ -13,10 +13,7 @@ import {
   UPDATE_SUBMITTED
 } from "../config";
 
-import {
-  TRANSACTION_CLOSE_ERROR,
-  FAILED_TO_CREATE_REA_ERROR
-} from "../constants/app.const";
+import { CONFIRM_EMAIL_CHANGE_ERROR } from "../constants/app.const";
 
 const router: Router = Router();
 const emailRouterViews: string = "router_views/email/";
@@ -64,12 +61,11 @@ router.post(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunc
       res.redirect(EMAIL_UPDATE_SUBMITTED_URL);
     }).catch((viewData) => {
       switch (viewData.statementError) {
-          case FAILED_TO_CREATE_REA_ERROR:
-          case TRANSACTION_CLOSE_ERROR:
-            res.redirect(THERE_IS_A_PROBLEM_URL);
+          case CONFIRM_EMAIL_CHANGE_ERROR:
+            res.render(`${emailRouterViews}` + CHECK_ANSWER_URL, viewData);
             break;
           default:
-            res.render(`${emailRouterViews}` + CHECK_ANSWER_URL, viewData);
+            res.redirect(THERE_IS_A_PROBLEM_URL);
             break;
       }
     });
