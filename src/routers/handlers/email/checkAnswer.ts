@@ -3,6 +3,8 @@ import {GenericHandler} from "../generic";
 import {Session} from "@companieshouse/node-session-handler";
 import {logger} from "../../../utils/common/Logger";
 import {
+  CHECK_ANSWER_ERROR_ANCHOR,
+  CHECK_ANSWER_ERROR_KEY,
   COMPANY_PROFILE,
   CONFIRM_EMAIL_CHANGE_ERROR,
   FAILED_TO_CREATE_REA_ERROR,
@@ -12,9 +14,9 @@ import {
 } from "../../../constants/app.const";
 import {EMAIL_CHANGE_EMAIL_ADDRESS_URL} from "../../../config";
 import {postRegisteredEmailAddress} from "../../../services/email/email.registered.service";
-import {closeTransaction} from "../../../services/transaction/transaction.service";
 import {CompanyProfile} from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import {formatValidationError} from "../../../utils/error/formatValidationErrors";
+import {closeTransaction} from "../../../services/transaction/transaction.service";
 
 const PAGE_TITLE = "Check your answer";
 
@@ -37,7 +39,7 @@ export class CheckAnswerHandler extends GenericHandler {
     this.viewData.companyName = companyProfile?.companyName.toUpperCase();
     this.viewData.companyNumber = companyProfile?.companyNumber;
 
-    return Promise.resolve (this.viewData);
+    return Promise.resolve(this.viewData);
   }
 
   async post(req: Request, response: Response): Promise<any> {
@@ -60,25 +62,24 @@ export class CheckAnswerHandler extends GenericHandler {
     if (emailConfirmation === undefined) {
       this.viewData.title = "Error: " + PAGE_TITLE;
       this.viewData.statementError = CONFIRM_EMAIL_CHANGE_ERROR;
-      this.viewData.errors = formatValidationError("emailConfirmation", "#emailConfirmation", CONFIRM_EMAIL_CHANGE_ERROR);
+      this.viewData.errors = formatValidationError(CHECK_ANSWER_ERROR_KEY, CHECK_ANSWER_ERROR_ANCHOR, CONFIRM_EMAIL_CHANGE_ERROR);
       return Promise.reject(this.viewData);
     }
 
     const transactionId: string | undefined = session?.getExtraData(SUBMISSION_ID);
 
-    return await postRegisteredEmailAddress(session, <string>transactionId, <string>companyNumber, <string>companyEmail).then(async () => {
-      // REA resource created so close the transaction
-      return await closeTransaction(session, <string> companyNumber, <string>transactionId).then(() => {
-        // Success!
-        this.viewData.sessionID = transactionId;
-        return Promise.resolve(this.viewData);
-      }).catch(() => {
-        // Failed to close the transaction
-        return Promise.reject({ statementError: TRANSACTION_CLOSE_ERROR });
-      });
-    }).catch((e) => {
+    await postRegisteredEmailAddress(session, <string>transactionId, <string>companyNumber, <string>companyEmail).catch(() => {
       // Failed to create the REA resource
-      return Promise.reject({ statementError: FAILED_TO_CREATE_REA_ERROR });
+      return Promise.reject({statementError: FAILED_TO_CREATE_REA_ERROR + companyNumber});
     });
+
+    await closeTransaction(session, <string>companyNumber, <string>transactionId).catch(() => {
+      // Failed to close the transaction
+      return Promise.reject({statementError: TRANSACTION_CLOSE_ERROR + companyNumber});
+    });
+
+    // Success!
+    this.viewData.sessionID = transactionId;
+    return Promise.resolve(this.viewData);
   }
 }

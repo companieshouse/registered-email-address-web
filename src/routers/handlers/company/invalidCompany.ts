@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { GenericHandler } from "./../generic";
+import { GenericHandler } from "../generic";
 import { Session } from "@companieshouse/node-session-handler";
 import { logger } from "../../../utils/common/Logger";
 import {
