@@ -62,7 +62,7 @@ describe("Index router tests -", () => {
           expect(response.text).toContain(PAGE_HEADING);
           expect(response.status).toBe(StatusCodes.OK);
           expect(getSpy).toHaveBeenCalled();
-          expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalledTimes(0);
+          expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalledTimes(1);
 
         });
     });
@@ -76,7 +76,7 @@ describe("Index router tests -", () => {
           expect(response.text).toContain(ACCOUNTS_SIGNOUT_PATH);
           expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
           expect(getSpy).toHaveBeenCalledTimes(0);
-          expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalledTimes(0);
+          expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalledTimes(1);
         });
     });
 
@@ -88,7 +88,7 @@ describe("Index router tests -", () => {
         .then((response) => {
           expect(response.text).toContain(URL);
           expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
-          expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalledTimes(0);
+          expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalledTimes(1);
           expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
 
         });
@@ -103,7 +103,7 @@ describe("Index router tests -", () => {
           expect(response.text).toContain(ERROR_HEADING);
           expect(response.status).toBe(StatusCodes.OK);
           expect(getSpy).toHaveBeenCalled();
-          expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalledTimes(0);
+          expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalledTimes(1);
           expect(mocks.mockSessionMiddleware).toHaveBeenCalled();
 
         });

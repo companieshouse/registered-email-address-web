@@ -20,7 +20,8 @@ import {
   EMAIL_BASE_URL,
   HOME_URL,
   PIWIK_URL,
-  PIWIK_SITE_ID
+  PIWIK_SITE_ID,
+  SIGN_OUT_URL
 } from "./config";
 
 const app = express();
@@ -85,8 +86,8 @@ process.on("unhandledRejection", (err: any) => {
 app.use(cookieParser());
 app.use(`${HOME_URL}*`, sessionMiddleware);
 
-// Login redirect for company and email paths only
-const userAuthRegex = new RegExp(`^(${COMPANY_BASE_URL})|(${EMAIL_BASE_URL}).+`);
+// Login redirect for company and email paths and also signout page
+const userAuthRegex = new RegExp(`^((${COMPANY_BASE_URL})|(${EMAIL_BASE_URL}).+)|(${SIGN_OUT_URL})`);
 app.use(userAuthRegex, authenticationMiddleware);
 
 // Company Auth redirect
