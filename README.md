@@ -52,3 +52,7 @@ In order to run tests locally you will need to do the following:
 1. Navigate to /registered-email-address-web/
 2. Run 'git submodule init', followed by 'git submodule update'.
 3. Run 'npm test'
+
+### Environment Variables
+SESSION_TIMEOUT=<browser timeout in seconds> - default if not set=3600
+SESSION_COUNTDOWN=<length of countdown in seconds> - timeout popup before signing out - default if not set=60 seconds
