@@ -41,7 +41,8 @@ export default class RegisteredEmailAddressService {
     const body = resp.body as RegisteredEmailAddressResource;
 
     resource.resource = {
-      registeredEmailAddress: body.registered_email_address
+      registeredEmailAddress: body.registered_email_address,
+      acceptAppropriateEmailAddressStatement: body.accept_appropriate_email_address_statement
     };
 
     return resource;

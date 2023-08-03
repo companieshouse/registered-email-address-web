@@ -114,7 +114,7 @@ describe("Email router tests", () => {
           statementError: CONFIRM_EMAIL_CHANGE_ERROR,
           errors: {
             errorList: [{
-              href: "emailConfirmation",
+              href: "acceptAppropriateEmailAddressStatement",
               text: "wrong deliberately"
             }]
           },
@@ -140,7 +140,7 @@ describe("Email router tests", () => {
 
         await request(app)
           .post(EMAIL_CHECK_ANSWER_URL)
-          .send({emailConfirmation: 'anything'})
+          .send({acceptAppropriateEmailAddressStatement: 'anything'})
           .then((response) => {
             expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
             expect(response.text).toContain("Redirecting to /registered-email-address/there-is-a-problem");
@@ -153,7 +153,7 @@ describe("Email router tests", () => {
 
         await request(app)
           .post(EMAIL_CHECK_ANSWER_URL)
-          .send({emailConfirmation: 'anything'})
+          .send({acceptAppropriateEmailAddressStatement: 'anything'})
           .then((response) => {
             expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
             expect(response.text).toContain(EMAIL_UPDATE_SUBMITTED_URL);
