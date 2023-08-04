@@ -23,5 +23,5 @@ export const PRIVATE_API_ERROR: string =  "You cannot set both api key and oauth
 // erroring constants
 export const UPDATE_EMAIL_ERROR_KEY: string =  "changeEmailAddress";
 export const UPDATE_EMAIL_ERROR_ANCHOR: string =  "#change-email-address";
-export const CHECK_ANSWER_ERROR_KEY: string =  "emailConfirmation";
-export const CHECK_ANSWER_ERROR_ANCHOR: string =  "#emailConfirmation";
+export const CHECK_ANSWER_ERROR_KEY: string =  "acceptAppropriateEmailAddressStatement";
+export const CHECK_ANSWER_ERROR_ANCHOR: string =  "#acceptAppropriateEmailAddressStatement";

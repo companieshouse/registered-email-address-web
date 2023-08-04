@@ -1,5 +1,8 @@
 import {postRegisteredEmailAddress} from "../../../../src/services/email/email.registered.service";
-import {RegisteredEmailAddress} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
+import {
+  RegisteredEmailAddress,
+  RegisteredEmailAddressResource
+} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
 import {Resource} from "@companieshouse/api-sdk-node";
 import {StatusCodes} from "http-status-codes";
 import {Session} from "@companieshouse/node-session-handler";
@@ -24,6 +27,8 @@ describe("Registered Email service test", () => {
   const COMPANY_NUMBER = "1234567";
   const TRANSACTION_ID = "178417-909116-690426";
   const EMAIL_ADDRESS_TO_REGISTER = "test@test.com";
+  const ACCEPT_APPROPRIATE_EMAIL_ADDRESS_STATEMENT = "true";
+  const mockResponseBody: RegisteredEmailAddress = { registeredEmailAddress: EMAIL_ADDRESS_TO_REGISTER, acceptAppropriateEmailAddressStatement: ACCEPT_APPROPRIATE_EMAIL_ADDRESS_STATEMENT };
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -35,14 +40,16 @@ describe("Registered Email service test", () => {
       mockPostTransaction.mockResolvedValueOnce({
         httpStatusCode: StatusCodes.CREATED,
         resource: {
-          registeredEmailAddress: EMAIL_ADDRESS_TO_REGISTER
+          registeredEmailAddress: EMAIL_ADDRESS_TO_REGISTER,
+          acceptAppropriateEmailAddressStatement: ACCEPT_APPROPRIATE_EMAIL_ADDRESS_STATEMENT
         }
       });
 
-      await postRegisteredEmailAddress(session, TRANSACTION_ID, COMPANY_NUMBER, EMAIL_ADDRESS_TO_REGISTER).then((data) => {
+      await postRegisteredEmailAddress(session, TRANSACTION_ID, COMPANY_NUMBER, mockResponseBody).then((data) => {
         expect(data.httpStatusCode).toEqual(StatusCodes.CREATED);
         const castedData: Resource<RegisteredEmailAddress> = data as Resource<RegisteredEmailAddress>;
         expect(castedData?.resource?.registeredEmailAddress).toEqual(EMAIL_ADDRESS_TO_REGISTER);
+        expect(castedData?.resource?.acceptAppropriateEmailAddressStatement).toEqual(ACCEPT_APPROPRIATE_EMAIL_ADDRESS_STATEMENT);
       });
     });
 
@@ -50,7 +57,7 @@ describe("Registered Email service test", () => {
       const mockedResponse = undefined;
       mockPostTransaction.mockResolvedValueOnce(mockedResponse);
 
-      await expect(postRegisteredEmailAddress(session, TRANSACTION_ID, COMPANY_NUMBER, EMAIL_ADDRESS_TO_REGISTER))
+      await expect(postRegisteredEmailAddress(session, TRANSACTION_ID, COMPANY_NUMBER, mockResponseBody))
         .rejects.toBe(mockedResponse);
     });
 
@@ -58,7 +65,7 @@ describe("Registered Email service test", () => {
       const mockedResponse = {httpStatusCode: StatusCodes.SERVICE_UNAVAILABLE};
       mockPostTransaction.mockResolvedValueOnce(mockedResponse as Resource<RegisteredEmailAddress>);
 
-      await expect(postRegisteredEmailAddress(session, TRANSACTION_ID, COMPANY_NUMBER, EMAIL_ADDRESS_TO_REGISTER))
+      await expect(postRegisteredEmailAddress(session, TRANSACTION_ID, COMPANY_NUMBER, mockResponseBody))
         .rejects.toEqual(mockedResponse);
     });
 
@@ -66,7 +73,7 @@ describe("Registered Email service test", () => {
       const mockedResponse = {httpStatusCode: StatusCodes.CREATED};
       mockPostTransaction.mockResolvedValueOnce(mockedResponse);
 
-      await expect(postRegisteredEmailAddress(session, TRANSACTION_ID, COMPANY_NUMBER, EMAIL_ADDRESS_TO_REGISTER))
+      await expect(postRegisteredEmailAddress(session, TRANSACTION_ID, COMPANY_NUMBER, mockResponseBody))
         .rejects.toEqual(mockedResponse);
     });
   });

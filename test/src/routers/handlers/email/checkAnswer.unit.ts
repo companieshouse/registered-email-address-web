@@ -14,7 +14,6 @@ import {
 import {validCompanyProfile} from "../../../../mocks/company.profile.mock";
 import {createSessionData} from "../../../../mocks/sessionGenerator.mock";
 import {generateRandomBytesBase64} from "./updateSubmitted.unit";
-// import {postRegisteredEmailAddress} from "../../../../../src/services/email/email.registered.service";
 import {closeTransaction} from "../../../../../src/services/transaction/transaction.service";
 
 jest.mock("../../../../../src/services/email/email.registered.service");
@@ -82,7 +81,7 @@ describe("Check answer - tests", () => {
           expect(dataJson.title).toEqual(TITLE);
           expect(dataJson.errors).toBeTruthy;
           expect(dataJson.errors.errorList).toBeTruthy;
-          expect(dataJson.errors.emailConfirmation).toEqual(CONFIRM_EMAIL_CHANGE_ERROR);
+          expect(dataJson.errors.acceptAppropriateEmailAddressStatement).toEqual(CONFIRM_EMAIL_CHANGE_ERROR);
           expect(dataJson.errors.errorList).toHaveLength(1);
           expect(dataJson.errors.errorList[0].href).toEqual(CHECK_ANSWER_ERROR_ANCHOR);
           expect(dataJson.errors.errorList[0].text).toEqual(CONFIRM_EMAIL_CHANGE_ERROR);
@@ -92,7 +91,7 @@ describe("Check answer - tests", () => {
       });
 
       it("Should handle failure on create registered email address resource", async () => {
-        request.body.emailConfirmation = "anything";
+        request.body.acceptAppropriateEmailAddressStatement = "anything";
         request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
         request.session?.setExtraData(NEW_EMAIL_ADDRESS, EMAIL_ADDRESS);
 
@@ -103,7 +102,7 @@ describe("Check answer - tests", () => {
       });
 
       it("Should handle failure on close transaction", async () => {
-        request.body.emailConfirmation = "anything";
+        request.body.acceptAppropriateEmailAddressStatement = "anything";
         request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
         request.session?.setExtraData(NEW_EMAIL_ADDRESS, EMAIL_ADDRESS);
 
@@ -115,7 +114,7 @@ describe("Check answer - tests", () => {
       });
 
       it("Successfully create registered email address resource", async () => {
-        request.body.emailConfirmation = "anything";
+        request.body.acceptAppropriateEmailAddressStatement = "anything";
         request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
         request.session?.setExtraData(NEW_EMAIL_ADDRESS, EMAIL_ADDRESS);
         request.session?.setExtraData(SUBMISSION_ID, TRANSACTION_ID);

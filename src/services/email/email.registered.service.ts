@@ -7,9 +7,8 @@ import {logger} from "../../utils/common/Logger";
 import {StatusCodes} from "http-status-codes";
 import {RegisteredEmailAddress} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
 
-export const postRegisteredEmailAddress = async (session: Session, transactionId: string, companyNumber: string, companyEmail: string): Promise<Awaited<Resource<RegisteredEmailAddress> | ApiErrorResponse>> => {
+export const postRegisteredEmailAddress = async (session: Session, transactionId: string, companyNumber: string, registeredEmailAddress: RegisteredEmailAddress): Promise<Awaited<Resource<RegisteredEmailAddress> | ApiErrorResponse>> => {
   const apiClient: ApiClient = createPublicOAuthApiClient(session);
-  const registeredEmailAddress: RegisteredEmailAddress = {registeredEmailAddress: companyEmail};
 
   logger.debug(`Creating Registered Email address Address with company number ${companyNumber}`);
   const sdkResponse: Resource<RegisteredEmailAddress> | ApiErrorResponse = await apiClient.registeredEmailAddressService.postRegisteredEmailAddress(transactionId, registeredEmailAddress);

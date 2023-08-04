@@ -72,187 +72,190 @@ const clone = (objectToClone: any): any => {
   return JSON.parse(JSON.stringify(objectToClone));
 };
 
-describe("Registered email address update - test GET method", () => {
+describe("Change email address - tests", () => {
+
+  describe("Registered email address update - test GET method", () => {
   // clear down mocks
-  beforeEach(() => {
-    jest.clearAllMocks();
-    changeEmailAddressHandler = new ChangeEmailAddressHandler(
-      formValidator,
-      TEST_EMAIL_EXISTING
-    );
-    // session instance
-    session = new Session();
-    // mock request/responses
-    request = createRequest({
-      session: session
+    beforeEach(() => {
+      jest.clearAllMocks();
+      changeEmailAddressHandler = new ChangeEmailAddressHandler(
+        formValidator,
+        TEST_EMAIL_EXISTING
+      );
+      // session instance
+      session = new Session();
+      // mock request/responses
+      request = createRequest({
+        session: session
+      });
+      response = createResponse();
     });
-    response = createResponse();
-  });
 
-  it("Handle error returned from creating transaction record", async () => {
+    it("Handle error returned from creating transaction record", async () => {
     // build required transaction response for test
-    mockPostTransactionResponse.mockResolvedValueOnce(clone(EmailErrorReponse));
-    //set company number in session
-    request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
-    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
-    request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
+      mockPostTransactionResponse.mockResolvedValueOnce(clone(EmailErrorReponse));
+      //set company number in session
+      request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
+      request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
+      request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
 
-    await changeEmailAddressHandler.get(request, response).catch((changeEmailAddressResponse) => {
-      const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
+      await changeEmailAddressHandler.get(request, response).catch((changeEmailAddressResponse) => {
+        const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
 
-      expect(changeEmailAddressResponseJson.errors).toBeTruthy;
-      expect(changeEmailAddressResponseJson.errors.errorList).toBeTruthy;
-      expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(CREATE_TRANSACTION_ERROR);
-      expect(changeEmailAddressResponseJson.errors.errorList).toHaveLength(1);
-      expect(changeEmailAddressResponseJson.errors.errorList[0].href).toEqual(UPDATE_EMAIL_ERROR_ANCHOR);
-      expect(changeEmailAddressResponseJson.errors.errorList[0].text).toEqual(CREATE_TRANSACTION_ERROR);
-      expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
-      expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
-      expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
-      expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+        expect(changeEmailAddressResponseJson.errors).toBeTruthy;
+        expect(changeEmailAddressResponseJson.errors.errorList).toBeTruthy;
+        expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(CREATE_TRANSACTION_ERROR);
+        expect(changeEmailAddressResponseJson.errors.errorList).toHaveLength(1);
+        expect(changeEmailAddressResponseJson.errors.errorList[0].href).toEqual(UPDATE_EMAIL_ERROR_ANCHOR);
+        expect(changeEmailAddressResponseJson.errors.errorList[0].text).toEqual(CREATE_TRANSACTION_ERROR);
+        expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
+        expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
+        expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
+        expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+      });
     });
-  });
 
-  it("Registered email address update - company email in session", async () => {
-    validTransactionSDKResource.httpStatusCode = StatusCodes.CREATED;
-    mockPostTransactionResponse.mockResolvedValueOnce(clone(validTransactionSDKResource));
-    //set email in session
-    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
-    request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
-    request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
+    it("Registered email address update - company email in session", async () => {
+      validTransactionSDKResource.httpStatusCode = StatusCodes.CREATED;
+      mockPostTransactionResponse.mockResolvedValueOnce(clone(validTransactionSDKResource));
+      //set email in session
+      request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
+      request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
+      request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
 
-    await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {
-      const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
-      expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
-      expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
-      expect(changeEmailAddressResponseJson.userEmail).toEqual(TEST_EMAIL_EXISTING);
-      expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
-      expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
-      expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+      await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {
+        const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
+        expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+        expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
+        expect(changeEmailAddressResponseJson.userEmail).toEqual(TEST_EMAIL_EXISTING);
+        expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
+        expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
+        expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+      });
     });
-  });
 
-  it("Registered email address update - company email not in session", async () => {
-    validTransactionSDKResource.httpStatusCode = StatusCodes.CREATED;
-    mockPostTransactionResponse.mockResolvedValueOnce(clone(validTransactionSDKResource));
-    request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
-    request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
+    it("Registered email address update - company email not in session", async () => {
+      validTransactionSDKResource.httpStatusCode = StatusCodes.CREATED;
+      mockPostTransactionResponse.mockResolvedValueOnce(clone(validTransactionSDKResource));
+      request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
+      request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
 
-    await changeEmailAddressHandler.get(request, response).catch((changeEmailAddressResponse) => {
-      const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
+      await changeEmailAddressHandler.get(request, response).catch((changeEmailAddressResponse) => {
+        const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
 
-      expect(changeEmailAddressResponseJson.errors).toBeTruthy;
-      expect(changeEmailAddressResponseJson.errors.errorList).toBeTruthy;
-      expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(NO_EMAIL_ADDRESS_FOUND);
-      expect(changeEmailAddressResponseJson.errors.errorList).toHaveLength(1);
-      expect(changeEmailAddressResponseJson.errors.errorList[0].href).toEqual(UPDATE_EMAIL_ERROR_ANCHOR);
-      expect(changeEmailAddressResponseJson.errors.errorList[0].text).toEqual(NO_EMAIL_ADDRESS_FOUND);
-      expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
+        expect(changeEmailAddressResponseJson.errors).toBeTruthy;
+        expect(changeEmailAddressResponseJson.errors.errorList).toBeTruthy;
+        expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(NO_EMAIL_ADDRESS_FOUND);
+        expect(changeEmailAddressResponseJson.errors.errorList).toHaveLength(1);
+        expect(changeEmailAddressResponseJson.errors.errorList[0].href).toEqual(UPDATE_EMAIL_ERROR_ANCHOR);
+        expect(changeEmailAddressResponseJson.errors.errorList[0].text).toEqual(NO_EMAIL_ADDRESS_FOUND);
+        expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
+      });
     });
-  });
 
-  it("Valid transaction created", async () => {
+    it("Valid transaction created", async () => {
     // build required transaction response for test
-    validTransactionSDKResource.httpStatusCode = StatusCodes.CREATED;
-    mockPostTransactionResponse.mockResolvedValueOnce(clone(validTransactionSDKResource));
-    mockGetCompanyEmailResponse.mockResolvedValueOnce(clone(validEmailSDKResource));
-    //set company number in session
-    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
-    request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
-    request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
+      validTransactionSDKResource.httpStatusCode = StatusCodes.CREATED;
+      mockPostTransactionResponse.mockResolvedValueOnce(clone(validTransactionSDKResource));
+      mockGetCompanyEmailResponse.mockResolvedValueOnce(clone(validEmailSDKResource));
+      //set company number in session
+      request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
+      request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
+      request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
 
-    await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {
-      const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
+      await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {
+        const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
 
-      expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
-      expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
-      expect(changeEmailAddressResponseJson.userEmail).toEqual(TEST_EMAIL_EXISTING);
-      expect(request.session?.getExtraData(SUBMISSION_ID)).toBeTruthy;
-      expect(request.session?.getExtraData(SUBMISSION_ID)).toEqual(transactionId);
-      expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
-      expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
-      expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+        expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+        expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
+        expect(changeEmailAddressResponseJson.userEmail).toEqual(TEST_EMAIL_EXISTING);
+        expect(request.session?.getExtraData(SUBMISSION_ID)).toBeTruthy;
+        expect(request.session?.getExtraData(SUBMISSION_ID)).toEqual(transactionId);
+        expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
+        expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
+        expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+      });
     });
   });
-});
 
-describe("Registered email address update - test POST method", () => {
+  describe("Registered email address update - test POST method", () => {
   // clear down mocks
-  beforeEach(() => {
-    jest.clearAllMocks();
-    changeEmailAddressHandler = new ChangeEmailAddressHandler(
-      formValidator,
-      TEST_EMAIL_EXISTING
-    );
-    // session instance
-    session = new Session();
-    // mock request/responses
-    request = createRequest({
-      session: session
+    beforeEach(() => {
+      jest.clearAllMocks();
+      changeEmailAddressHandler = new ChangeEmailAddressHandler(
+        formValidator,
+        TEST_EMAIL_EXISTING
+      );
+      // session instance
+      session = new Session();
+      // mock request/responses
+      request = createRequest({
+        session: session
+      });
+      response = createResponse();
     });
-    response = createResponse();
-  });
 
-  it("No email in POST request body - return view data error", async () => {
+    it("No email in POST request body - return view data error", async () => {
     //set email address in request body to empty
-    request.body.changeEmailAddress = "";
-    request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
-    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
+      request.body.changeEmailAddress = "";
+      request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
+      request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
 
-    await changeEmailAddressHandler.post(request, response).catch((changeEmailAddressResponse) => {
-      const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
+      await changeEmailAddressHandler.post(request, response).catch((changeEmailAddressResponse) => {
+        const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
 
-      expect(changeEmailAddressResponseJson.errors).toBeTruthy;
-      expect(changeEmailAddressResponseJson.errors.errorList).toBeTruthy;
-      expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(NO_EMAIL_ADDRESS_SUPPLIED);
-      expect(changeEmailAddressResponseJson.errors.errorList).toHaveLength(1);
-      expect(changeEmailAddressResponseJson.errors.errorList[0].href).toEqual(UPDATE_EMAIL_ERROR_ANCHOR);
-      expect(changeEmailAddressResponseJson.errors.errorList[0].text).toEqual(NO_EMAIL_ADDRESS_SUPPLIED);
-      expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
-      expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
-      expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
-      expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+        expect(changeEmailAddressResponseJson.errors).toBeTruthy;
+        expect(changeEmailAddressResponseJson.errors.errorList).toBeTruthy;
+        expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(NO_EMAIL_ADDRESS_SUPPLIED);
+        expect(changeEmailAddressResponseJson.errors.errorList).toHaveLength(1);
+        expect(changeEmailAddressResponseJson.errors.errorList[0].href).toEqual(UPDATE_EMAIL_ERROR_ANCHOR);
+        expect(changeEmailAddressResponseJson.errors.errorList[0].text).toEqual(NO_EMAIL_ADDRESS_SUPPLIED);
+        expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
+        expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
+        expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
+        expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+      });
     });
-  });
 
-  it("Updated email address supplied does not match expected pattern - return view data error", async () => {
+    it("Updated email address supplied does not match expected pattern - return view data error", async () => {
     //set email address in request body to invalid pattern
-    request.body.changeEmailAddress = INVALID_EMAIL_ADDRESS;
-    request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
-    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
+      request.body.changeEmailAddress = INVALID_EMAIL_ADDRESS;
+      request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
+      request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
 
-    await changeEmailAddressHandler.post(request, response).catch((changeEmailAddressResponse) => {
-      const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
+      await changeEmailAddressHandler.post(request, response).catch((changeEmailAddressResponse) => {
+        const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
 
-      expect(changeEmailAddressResponseJson.errors).toBeTruthy;
-      expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(EMAIL_ADDRESS_INVALID);
-      expect(changeEmailAddressResponseJson.errors.errorList).toHaveLength(1);
-      expect(changeEmailAddressResponseJson.errors.errorList[0].href).toEqual(UPDATE_EMAIL_ERROR_ANCHOR);
-      expect(changeEmailAddressResponseJson.errors.errorList[0].text).toEqual(EMAIL_ADDRESS_INVALID);
-      expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
-      expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(EMAIL_ADDRESS_INVALID);
-      expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
-      expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
-      expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+        expect(changeEmailAddressResponseJson.errors).toBeTruthy;
+        expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(EMAIL_ADDRESS_INVALID);
+        expect(changeEmailAddressResponseJson.errors.errorList).toHaveLength(1);
+        expect(changeEmailAddressResponseJson.errors.errorList[0].href).toEqual(UPDATE_EMAIL_ERROR_ANCHOR);
+        expect(changeEmailAddressResponseJson.errors.errorList[0].text).toEqual(EMAIL_ADDRESS_INVALID);
+        expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
+        expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(EMAIL_ADDRESS_INVALID);
+        expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
+        expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
+        expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+      });
     });
-  });
 
-  it("Valid email address supplied", async () => {
+    it("Valid email address supplied", async () => {
     //set email address in request body to invalid pattern
-    request.body.changeEmailAddress = TEST_EMAIL_UPDATE;
-    request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
-    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
+      request.body.changeEmailAddress = TEST_EMAIL_UPDATE;
+      request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
+      request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
 
-    await changeEmailAddressHandler.post(request, response).then((changeEmailAddressResponse) => {
-      const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
+      await changeEmailAddressHandler.post(request, response).then((changeEmailAddressResponse) => {
+        const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
 
-      expect(changeEmailAddressResponseJson.errors).toBeFalsy;
-      expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
-      expect(changeEmailAddressResponseJson.userEmail).toEqual(TEST_EMAIL_EXISTING);
-      expect(changeEmailAddressResponseJson.signoutBanner).toBeTruthy;
-      expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
-      expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
-      expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+        expect(changeEmailAddressResponseJson.errors).toBeFalsy;
+        expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
+        expect(changeEmailAddressResponseJson.userEmail).toEqual(TEST_EMAIL_EXISTING);
+        expect(changeEmailAddressResponseJson.signoutBanner).toBeTruthy;
+        expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
+        expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
+        expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+      });
     });
   });
 });
