@@ -6,7 +6,7 @@ import { ApiErrorResponse } from "@companieshouse/api-sdk-node/dist/services/res
 import { StatusCodes } from 'http-status-codes';
 
 const email: string = "test@test.co.biz";
-const statement: string = "true";
+const statement: boolean = true;
 
 const validEmail: RegisteredEmailAddress = {
   registeredEmailAddress: email,
