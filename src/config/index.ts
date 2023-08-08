@@ -43,7 +43,7 @@ export const SESSION_TIMEOUT = getEnvironmentValue("SESSION_TIMEOUT");
 export const SESSION_COUNTDOWN = getEnvironmentValue("SESSION_COUNTDOWN");
 
 export const DESCRIPTION = "Update Registered Email Address Transaction";
-export const REFERENCE = "UpdateRegisteredEmailAddressReference";
+export const REFERENCE = "UpdateRegisteredEmailAddressReference_";
 export const STATIC_SUBMISSION_ID = "72hw92jw992km90mw9002m22";
 export const ORACLE_QUERY_API_URL = getEnvironmentValue("ORACLE_QUERY_API_URL", "http://api.chs.local:4001");
 export const VALID_EMAIL_REGEX_PATTERN = ".+[@].+[.].+";
