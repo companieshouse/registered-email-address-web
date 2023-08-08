@@ -20,13 +20,6 @@ export default class RegisteredEmailAddressService {
      * @param number the company number to look up
      */
   public async getRegisteredEmailAddress(number: string): Promise<Resource<RegisteredEmailAddress>> {
-    // build client object
-    const client = createPrivateApiClient(
-      CHS_API_KEY,
-      undefined,
-      ORACLE_QUERY_API_URL
-    );
-
     const resp = await this.client.httpGet(`/company/${number}/registered-email-address`);
 
     const resource: Resource<RegisteredEmailAddress> = {
