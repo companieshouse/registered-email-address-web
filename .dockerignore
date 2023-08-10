@@ -1,4 +1,11 @@
 node_modules
 npm-debug.log
 assets
-dist
+
+!api-enumerations
+!dist
+!docker_start.sh
+!views
+!package-lock.json
+!package.json
+!tsconfig.json

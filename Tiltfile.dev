@@ -8,12 +8,12 @@ custom_build(
     ref = '169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/registered-email-address-web',
     #the following build-command was updated as specified by https://github.com/companieshouse/docker-chs-development/pull/581
     command = 'DOCKER_BUILDKIT=0 docker build --build-arg SSH_PRIVATE_KEY="$(cat ~/.ssh/id_rsa)" --build-arg SSH_PRIVATE_KEY_PASSPHRASE --tag $EXPECTED_REF . -f dev.dockerfile',
-    live_update = [
-      sync(local_path = './dist', remote_path = '/app'),
-      run('npm i', trigger='package.json'),
-      restart_container()
-    ],
-    deps = [
-      './dist'
-    ]
+  live_update = [
+    sync(local_path = './dist', remote_path = '/opt),
+    run('npm i', trigger='package.json'),
+    restart_container()
+  ],
+  deps = [
+    './dist'
+  ]
 )
