@@ -15,6 +15,11 @@ import {validCompanyProfile} from "../../../../mocks/company.profile.mock";
 import {createSessionData} from "../../../../mocks/sessionGenerator.mock";
 import {generateRandomBytesBase64} from "./updateSubmitted.unit";
 import {closeTransaction} from "../../../../../src/services/transaction/transaction.service";
+import {
+  RegisteredEmailAddressCreatedResource
+} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
+import {StatusCodes} from "http-status-codes";
+import {ApiResponse} from "@companieshouse/api-sdk-node/dist/services/resource";
 
 jest.mock("../../../../../src/services/email/email.registered.service");
 jest.mock("../../../../../src/services/transaction/transaction.service");
@@ -23,6 +28,7 @@ const PROFILE = validCompanyProfile;
 const EMAIL_ADDRESS: string = "test@test.com";
 const COMPANY_NAME: string = "TEST COMPANY";
 const USER_EMAIL: string = "test_user@test.co.biz";
+const ID = "12345";
 const COMPANY_NUMBER = "12345678";
 const BACK_LINK_PATH: string = "/registered-email-address/email/change-email-address";
 const TITLE: string = "Error: Check your answer";
@@ -102,11 +108,21 @@ describe("Check answer - tests", () => {
       });
 
       it("Should handle failure on close transaction", async () => {
+        const mockedResource = {
+          httpStatusCode: StatusCodes.CREATED,
+          resource: {
+            id: ID,
+            data: {
+              registeredEmailAddress: EMAIL_ADDRESS,
+              acceptAppropriateEmailAddressStatement: true
+            }
+          }
+        };
         request.body.acceptAppropriateEmailAddressStatement = "anything";
         request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
         request.session?.setExtraData(NEW_EMAIL_ADDRESS, EMAIL_ADDRESS);
 
-        mockPostRegisteredEmailAddress.mockResolvedValue("anything");
+        mockPostRegisteredEmailAddress.mockResolvedValue(mockedResource);
         mockCloseTransaction.mockRejectedValue(new Error("anything"));
         await checkAnswerHandler.post(request, response).catch((data) => {
           expect(data.statementError).toEqual("Unable to close a transaction record for company 12345678");
@@ -114,12 +130,23 @@ describe("Check answer - tests", () => {
       });
 
       it("Successfully create registered email address resource", async () => {
-        request.body.acceptAppropriateEmailAddressStatement = "anything";
+        const mockedResource = {
+          httpStatusCode: StatusCodes.CREATED,
+          resource: {
+            id: ID,
+            data: {
+              registeredEmailAddress: EMAIL_ADDRESS,
+              acceptAppropriateEmailAddressStatement: true
+            }
+          }
+        };
+
+        request.body.acceptAppropriateEmailAddressStatement = true;
         request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
         request.session?.setExtraData(NEW_EMAIL_ADDRESS, EMAIL_ADDRESS);
         request.session?.setExtraData(SUBMISSION_ID, TRANSACTION_ID);
 
-        mockPostRegisteredEmailAddress.mockResolvedValue("anything");
+        mockPostRegisteredEmailAddress.mockResolvedValueOnce(mockedResource as ApiResponse<RegisteredEmailAddressCreatedResource>);
         mockCloseTransaction.mockResolvedValue("anything");
         await checkAnswerHandler.post(request, response).then((data) => {
           expect(data.sessionID).toEqual(TRANSACTION_ID);

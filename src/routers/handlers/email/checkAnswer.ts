@@ -17,7 +17,11 @@ import {postRegisteredEmailAddress} from "../../../services/email/email.register
 import {CompanyProfile} from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import {formatValidationError} from "../../../utils/error/formatValidationErrors";
 import {closeTransaction} from "../../../services/transaction/transaction.service";
-import {RegisteredEmailAddress} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
+import {
+  RegisteredEmailAddress,
+  RegisteredEmailAddressCreatedResource
+} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
+import {ApiResponse} from "@companieshouse/api-sdk-node/dist/services/resource";
 
 const PAGE_TITLE = "Check your answer";
 
@@ -52,11 +56,11 @@ export class CheckAnswerHandler extends GenericHandler {
     const companyEmail = <string>session.getExtraData(NEW_EMAIL_ADDRESS);
     this.viewData.companyEmail = companyEmail;
 
-    const acceptAppropriateEmailAddressStatement: string | undefined = req.body.acceptAppropriateEmailAddressStatement;
+    const acceptAppropriateEmailAddressStatement: boolean | undefined = req.body.acceptAppropriateEmailAddressStatement;
     this.viewData.acceptAppropriateEmailAddressStatement = acceptAppropriateEmailAddressStatement;
 
     const companyProfile: CompanyProfile | undefined = session.getExtraData(COMPANY_PROFILE);
-    const companyNumber: string= <string>companyProfile?.companyNumber;
+    const companyNumber: string = <string>companyProfile?.companyNumber;
     this.viewData.companyName = companyProfile?.companyName.toUpperCase();
     this.viewData.companyNumber = companyNumber;
 
@@ -70,18 +74,23 @@ export class CheckAnswerHandler extends GenericHandler {
     const transactionId: string = <string>session.getExtraData(SUBMISSION_ID);
 
     const registeredEmailAddress: RegisteredEmailAddress = {
-      registeredEmailAddress:companyEmail,
-      acceptAppropriateEmailAddressStatement:acceptAppropriateEmailAddressStatement
+      registeredEmailAddress: companyEmail,
+      acceptAppropriateEmailAddressStatement: acceptAppropriateEmailAddressStatement
     };
-    await postRegisteredEmailAddress(session, transactionId, companyNumber, registeredEmailAddress).catch(() => {
-      // Failed to create the REA resource
-      return Promise.reject({statementError: FAILED_TO_CREATE_REA_ERROR + companyNumber});
-    });
 
-    await closeTransaction(session, <string>companyNumber, <string>transactionId).catch(() => {
-      // Failed to close the transaction
-      return Promise.reject({statementError: TRANSACTION_CLOSE_ERROR + companyNumber});
-    });
+    const apiResponse: ApiResponse<RegisteredEmailAddressCreatedResource> = await postRegisteredEmailAddress(session, transactionId, companyNumber, registeredEmailAddress)
+      .catch(() => {
+        // Failed to create the REA resource
+        return Promise.reject({statementError: FAILED_TO_CREATE_REA_ERROR + companyNumber});
+      });
+
+    const castedResponse: RegisteredEmailAddressCreatedResource = apiResponse.resource as RegisteredEmailAddressCreatedResource;
+
+    await closeTransaction(session, <string>companyNumber, <string>transactionId, castedResponse.id)
+      .catch(() => {
+        // Failed to close the transaction
+        return Promise.reject({statementError: TRANSACTION_CLOSE_ERROR + companyNumber});
+      });
 
     // Success!
     this.viewData.sessionID = transactionId;
