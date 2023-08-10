@@ -1,7 +1,5 @@
 import {IHttpClient} from "@companieshouse/api-sdk-node/dist/http";
 import Resource from "@companieshouse/api-sdk-node/dist/services/resource";
-import {createPrivateApiClient} from "./index";
-import {CHS_API_KEY, ORACLE_QUERY_API_URL} from "../../../config";
 import {
   RegisteredEmailAddress,
   RegisteredEmailAddressResource
