@@ -17,6 +17,7 @@ export const postRegisteredEmailAddress = async (session: Session, transactionId
   logger.debug(`Creating Registered Email address Address with company number ${companyNumber}`);
   const sdkResponse: ApiResponse<RegisteredEmailAddressResponse> | ApiErrorResponse = await apiClient.registeredEmailAddressService.postRegisteredEmailAddress(transactionId, registeredEmailAddress);
 
+
   if (!sdkResponse) {
     logger.error(`Create Registered Email API POST request returned no response for company number ${companyNumber}`);
     return Promise.reject(sdkResponse);
