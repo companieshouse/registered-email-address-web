@@ -1,7 +1,5 @@
 import {IHttpClient} from "@companieshouse/api-sdk-node/dist/http";
 import Resource from "@companieshouse/api-sdk-node/dist/services/resource";
-import {createPrivateApiClient} from "./index";
-import {CHS_API_KEY, ORACLE_QUERY_API_URL} from "../../../config";
 import {
   RegisteredEmailAddress,
   RegisteredEmailAddressResource
@@ -20,13 +18,6 @@ export default class RegisteredEmailAddressService {
      * @param number the company number to look up
      */
   public async getRegisteredEmailAddress(number: string): Promise<Resource<RegisteredEmailAddress>> {
-    // build client object
-    const client = createPrivateApiClient(
-      CHS_API_KEY,
-      undefined,
-      ORACLE_QUERY_API_URL
-    );
-
     const resp = await this.client.httpGet(`/company/${number}/registered-email-address`);
 
     const resource: Resource<RegisteredEmailAddress> = {
