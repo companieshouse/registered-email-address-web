@@ -32,7 +32,7 @@ import ValidationErrors from "../../../models/validationErrors.model";
 import { StatusCodes } from 'http-status-codes';
 import Optional from "../../../models/optional";
 import FormValidator from "../../../utils/common/formValidator.util";
-import formSchema from "../../../schemas/changeEmailAddress.schema";
+import changeEmailAddressSchema from "../../../schemas/changeEmailAddressSchema";
 import {RegisteredEmailAddress} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 
@@ -99,7 +99,7 @@ export class ChangeEmailAddressHandler extends GenericHandler {
 
     const companyEmailAddressGiven: string = req.body.changeEmailAddress;
 
-    const errors: Optional<ValidationErrors> = this.validator.validate(req.body, formSchema);
+    const errors: Optional<ValidationErrors> = this.validator.validate(req.body, changeEmailAddressSchema);
 
     //check: no email supplied
     if (errors) {

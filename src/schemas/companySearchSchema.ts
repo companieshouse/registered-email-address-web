@@ -2,7 +2,7 @@ import * as Joi from "joi";
 
 const emptyCompanyNumberError: string = "You must enter a Company Number";
 const invalidCompanyNumberError: string = "You must enter a valid company number";
-const formSchema = Joi.object({
+const companySearchSchema = Joi.object({
   companyNumber: Joi.string()
     .required()
     .max(8)
@@ -13,4 +13,4 @@ const formSchema = Joi.object({
     })
 });
 
-export default formSchema;
+export default companySearchSchema;
