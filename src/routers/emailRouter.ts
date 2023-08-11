@@ -60,13 +60,10 @@ emailRouter.post(CHECK_ANSWER_URL, async (req: Request, res: Response, next: Nex
     .then(() => {
       res.redirect(EMAIL_UPDATE_SUBMITTED_URL);
     }).catch((viewData) => {
-      switch (viewData.statementError) {
-          case CONFIRM_EMAIL_CHANGE_ERROR:
-            res.render(`${emailRouterViews}` + CHECK_ANSWER_URL, viewData);
-            break;
-          default:
-            res.redirect(THERE_IS_A_PROBLEM_URL);
-            break;
+      if (viewData.statementError === CONFIRM_EMAIL_CHANGE_ERROR) {
+        res.render(`${emailRouterViews}` + CHECK_ANSWER_URL, viewData);
+      } else {
+        res.redirect(THERE_IS_A_PROBLEM_URL);
       }
     });
 });
