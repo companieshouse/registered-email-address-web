@@ -1,3 +1,4 @@
 export const getEnvironmentValue = (key: string, defaultValue = ""): string => {
-  return process.env[key] ?? defaultValue;
+  const value: string = process.env[key] ?? defaultValue;
+  return value;
 };
