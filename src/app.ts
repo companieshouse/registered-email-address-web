@@ -3,7 +3,7 @@ import express, {NextFunction, Request, Response} from "express";
 import nunjucks from "nunjucks";
 import path from "path";
 import { logger } from "./utils/common/Logger";
-import routerDispatch from "./router.dispatch";
+import routerDispatch from "./routerDispatch";
 import {authenticationMiddleware} from "./middleware/authentication.middleware";
 import {companyAuthenticationMiddleware} from "./middleware/company.authentication.middleware";
 import cookieParser from "cookie-parser";
