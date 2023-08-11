@@ -86,7 +86,7 @@ export class CheckAnswerHandler extends GenericHandler {
 
     const castedResponse: RegisteredEmailAddressCreatedResource = apiResponse.resource as RegisteredEmailAddressCreatedResource;
 
-    await closeTransaction(session, <string>companyNumber, <string>transactionId, castedResponse.id)
+    await closeTransaction(session, companyNumber, transactionId, castedResponse.id)
       .catch(() => {
         // Failed to close the transaction
         return Promise.reject({statementError: TRANSACTION_CLOSE_ERROR + companyNumber});
