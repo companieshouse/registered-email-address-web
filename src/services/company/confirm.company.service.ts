@@ -5,11 +5,11 @@ import { toReadableFormat } from "../../utils/common/date";
 export const buildAddress = (formattedCompanyProfile: any): string => {
   const addressArray: string[] = [
     formattedCompanyProfile.registeredOfficeAddress.poBox,
-    formattedCompanyProfile.registeredOfficeAddress.premises,
+    formattedCompanyProfile.registeredOfficeAddress.premises, 
     formattedCompanyProfile.registeredOfficeAddress.addressLineOne,
-    formattedCompanyProfile.registeredOfficeAddress.addressLineTwo,
+    formattedCompanyProfile.registeredOfficeAddress.addressLineTwo, 
     formattedCompanyProfile.registeredOfficeAddress.locality,
-    formattedCompanyProfile.registeredOfficeAddress.region,
+    formattedCompanyProfile.registeredOfficeAddress.region, 
     formattedCompanyProfile.registeredOfficeAddress.country,
     formattedCompanyProfile.registeredOfficeAddress.postalCode
   ];
@@ -35,7 +35,7 @@ export const formatForDisplay = (companyProfile: CompanyProfile) => {
     poBox  : companyProfile.registeredOfficeAddress.poBox ? companyProfile.registeredOfficeAddress.poBox.toUpperCase() : null
   };
 
-  return {
+  const formattedCompanyProfile = {
     companyNumber : companyProfile.companyNumber,
     companyName :  companyProfile.companyName,
     type : lookupCompanyType(companyProfile.type),
@@ -43,6 +43,7 @@ export const formatForDisplay = (companyProfile: CompanyProfile) => {
     dateOfCreation : toReadableFormat(companyProfile.dateOfCreation),
     registeredOfficeAddress : registeredOfficeAddress
   };
+  return formattedCompanyProfile;
 };
 
 export const formatTitleCase = (str: string|undefined): string => {
