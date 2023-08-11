@@ -15,11 +15,11 @@ import {
 
 import {CONFIRM_EMAIL_CHANGE_ERROR} from "../constants/app.const";
 
-const router: Router = Router();
+const emailRouter: Router = Router();
 const emailRouterViews: string = "router_views/email/";
 
 // GET: /change-email-address
-router.get(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
+emailRouter.get(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
   const formValidator = new FormValidator();
   const handler = new ChangeEmailAddressHandler(
     formValidator,
@@ -33,7 +33,7 @@ router.get(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: N
 });
 
 // POST: /change-email-address
-router.post(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
+emailRouter.post(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: NextFunction) => {
   const formValidator = new FormValidator();
   const handler = new ChangeEmailAddressHandler(
     formValidator,
@@ -47,7 +47,7 @@ router.post(CHANGE_EMAIL_ADDRESS_URL, async (req: Request, res: Response, next: 
 });
 
 // GET: /check-your-answers
-router.get(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunction) => {
+emailRouter.get(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunction) => {
   await new CheckAnswerHandler().get(req, res)
     .then((viewData) => {
       res.render(`${emailRouterViews}` + CHECK_ANSWER_URL, viewData);
@@ -55,7 +55,7 @@ router.get(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunct
 });
 
 // POST: /check-your-answers
-router.post(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunction) => {
+emailRouter.post(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunction) => {
   await new CheckAnswerHandler().post(req, res)
     .then(() => {
       res.redirect(EMAIL_UPDATE_SUBMITTED_URL);
@@ -69,11 +69,11 @@ router.post(CHECK_ANSWER_URL, async (req: Request, res: Response, next: NextFunc
 });
 
 // GET: /update-submitted
-router.get(UPDATE_SUBMITTED, async (req: Request, res: Response, next: NextFunction) => {
+emailRouter.get(UPDATE_SUBMITTED, async (req: Request, res: Response, next: NextFunction) => {
   const handler = new UpdateSubmittedHandler();
   await handler.get(req, res).then((viewData) => {
     res.render(`${emailRouterViews}` + UPDATE_SUBMITTED, viewData);
   });
 });
 
-export default router;
+export default emailRouter;
