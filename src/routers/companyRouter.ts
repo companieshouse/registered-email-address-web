@@ -16,18 +16,18 @@ import {
 import { COMPANY_PROFILE, COMPANY_NUMBER, INVALID_COMPANY_REASON } from "../constants/app.const";
 import { INVALID_COMPANY_SERVICE_UNAVAILABLE } from "../constants/validation.const";
 
-const router: Router = Router();
+const companyRouter: Router = Router();
 const routeViews: string = "router_views/company/";
 const invalidCompanyReason: string = "invalidCompanyReason";
 
 // GET: /registered-email-address/company/number
-router.get(NUMBER_URL, (req: Request, res: Response, next: NextFunction) => {
+companyRouter.get(NUMBER_URL, (req: Request, res: Response, next: NextFunction) => {
   logger.info(`GET request to enter company number`);
   res.redirect(COMPANY_LOOKUP_URL);
 });
 
 // GET: /registered-email-address/company/confirm
-router.get(CONFIRM_URL, async (req: Request, res: Response, next: NextFunction) => {
+companyRouter.get(CONFIRM_URL, async (req: Request, res: Response, next: NextFunction) => {
   new ConfirmCompanyHandler().get(req, res).then((viewData) => {
     // eslint-disable-next-line no-prototype-builtins
     res.render(`${routeViews}` + CONFIRM_URL, viewData);
@@ -35,7 +35,7 @@ router.get(CONFIRM_URL, async (req: Request, res: Response, next: NextFunction) 
 });
 
 // POST: /registered-email-address/company/confirm
-router.post(CONFIRM_URL, async (req: Request, res: Response, next: NextFunction) => {
+companyRouter.post(CONFIRM_URL, async (req: Request, res: Response, next: NextFunction) => {
   const companyProfile: CompanyProfile | undefined = req.session?.getExtraData(COMPANY_PROFILE);
   if (companyProfile !== undefined) {
     req.session?.setExtraData(COMPANY_NUMBER, companyProfile.companyNumber);
@@ -55,10 +55,10 @@ router.post(CONFIRM_URL, async (req: Request, res: Response, next: NextFunction)
 });
 
 // GET: /registered-email-address/company/invalid
-router.get(INVALID_URL, async (req: Request, res: Response, next: NextFunction) => {
+companyRouter.get(INVALID_URL, async (req: Request, res: Response, next: NextFunction) => {
   await new InvalidCompanyHandler().get(req, res).then((data) => {
     res.render(`${routeViews}` + COMPANY_INVALID_PAGE, data);
   });
 });
 
-export default router;
+export default companyRouter;
