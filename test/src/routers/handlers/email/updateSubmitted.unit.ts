@@ -4,7 +4,7 @@ import { createRequest, createResponse, MockRequest, MockResponse } from 'node-m
 import { UpdateSubmittedHandler } from "../../../../../src/routers/handlers/email/updateSubmitted";
 import { Session } from "@companieshouse/node-session-handler";
 import { createSessionData } from "../../../../mocks/sessionGenerator.mock";
-import { SUBMISSION_ID } from "../../../../../src/constants/app.const";
+import { SUBMISSION_ID, REGISTERED_EMAIL_ADDRESS} from "../../../../../src/constants/app.const";
 import * as crypto from "crypto";
 
 const TEST_USER_EMAIL: string = "test_user@test.co.biz";
@@ -32,6 +32,28 @@ describe("Registered email address update - test GET method", () => {
     request.session?.setExtraData(SUBMISSION_ID, TEST_SUBMISSION_ID);
 
     await updateSubmittedHandler.get(request, response).then((updateSubmittedResponse) => {
+      const updateSubmittedResponseJson = JSON.parse(JSON.stringify(updateSubmittedResponse));
+
+      expect(updateSubmittedResponseJson.userEmail).toEqual(TEST_USER_EMAIL);
+      expect(updateSubmittedResponseJson.submissionID).toEqual(TEST_SUBMISSION_ID);
+    });
+  });
+});
+
+describe("Registered email address update - test POST method", () => {  
+  it("Required submission data in object returned from handler", async () => {
+    // mock request/responses
+    request = createRequest({
+      session: new Session({ 
+        ...createSessionData(cookieSecret)
+      })
+    });
+
+    // set submission id and REA in session
+    request.session?.setExtraData(SUBMISSION_ID, TEST_SUBMISSION_ID);
+    request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_USER_EMAIL);
+
+    await updateSubmittedHandler.post(request, response).then((updateSubmittedResponse) => {
       const updateSubmittedResponseJson = JSON.parse(JSON.stringify(updateSubmittedResponse));
 
       expect(updateSubmittedResponseJson.userEmail).toEqual(TEST_USER_EMAIL);

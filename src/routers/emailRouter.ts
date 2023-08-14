@@ -76,4 +76,12 @@ emailRouter.get(UPDATE_SUBMITTED, async (req: Request, res: Response, next: Next
   });
 });
 
+// POST: /update-submitted
+emailRouter.get(UPDATE_SUBMITTED, async (req: Request, res: Response, next: NextFunction) => {
+  const handler = new UpdateSubmittedHandler();
+  await handler.post(req, res).then((viewData) => {
+    res.render(`${emailRouterViews}` + UPDATE_SUBMITTED, viewData);
+  });
+});
+
 export default emailRouter;

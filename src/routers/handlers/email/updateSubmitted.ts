@@ -30,9 +30,21 @@ export class UpdateSubmittedHandler extends GenericHandler {
     // clear session.ExtraData
     session.setExtraData(COMPANY_PROFILE, undefined);
     session.setExtraData(COMPANY_NUMBER, undefined);
-    session.setExtraData(REGISTERED_EMAIL_ADDRESS, undefined);
     session.setExtraData(NEW_EMAIL_ADDRESS, undefined);
     session.setExtraData(INVALID_COMPANY_REASON, undefined);
+
+    return Promise.resolve(this.viewData);
+  }
+
+  async post (req: Request, response: Response): Promise<Object> {
+    logger.info(`POST request to serve update submitted page`);
+    const session: Session = req.session as Session;
+    this.viewData.userEmail = session.getExtraData(REGISTERED_EMAIL_ADDRESS);
+    this.viewData.backUri = undefined;
+    this.viewData.submissionID = session.getExtraData(SUBMISSION_ID);
+
+    // clear session.ExtraData
+    session.setExtraData(REGISTERED_EMAIL_ADDRESS, undefined);
     session.setExtraData(SUBMISSION_ID, undefined);
 
     return Promise.resolve(this.viewData);
