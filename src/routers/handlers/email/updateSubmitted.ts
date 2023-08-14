@@ -33,7 +33,6 @@ export class UpdateSubmittedHandler extends GenericHandler {
     session.setExtraData(REGISTERED_EMAIL_ADDRESS, undefined);
     session.setExtraData(NEW_EMAIL_ADDRESS, undefined);
     session.setExtraData(INVALID_COMPANY_REASON, undefined);
-    session.setExtraData(SUBMISSION_ID, undefined);
 
     return Promise.resolve(this.viewData);
   }
