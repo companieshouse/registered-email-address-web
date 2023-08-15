@@ -8,7 +8,7 @@ import {RegisteredEmailAddress} from "@companieshouse/api-sdk-node/dist/services
 
 jest.mock("@companieshouse/api-sdk-node");
 jest.mock("../../../../src/services/api/private-get-rea");
-jest.mock("../../../../src/utils/common/Logger");
+jest.mock("../../../../src/utils/common/logger");
 
 const mockCreatePrivateApiClient = createPrivateApiClient as jest.Mock;
 const mockGetRegisteredEmailAddress = jest.fn();

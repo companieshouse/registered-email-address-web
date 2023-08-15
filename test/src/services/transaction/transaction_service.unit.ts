@@ -14,7 +14,7 @@ import {CompanyProfile} from "@companieshouse/api-sdk-node/dist/services/company
 
 jest.mock("@companieshouse/api-sdk-node");
 jest.mock("../../../../src/services/api/api_service");
-jest.mock("../../../../src/utils/common/Logger");
+jest.mock("../../../../src/utils/common/logger");
 
 const mockCreatePublicOAuthApiClient = createPublicOAuthApiClient as jest.Mock;
 const mockPostTransaction = jest.fn();
