@@ -2,12 +2,12 @@ import "reflect-metadata";
 import express, {NextFunction, Request, Response} from "express";
 import nunjucks from "nunjucks";
 import path from "path";
-import { logger } from "./utils/common/Logger";
-import routerDispatch from "./routerDispatch";
-import {authenticationMiddleware} from "./middleware/authentication.middleware";
-import {companyAuthenticationMiddleware} from "./middleware/company.authentication.middleware";
+import { logger } from "./utils/common/logger";
+import router_dispatch from "./router_dispatch";
+import {authentication_middleware} from "./middleware/authentication_middleware";
+import {company_authentication_middleware} from "./middleware/company_authentication_middleware";
 import cookieParser from "cookie-parser";
-import {sessionMiddleware} from "./middleware/session.middleware";
+import {session_middleware} from "./middleware/session_middleware";
 import {pageNotFound} from "./utils/error/error";
 
 import {
@@ -84,18 +84,18 @@ process.on("unhandledRejection", (err: any) => {
 
 // Apply middleware
 app.use(cookieParser());
-app.use(`${HOME_URL}*`, sessionMiddleware);
+app.use(`${HOME_URL}*`, session_middleware);
 
 // Login redirect for company and email paths and also signout page
 const userAuthRegex = new RegExp(`^((${COMPANY_BASE_URL})|(${EMAIL_BASE_URL}).+)|(${SIGN_OUT_URL})`);
-app.use(userAuthRegex, authenticationMiddleware);
+app.use(userAuthRegex, authentication_middleware);
 
 // Company Auth redirect
 const companyAuthRegex = new RegExp(`^${EMAIL_BASE_URL}/.+`);
-app.use(companyAuthRegex, companyAuthenticationMiddleware);
+app.use(companyAuthRegex, company_authentication_middleware);
 
 // Channel all requests through router dispatch
-routerDispatch(app);
+router_dispatch(app);
 
 app.use(pageNotFound);
 

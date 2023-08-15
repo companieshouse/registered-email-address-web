@@ -1,4 +1,4 @@
-import { getEnvironmentValue } from "../utils/environment/environment.value";
+import { getEnvironmentValue } from "../utils/environment/environment_value";
 
 // URL params
 export enum urlParams {

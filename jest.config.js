@@ -18,5 +18,5 @@ module.exports = {
       diagnostics: true
     }
   },
-  globalSetup: './test/global.setup.ts'
+  globalSetup: './test/global_setup.ts'
 }
