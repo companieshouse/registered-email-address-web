@@ -5,7 +5,7 @@ import {validSDKResource} from "../../../mocks/company.profile.mock";
 import {StatusCodes} from "http-status-codes";
 
 jest.mock("@companieshouse/api-sdk-node");
-jest.mock("../../../../src/utils/common/Logger");
+jest.mock("../../../../src/utils/common/logger");
 
 const mockCreateApiClient = createApiClient as jest.Mock;
 const mockGetCompanyProfile = jest.fn();

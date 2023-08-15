@@ -1,6 +1,6 @@
 jest.mock("@companieshouse/api-sdk-node");
 jest.mock("../../../../../src/services/api/api.service");
-jest.mock("../../../../../src/utils/common/Logger");
+jest.mock("../../../../../src/utils/common/logger");
 
 import "reflect-metadata";
 import {Request, Response} from "express";

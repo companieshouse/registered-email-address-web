@@ -11,7 +11,7 @@ import {ApiResponse} from "@companieshouse/api-sdk-node/dist/services/resource";
 
 jest.mock("../../../../src/services/api/api.service");
 jest.mock("@companieshouse/api-sdk-node");
-jest.mock("../../../../src/utils/common/Logger");
+jest.mock("../../../../src/utils/common/logger");
 
 let session: any;
 
