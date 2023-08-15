@@ -3,20 +3,18 @@ import { GenericHandler } from "../generic";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile";
 import { Session } from "@companieshouse/node-session-handler";
 import { Resource } from "@companieshouse/api-sdk-node";
-import { getCompanyProfile } from "../../../services/company/company.profile.service";
-import { buildAddress, formatForDisplay } from "../../../services/company/confirm.company.service";
-import { getCompanyEmail } from "../../../services/company/company.email.service";
+import { getCompanyProfile } from "../../../services/company/company_profile_service";
+import { buildAddress, formatForDisplay } from "../../../services/company/confirm_company_service";
+import { getCompanyEmail } from "../../../services/company/company_email_service";
 import {RegisteredEmailAddress} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
-
-import {logger} from "../../../utils/common/Logger";
-
+import {logger} from "../../../utils/common/logger";
 import {
   COMPANY_PROFILE,
   COMPANY_NUMBER,
   INVALID_COMPANY_NUMBER,
   REGISTERED_EMAIL_ADDRESS,
   THERE_IS_A_PROBLEM_ERROR
-} from "../../../constants/app.const";
+} from "../../../constants/app_const";
 import {
   INVALID_COMPANY_NO_EMAIL_REASON,
   INVALID_COMPANY_SERVICE_UNAVAILABLE,
@@ -24,7 +22,7 @@ import {
   INVALID_COMPANY_TYPE_REASON,
   VALID_COMPANY_STATUS,
   VALID_COMPANY_TYPES
-} from "../../../constants/validation.const";
+} from "../../../constants/validation_const";
 import { COMPANY_NUMBER_URL } from "../../../config";
 import { StatusCodes } from "http-status-codes";
 

@@ -3,7 +3,7 @@
 import { BaseHttpController } from "inversify-express-utils";
 import "reflect-metadata";
 
-import errorManifest from "../../utils/error/errorManifest";
+import error_manifest from "../../utils/error/error_manifest";
 import { SESSION_COUNTDOWN, SESSION_TIMEOUT } from "../../config";
 
 export abstract class GenericHandler extends BaseHttpController {
@@ -13,7 +13,7 @@ export abstract class GenericHandler extends BaseHttpController {
 
   constructor () {
     super();
-    this.errorManifest = errorManifest;
+    this.errorManifest = error_manifest;
     this.viewData = {};
     this.viewData.signoutBanner = true;
     this.viewData.sessionTimeout = SESSION_TIMEOUT;

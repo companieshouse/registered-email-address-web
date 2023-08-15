@@ -1,5 +1,5 @@
 jest.mock("@companieshouse/api-sdk-node");
-jest.mock("../../../../../src/services/api/api.service");
+jest.mock("../../../../../src/services/api/api_service");
 jest.mock("../../../../../src/services/api/private-get-rea");
 jest.mock("../../../../../src/utils/common/Logger");
 
@@ -8,14 +8,14 @@ import { Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from 'node-mocks-http';
 import { ConfirmCompanyHandler } from "../../../../../src/routers/handlers/company/confirm";
 import { Session } from "@companieshouse/node-session-handler";
-import { REGISTERED_EMAIL_ADDRESS, INVALID_COMPANY_NUMBER } from "../../../../../src/constants/app.const";
+import { REGISTERED_EMAIL_ADDRESS, INVALID_COMPANY_NUMBER } from "../../../../../src/constants/app_const";
 import {createApiClient} from "@companieshouse/api-sdk-node";
 import { createPrivateApiClient } from "../../../../../src/services/api/private-get-rea";
-import { CompanyProfileErrorResponse, validSDKResource} from "../../../../mocks/company.profile.mock";
-import { validEmailSDKResource, EmailNotFoundReponse} from "../../../../mocks/company.email.mock";
-import { createAndLogError } from "../../../../../src/utils/common/Logger";
-import * as constants from "../../../../../src/constants/app.const";
-import * as validationConstants from "../../../../../src/constants/validation.const";
+import { CompanyProfileErrorResponse, validSDKResource} from "../../../../mocks/company_profile_mock";
+import { validEmailSDKResource, EmailNotFoundReponse} from "../../../../mocks/company_email_mock";
+import { createAndLogError } from "../../../../../src/utils/common/logger";
+import * as constants from "../../../../../src/constants/app_const";
+import * as validationConstants from "../../../../../src/constants/validation_const";
 
 
 // Testing Const
@@ -39,7 +39,7 @@ mockCreateApiClient.mockReturnValue({
   }
 });
 
-// mocking block - PrivateApiClient
+// mocking block - Private_api_client
 const mockCreatePrivateApiClient = createPrivateApiClient as jest.Mock;
 mockCreatePrivateApiClient.mockReturnValue({
   registeredEmailAddress: {

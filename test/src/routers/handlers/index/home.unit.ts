@@ -1,5 +1,5 @@
 jest.mock("@companieshouse/api-sdk-node");
-jest.mock("../../../../../src/services/api/api.service");
+jest.mock("../../../../../src/services/api/api_service");
 jest.mock("../../../../../src/utils/common/Logger");
 
 import "reflect-metadata";
@@ -7,7 +7,7 @@ import { Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from 'node-mocks-http';
 import { HomeHandler } from "../../../../../src/routers/handlers/index/home";
 import { Session } from "@companieshouse/node-session-handler";
-import { createAndLogError } from "../../../../../src/utils/common/Logger";
+import { createAndLogError } from "../../../../../src/utils/common/logger";
 
 // default handler instance
 let homeHandler: HomeHandler;
