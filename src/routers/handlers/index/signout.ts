@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import { Session } from "@companieshouse/node-session-handler";
-import { FAILED_TO_FIND_RETURN_URL_ERROR, RETURN_URL} from "../../../constants/app.const";
-import { logger } from "../../../utils/common/Logger";
+import { FAILED_TO_FIND_RETURN_URL_ERROR, RETURN_URL} from "../../../constants/app_const";
+import { logger } from "../../../utils/common/logger";
 
 const PAGE_TITLE = "Are you sure you want to sign out?";
 

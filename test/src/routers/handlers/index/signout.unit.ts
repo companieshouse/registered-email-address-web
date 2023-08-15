@@ -1,14 +1,14 @@
 jest.mock("@companieshouse/api-sdk-node");
-jest.mock("../../../../../src/services/api/api.service");
-jest.mock("../../../../../src/utils/common/Logger");
+jest.mock("../../../../../src/services/api/api_service");
+jest.mock("../../../../../src/utils/common/logger");
 
 import "reflect-metadata";
 import { Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from 'node-mocks-http';
 import { SignOutHandler } from "../../../../../src/routers/handlers/index/signout";
 import { Session } from "@companieshouse/node-session-handler";
-import { createAndLogError } from "../../../../../src/utils/common/Logger";
-import { FAILED_TO_FIND_RETURN_URL_ERROR, RETURN_URL } from "../../../../../src/constants/app.const";
+import { createAndLogError } from "../../../../../src/utils/common/logger";
+import { FAILED_TO_FIND_RETURN_URL_ERROR, RETURN_URL } from "../../../../../src/constants/app_const";
 
 const TEST_BACK_LINK =  "test/any";
 

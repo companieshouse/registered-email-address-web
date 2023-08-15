@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
-import { logger } from "../../../utils/common/Logger";
+import { logger } from "../../../utils/common/logger";
 
 const PAGE_TITLE = "Start";
 
