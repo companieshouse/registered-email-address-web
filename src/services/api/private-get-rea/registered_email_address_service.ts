@@ -8,7 +8,7 @@ import {
 /**
  * https://developer.companieshouse.gov.uk/api/docs/company/company_number/company_number.html
  */
-export default class Registered_email_address_service {
+export default class RegisteredEmailAddressService {
   constructor(private readonly client: IHttpClient) {
   }
 

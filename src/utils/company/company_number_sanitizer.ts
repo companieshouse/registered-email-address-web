@@ -1,7 +1,7 @@
 import { provide } from "inversify-binding-decorators";
 
-@provide(Company_number_sanitizer)
-export default class Company_number_sanitizer {
+@provide(CompanyNumberSanitizer)
+export default class CompanyNumberSanitizer {
   private readonly COMPANY_NUMBER_SIZE: number = 8;
 
   public sanitizeCompany (companyNumber: string): string {
@@ -19,7 +19,7 @@ export default class Company_number_sanitizer {
   }
 
   private padNumber (companyNumber: string): string {
-    if (!Company_number_sanitizer.isAlphaPrefix(companyNumber)) {
+    if (!CompanyNumberSanitizer.isAlphaPrefix(companyNumber)) {
       return companyNumber.padStart(this.COMPANY_NUMBER_SIZE, "0");
     }
     const leadingChars: string = companyNumber.substring(0, 2);

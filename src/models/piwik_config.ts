@@ -1,4 +1,4 @@
-export default interface Piwik_config {
+export default interface PiwikConfig {
   url: string
   siteId: string
   landingPageStartGoalId: number

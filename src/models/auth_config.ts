@@ -1,4 +1,4 @@
-export default interface Auth_config {
+export default interface AuthConfig {
   accountUrl: string
   accountRequestKey: string
   accountClientId: string
