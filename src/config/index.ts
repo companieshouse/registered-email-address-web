@@ -13,11 +13,6 @@ export const transactionStatuses = {
   CLOSED: "closed"
 };
 
-// Headers
-export const headers = {
-  PAYMENT_REQUIRED: "x-payment-required"
-};
-
 // APP CONFIGs
 export const APPLICATION_NAME = "registered-email-address-web";
 export const NODE_ENV = process.env.NODE_ENV;

@@ -100,9 +100,7 @@ describe("transaction service tests", () => {
   describe("putTransaction tests", () => {
     it("Should successfully PUT a transaction", async () => {
       mockPutTransaction.mockResolvedValueOnce({
-        headers: {
-          "X-Payment-Required": "http://payment"
-        },
+        headers: {},
         httpStatusCode: StatusCodes.NO_CONTENT,
         resource: {
           reference: EXPECTED_REF,
