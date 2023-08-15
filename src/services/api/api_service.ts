@@ -19,11 +19,3 @@ export const createPublicOAuthApiClient = (session: Session): ApiClient => {
 export const createPublicApiKeyClient = (): ApiClient => {
   return createApiClient(CHS_API_KEY, undefined, API_URL);
 };
-
-export const createPaymentApiClient = (session: Session, paymentUrl: string): ApiClient => {
-  const oAuth = session.data?.[SessionKey.SignInInfo]?.[SignInInfoKeys.AccessToken]?.[AccessTokenKeys.AccessToken];
-  if (oAuth) {
-    return createApiClient(undefined, oAuth, paymentUrl);
-  }
-  throw createAndLogError( THERE_IS_A_PROBLEM_ERROR, "Error getting session keys for creating public api client");
-};
