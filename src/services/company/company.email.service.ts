@@ -1,7 +1,7 @@
 import { Resource } from "@companieshouse/api-sdk-node";
 import { createPrivateApiClient } from "../api/private-get-rea";
 import { CHS_API_KEY, ORACLE_QUERY_API_URL } from "../../config";
-import { logger } from "../../utils/common/Logger";
+import { logger } from "../../utils/common/logger";
 import { StatusCodes } from 'http-status-codes';
 import {RegisteredEmailAddress} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
 

@@ -1,9 +1,9 @@
 // Do Router dispatch here, i.e. map incoming routes to appropriate router
 import { Application } from "express";
 import * as config from "./config/index";
-import indexRouter from "./routers/indexRouter";
-import companyRouter from "./routers/companyRouter";
-import emailRouter from "./routers/emailRouter";
+import indexRouter from "./routers/index.router";
+import companyRouter from "./routers/company.router";
+import emailRouter from "./routers/email.router";
 
 const routerDispatch = (app: Application) => {
   app.use("/", indexRouter);

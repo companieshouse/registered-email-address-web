@@ -2,10 +2,10 @@ import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
 import { inject } from "inversify";
 import { Session } from "@companieshouse/node-session-handler";
-import { logger } from "../../../utils/common/Logger";
-import { validateEmailString } from "../../../utils/email/validateEmailString";
+import { logger } from "../../../utils/common/logger";
+import { validateEmailString } from "../../../utils/email/validate.email.string";
 import { postTransaction } from "../../../services/transaction/transaction.service";
-import { formatValidationError } from "../../../utils/error/formatValidationErrors";
+import { formatValidationError } from "../../../utils/error/format.validation.errors";
 
 import {
   COMPANY_NUMBER,
@@ -27,12 +27,12 @@ import {
   REFERENCE
 } from "../../../config";
 
-import ValidationErrors from "../../../models/validationErrors.model";
+import ValidationErrors from "../../../models/validation.errors.model";
 
 import { StatusCodes } from 'http-status-codes';
 import Optional from "../../../models/optional";
-import FormValidator from "../../../utils/common/formValidator.util";
-import changeEmailAddressSchema from "../../../schemas/changeEmailAddressSchema";
+import FormValidator from "../../../utils/common/form.validator.util";
+import changeEmailAddressSchema from "../../../schemas/change.email.address.schema";
 import {RegisteredEmailAddress} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 

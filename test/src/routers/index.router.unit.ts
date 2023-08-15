@@ -10,7 +10,7 @@ import {
 } from "../../../src/config";
 import {StatusCodes} from "http-status-codes";
 import {HomeHandler} from "../../../src/routers/handlers/index/home";
-import {SignOutHandler} from "../../../src/routers/handlers/index/signout";
+import {SignOutHandler} from "../../../src/routers/handlers/index/sign.out";
 
 const COMPANY_NUMBER_REDIRECT: string = "Found. Redirecting to /registered-email-address/company/number";
 

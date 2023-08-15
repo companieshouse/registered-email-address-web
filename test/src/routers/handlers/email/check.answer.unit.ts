@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {postRegisteredEmailAddress} from "../../../../../src/services/email/email.registered.service";
-import {CheckAnswerHandler} from "../../../../../src/routers/handlers/email/checkAnswer";
+import {CheckAnswerHandler} from "../../../../../src/routers/handlers/email/check.answer";
 import {Session} from "@companieshouse/node-session-handler";
 import {createRequest, createResponse, MockRequest, MockResponse} from "node-mocks-http";
 import {Request, Response} from "express";
@@ -13,7 +13,7 @@ import {
 } from "../../../../../src/constants/app.const";
 import {validCompanyProfile} from "../../../../mocks/company.profile.mock";
 import {createSessionData} from "../../../../mocks/sessionGenerator.mock";
-import {generateRandomBytesBase64} from "./updateSubmitted.unit";
+import {generateRandomBytesBase64} from "./update.submitted.unit";
 import {closeTransaction} from "../../../../../src/services/transaction/transaction.service";
 import {
   RegisteredEmailAddressCreatedResource

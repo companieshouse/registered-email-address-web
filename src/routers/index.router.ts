@@ -1,6 +1,6 @@
 import { Request, Response, Router, NextFunction } from "express";
 import { HomeHandler } from "./handlers/index/home";
-import { SignOutHandler, getReturnPageFromSession } from "./handlers/index/signout";
+import { SignOutHandler, getReturnPageFromSession } from "./handlers/index/sign.out";
 import {
   ACCESSIBILITY_STATEMENT_PAGE,
   ACCESSIBILITY_STATEMENT_URL,

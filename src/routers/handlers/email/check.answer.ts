@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import {GenericHandler} from "../generic";
 import {Session} from "@companieshouse/node-session-handler";
-import {logger} from "../../../utils/common/Logger";
+import {logger} from "../../../utils/common/logger";
 import {
   CHECK_ANSWER_ERROR_ANCHOR,
   CHECK_ANSWER_ERROR_KEY,
@@ -15,7 +15,7 @@ import {
 import {EMAIL_CHANGE_EMAIL_ADDRESS_URL} from "../../../config";
 import {postRegisteredEmailAddress} from "../../../services/email/email.registered.service";
 import {CompanyProfile} from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
-import {formatValidationError} from "../../../utils/error/formatValidationErrors";
+import {formatValidationError} from "../../../utils/error/format.validation.errors";
 import {closeTransaction} from "../../../services/transaction/transaction.service";
 import {
   RegisteredEmailAddress,

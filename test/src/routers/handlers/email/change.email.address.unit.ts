@@ -5,8 +5,8 @@ jest.mock("../../../../../src/utils/common/Logger");
 import "reflect-metadata";
 import {Request, Response} from "express";
 import {createRequest, createResponse, MockRequest, MockResponse} from 'node-mocks-http';
-import {ChangeEmailAddressHandler} from "../../../../../src/routers/handlers/email/changeEmailAddress";
-import FormValidator from "../../../../../src/utils/common/formValidator.util";
+import {ChangeEmailAddressHandler} from "../../../../../src/routers/handlers/email/change.email.address";
+import FormValidator from "../../../../../src/utils/common/form.validator.util";
 import {Session} from "@companieshouse/node-session-handler";
 import {
   COMPANY_NUMBER,
@@ -23,7 +23,7 @@ import {transactionId, validTransactionSDKResource} from "../../../../mocks/tran
 import {EmailErrorReponse, validEmailSDKResource} from "../../../../mocks/company.email.mock";
 import {createApiClient} from "@companieshouse/api-sdk-node";
 import {createPublicOAuthApiClient} from "../../../../../src/services/api/api.service";
-import {createAndLogError} from "../../../../../src/utils/common/Logger";
+import {createAndLogError} from "../../../../../src/utils/common/logger";
 import {validCompanyProfile} from "../../../../mocks/company.profile.mock";
 import {StatusCodes} from "http-status-codes";
 

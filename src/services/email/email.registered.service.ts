@@ -3,7 +3,7 @@ import ApiClient from "@companieshouse/api-sdk-node/dist/client";
 import {createPublicOAuthApiClient} from "../api/api.service";
 import {Resource} from "@companieshouse/api-sdk-node";
 import {ApiErrorResponse, ApiResponse} from "@companieshouse/api-sdk-node/dist/services/resource";
-import {logger} from "../../utils/common/Logger";
+import {logger} from "../../utils/common/logger";
 import {StatusCodes} from "http-status-codes";
 import {
   RegisteredEmailAddress,

@@ -10,7 +10,7 @@ import {
 import {StatusCodes} from "http-status-codes";
 import {HttpResponse} from "@companieshouse/api-sdk-node/dist/http/http-client";
 import {INVALID_COMPANY_NUMBER} from "../../../src/constants/app.const";
-import {InvalidCompanyHandler} from "../../../src/routers/handlers/company/invalidCompany";
+import {InvalidCompanyHandler} from "../../../src/routers/handlers/company/invalid.company";
 import {ConfirmCompanyHandler} from "../../../src/routers/handlers/company/confirm";
 import {
   INVALID_COMPANY_SERVICE_UNAVAILABLE,

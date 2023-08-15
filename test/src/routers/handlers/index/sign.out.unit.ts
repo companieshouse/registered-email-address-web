@@ -5,9 +5,9 @@ jest.mock("../../../../../src/utils/common/Logger");
 import "reflect-metadata";
 import { Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from 'node-mocks-http';
-import { SignOutHandler } from "../../../../../src/routers/handlers/index/signout";
+import { SignOutHandler } from "../../../../../src/routers/handlers/index/sign.out";
 import { Session } from "@companieshouse/node-session-handler";
-import { createAndLogError } from "../../../../../src/utils/common/Logger";
+import { createAndLogError } from "../../../../../src/utils/common/logger";
 import { FAILED_TO_FIND_RETURN_URL_ERROR, RETURN_URL } from "../../../../../src/constants/app.const";
 
 const TEST_BACK_LINK =  "test/any";
@@ -42,7 +42,7 @@ describe("Test ConfirmCompanyHandler", () => {
       headers : {
         referer :  TEST_BACK_LINK
       }
-    });    
+    });
     response = createResponse();
 
   });

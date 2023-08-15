@@ -1,8 +1,8 @@
 import {NextFunction, Request, Response, Router} from "express";
-import {ChangeEmailAddressHandler} from "./handlers/email/changeEmailAddress";
-import {UpdateSubmittedHandler} from "./handlers/email/updateSubmitted";
-import FormValidator from "../utils/common/formValidator.util";
-import {CheckAnswerHandler} from "./handlers/email/checkAnswer";
+import {ChangeEmailAddressHandler} from "./handlers/email/change.email.address";
+import {UpdateSubmittedHandler} from "./handlers/email/update.submitted";
+import FormValidator from "../utils/common/form.validator.util";
+import {CheckAnswerHandler} from "./handlers/email/check.answer";
 
 import {
   CHANGE_EMAIL_ADDRESS_URL,

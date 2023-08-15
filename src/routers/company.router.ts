@@ -1,8 +1,8 @@
 import { Request, Response, Router, NextFunction } from "express";
 import { ConfirmCompanyHandler } from "./handlers/company/confirm";
-import { InvalidCompanyHandler } from "./handlers/company/invalidCompany";
+import { InvalidCompanyHandler } from "./handlers/company/invalid.company";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
-import { logger } from "../utils/common/Logger";
+import { logger } from "../utils/common/logger";
 import {
   COMPANY_INVALID_PAGE,
   CONFIRM_URL,

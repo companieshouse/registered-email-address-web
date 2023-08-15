@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { GenericHandler } from "../generic";
-import { logger } from "../../../utils/common/Logger";
+import { logger } from "../../../utils/common/logger";
 import { Session } from "@companieshouse/node-session-handler";
 import {
   COMPANY_PROFILE,
@@ -19,7 +19,7 @@ export class UpdateSubmittedHandler extends GenericHandler {
     super();
     this.viewData.title = PAGE_TITLE;
   }
-  
+
   async get (req: Request, response: Response): Promise<Object> {
     logger.info(`GET request to serve update submitted page`);
     const session: Session = req.session as Session;

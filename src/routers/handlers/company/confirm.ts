@@ -8,7 +8,7 @@ import { buildAddress, formatForDisplay } from "../../../services/company/confir
 import { getCompanyEmail } from "../../../services/company/company.email.service";
 import {RegisteredEmailAddress} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
 
-import {logger} from "../../../utils/common/Logger";
+import {logger} from "../../../utils/common/logger";
 
 import {
   COMPANY_PROFILE,

@@ -5,11 +5,11 @@ jest.mock("../../../../../src/utils/common/Logger");
 import "reflect-metadata";
 import { Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from 'node-mocks-http';
-import { InvalidCompanyHandler } from "../../../../../src/routers/handlers/company/invalidCompany";
+import { InvalidCompanyHandler } from "../../../../../src/routers/handlers/company/invalid.company";
 import { Session } from "@companieshouse/node-session-handler";
 import { REGISTERED_EMAIL_ADDRESS } from "../../../../../src/constants/app.const";
 import { validSDKResource} from "../../../../mocks/company.profile.mock";
-import { createAndLogError } from "../../../../../src/utils/common/Logger";
+import { createAndLogError } from "../../../../../src/utils/common/logger";
 import * as constants from "../../../../../src/constants/app.const";
 import * as validationConstants from "../../../../../src/constants/validation.const";
 
@@ -50,7 +50,7 @@ describe("Test ConfirmCompanyHandler", () => {
     request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
     request.session?.setExtraData(constants.COMPANY_PROFILE, validSDKResource.resource);
   });
-  
+
   it("GET request to serve company Invalid Company - Get invalid company type page", async () => {
     //set Company Profile in session
     request.session?.setExtraData(constants.INVALID_COMPANY_REASON, validationConstants.INVALID_COMPANY_TYPE_REASON);
@@ -90,4 +90,4 @@ describe("Test ConfirmCompanyHandler", () => {
   });
 
 });
-    
+

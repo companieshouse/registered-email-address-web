@@ -13,7 +13,7 @@ import {createApiClient} from "@companieshouse/api-sdk-node";
 import { createPrivateApiClient } from "../../../../../src/services/api/private-get-rea";
 import { CompanyProfileErrorResponse, validSDKResource} from "../../../../mocks/company.profile.mock";
 import { validEmailSDKResource, EmailNotFoundReponse} from "../../../../mocks/company.email.mock";
-import { createAndLogError } from "../../../../../src/utils/common/Logger";
+import { createAndLogError } from "../../../../../src/utils/common/logger";
 import * as constants from "../../../../../src/constants/app.const";
 import * as validationConstants from "../../../../../src/constants/validation.const";
 
@@ -96,7 +96,7 @@ describe("Test ConfirmCompanyHandler", () => {
 
     //Set Company Number in Query
     request.query = {companyNumber : '12345678'};
-  
+
     await confirmCompanyHandler.get(request, response).then((confirmCompanyResponse) => {
       const confirmCompanyResponseJson = JSON.parse(JSON.stringify(confirmCompanyResponse));
       expect(confirmCompanyResponseJson.company.companyName).toEqual('Test Company');
@@ -135,7 +135,7 @@ describe("Test ConfirmCompanyHandler", () => {
   });
 
   it("POST Request in ConfirmCompanyHandler - Company has invalid company type", async () => {
-    //set Company Profile in session    
+    //set Company Profile in session
     const invalidCompany = {type : "invalid-company-type"};
     request.session?.setExtraData(constants.COMPANY_PROFILE, invalidCompany);
 
@@ -146,7 +146,7 @@ describe("Test ConfirmCompanyHandler", () => {
   });
 
   it("POST Request in ConfirmCompanyHandler - Company has invalid company status", async () => {
-    //set Company Profile in session    
+    //set Company Profile in session
     const invalidCompany = {
       type : "ltd",
       companyStatus : "invalid-company-staus"};
@@ -162,7 +162,7 @@ describe("Test ConfirmCompanyHandler", () => {
     //mock the email response
     mockGetCompanyEmail.mockRejectedValueOnce(clone(EmailNotFoundReponse));
 
-    //set Company Profile in session    
+    //set Company Profile in session
     const invalidCompany = {
       type : "ltd",
       companyStatus : "active",
@@ -182,4 +182,4 @@ describe("Test ConfirmCompanyHandler", () => {
   });
 
 });
-    
+

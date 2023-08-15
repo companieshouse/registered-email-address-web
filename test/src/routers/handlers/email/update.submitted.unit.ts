@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { Request, Response } from "express";
 import { createRequest, createResponse, MockRequest, MockResponse } from 'node-mocks-http';
-import { UpdateSubmittedHandler } from "../../../../../src/routers/handlers/email/updateSubmitted";
+import { UpdateSubmittedHandler } from "../../../../../src/routers/handlers/email/update.submitted";
 import { Session } from "@companieshouse/node-session-handler";
 import { createSessionData } from "../../../../mocks/sessionGenerator.mock";
 import { SUBMISSION_ID } from "../../../../../src/constants/app.const";
@@ -19,11 +19,11 @@ let session: Session;
 let request: MockRequest<Request>;
 const response: MockResponse<Response> = createResponse();
 
-describe("Registered email address update - test GET method", () => {  
+describe("Registered email address update - test GET method", () => {
   it("Required submission data in object returned from handler", async () => {
     // mock request/responses
     request = createRequest({
-      session: new Session({ 
+      session: new Session({
         ...createSessionData(cookieSecret)
       })
     });

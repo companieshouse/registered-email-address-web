@@ -1,5 +1,5 @@
 import { IHttpClient } from "@companieshouse/api-sdk-node/dist/http";
-import RegisteredEmailAddressService from "./RegisteredEmailAddressService";
+import RegisteredEmailAddressService from "./registered.email.address.service";
 
 /**
  * ApiClient is the class that all service objects hang off.

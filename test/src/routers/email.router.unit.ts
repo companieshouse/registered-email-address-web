@@ -12,9 +12,9 @@ import {
 } from "../../../src/constants/app.const";
 import {HttpResponse} from "@companieshouse/api-sdk-node/dist/http/http-client";
 import {StatusCodes} from "http-status-codes";
-import {CheckAnswerHandler} from "../../../src/routers/handlers/email/checkAnswer";
-import {ChangeEmailAddressHandler} from "../../../src/routers/handlers/email/changeEmailAddress";
-import {UpdateSubmittedHandler} from "../../../src/routers/handlers/email/updateSubmitted";
+import {CheckAnswerHandler} from "../../../src/routers/handlers/email/check.answer";
+import {ChangeEmailAddressHandler} from "../../../src/routers/handlers/email/change.email.address";
+import {UpdateSubmittedHandler} from "../../../src/routers/handlers/email/update.submitted";
 
 const okResponse: HttpResponse = {status: StatusCodes.OK};
 const movedTemporarilyResponse: HttpResponse = {status: StatusCodes.MOVED_TEMPORARILY};
