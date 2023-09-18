@@ -10,14 +10,18 @@ import {
   INVALID_COMPANY_REASON,
   SUBMISSION_ID
 } from "../../../constants/app_const";
+import {CONFIRMATION_FEEDBACK_LINK} from "../../../config";
 
+const EVENT = "update-submitted-event";
 const PAGE_TITLE = "Application submitted – Update a registered email address";
 
 export class UpdateSubmittedHandler extends GenericHandler {
 
   constructor () {
     super();
+    this.viewData.eventType = EVENT;
     this.viewData.title = PAGE_TITLE;
+    this.viewData.feedback = CONFIRMATION_FEEDBACK_LINK;
   }
   
   async get (req: Request, response: Response): Promise<Object> {

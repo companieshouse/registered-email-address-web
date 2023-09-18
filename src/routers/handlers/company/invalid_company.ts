@@ -12,12 +12,14 @@ import {
   INVALID_COMPANY_TYPE_REASON
 } from "../../../constants/validation_const";
 
+const EVENT = "invalid-company-event";
 const PAGE_TITLE = "Invalid Company";
 
 export class InvalidCompanyHandler extends GenericHandler {
 
   constructor () {
     super();
+    this.viewData.eventType = EVENT;
     this.viewData.signoutBanner = false;
     this.viewData.title = PAGE_TITLE;
 

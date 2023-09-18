@@ -54,7 +54,7 @@
 {% endblock %}
 
 {% block beforeContent %}
-  <div id="templateName" data-id="event" hidden></div>
+  <div id="templateName" data-id={{eventType}} hidden></div>
   {% include "partials/phase-banner.njk" %}
   {% include "partials/signout-banner.njk" %}
 {% endblock %}
