@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "description": "Web front-end for Registered Email Address Service",
   "main": "dist/server.js",
-  "engines": {
-    "node": "16.20.0",
-    "npm": "^8"
-  },
   "scripts": {
     "build:server": "tsc && cp -r src/views dist/ && cp -r src/config dist/",
     "build:assets": "gulp build",
