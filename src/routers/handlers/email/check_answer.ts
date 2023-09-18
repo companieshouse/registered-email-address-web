@@ -12,7 +12,7 @@ import {
   SUBMISSION_ID,
   TRANSACTION_CLOSE_ERROR
 } from "../../../constants/app_const";
-import {EMAIL_CHANGE_EMAIL_ADDRESS_URL} from "../../../config";
+import {EMAIL_CHANGE_EMAIL_ADDRESS_URL, EMAIL_CONFIRMATION_FEEDBACK_LINK} from "../../../config";
 import {postRegisteredEmailAddress} from "../../../services/email/email_registered_service";
 import {CompanyProfile} from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import {formatValidationError} from "../../../utils/error/format_validation_errors";
@@ -24,13 +24,16 @@ import {
 import {ApiResponse} from "@companieshouse/api-sdk-node/dist/services/resource";
 
 const PAGE_TITLE = "Check your answer";
+const EVENT = "check-answer-event";
 
 export class CheckAnswerHandler extends GenericHandler {
 
   constructor() {
     super();
+    this.viewData.eventType = EVENT;
     this.viewData.title = PAGE_TITLE;
     this.viewData.backUri = EMAIL_CHANGE_EMAIL_ADDRESS_URL;
+    this.viewData.feedback = EMAIL_CONFIRMATION_FEEDBACK_LINK;
   }
 
   async get(req: Request, response: Response): Promise<Object> {

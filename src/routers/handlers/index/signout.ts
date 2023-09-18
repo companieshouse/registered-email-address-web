@@ -5,11 +5,14 @@ import { FAILED_TO_FIND_RETURN_URL_ERROR, RETURN_URL} from "../../../constants/a
 import { logger } from "../../../utils/common/logger";
 
 const PAGE_TITLE = "Are you sure you want to sign out?";
+const EVENT = "sign-out-event";
+
 
 export class SignOutHandler extends GenericHandler {
 
   constructor () {
     super();
+    this.viewData.eventType = EVENT;
     this.viewData.title = PAGE_TITLE;
   }
 

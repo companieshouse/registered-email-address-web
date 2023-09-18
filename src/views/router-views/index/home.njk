@@ -28,4 +28,12 @@
           })
         }}
       </form>
+
+      <script nonce={{ nonce | dump | safe }}>
+        $(document).ready(function() {
+          $('#start-now').on('click', function() {
+            _paq.push(["trackGoal", {{goal}}]);
+          });
+        })
+      </script>
 {% endblock %}

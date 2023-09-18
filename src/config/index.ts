@@ -30,17 +30,19 @@ export const DEFAULT_SESSION_EXPIRATION = getEnvironmentValue("DEFAULT_SESSION_E
 export const PIWIK_URL = getEnvironmentValue("PIWIK_URL", "https://matomo.platform.aws.chdev.org");
 export const PIWIK_SITE_ID = getEnvironmentValue("PIWIK_SITE_ID", "24");
 export const PIWIK_START_GOAL_ID = getEnvironmentValue("PIWIK_START_GOAL_ID", "3");
-export const PIWIK_UPDATE_START_GOAL_ID = getEnvironmentValue("PIWIK_UPDATE_START_GOAL_ID", "10");
 export const LOG_LEVEL = getEnvironmentValue("LOG_LEVEL", "DEBUG");
 export const API_URL = getEnvironmentValue("API_URL", "http://api.chs.local:4001");
 export const ACCOUNT_URL = getEnvironmentValue("ACCOUNT_URL", "http://account.chs.local");
 export const SESSION_TIMEOUT = getEnvironmentValue("SESSION_TIMEOUT");
 export const SESSION_COUNTDOWN = getEnvironmentValue("SESSION_COUNTDOWN");
+export const ORACLE_QUERY_API_URL = getEnvironmentValue("ORACLE_QUERY_API_URL", "http://api.chs.local:4001");
 
+export const FEEDBACK_LINK = "https://www.smartsurvey.co.uk/s/update-reg-email-addr-fdbck/";
+export const EMAIL_CONFIRMATION_FEEDBACK_LINK = "https://www.smartsurvey.co.uk/s/update-reg-email-addr-email-conf/";
+export const CONFIRMATION_FEEDBACK_LINK =  'https://www.smartsurvey.co.uk/s/update-reg-email-addr-conf/';
 export const DESCRIPTION = "Update Registered Email Address Transaction";
 export const REFERENCE = "UpdateRegisteredEmailAddressReference_";
 export const STATIC_SUBMISSION_ID = "72hw92jw992km90mw9002m22";
-export const ORACLE_QUERY_API_URL = getEnvironmentValue("ORACLE_QUERY_API_URL", "http://api.chs.local:4001");
 export const VALID_EMAIL_REGEX_PATTERN = ".+[@].+[.].+";
 
 // TEMPLATES

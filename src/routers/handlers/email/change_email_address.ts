@@ -37,6 +37,7 @@ import {RegisteredEmailAddress} from "@companieshouse/api-sdk-node/dist/services
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 
 const PAGE_TITLE = "What is the new registered email address?";
+const EVENT = "change-email-address-event";
 
 export class ChangeEmailAddressHandler extends GenericHandler {
 
@@ -44,8 +45,9 @@ export class ChangeEmailAddressHandler extends GenericHandler {
     super();
     this.viewData.backUri = COMPANY_BASE_URL+CONFIRM_URL;
     if (userEmail !== undefined) {
-      this.viewData.userEmail = userEmail;
+      this.viewData.eventType = EVENT;
       this.viewData.title = PAGE_TITLE;
+      this.viewData.userEmail = userEmail;
     }
   }
 
