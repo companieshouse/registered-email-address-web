@@ -17,7 +17,7 @@ export abstract class GenericHandler extends BaseHttpController {
     this.viewData.signoutBanner = true;
     this.viewData.sessionTimeout = SESSION_TIMEOUT;
     this.viewData.sessionCountdown = SESSION_COUNTDOWN;
-    this.viewData.feedback = "https://www.smartsurvey.co.uk/s/update-reg-email-addr-fdbck/";
+    this.viewData.feedback = FEEDBACK_LINK;
     this.errorManifest = error_manifest;
   }
 
