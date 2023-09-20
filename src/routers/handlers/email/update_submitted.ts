@@ -21,7 +21,7 @@ export class UpdateSubmittedHandler extends GenericHandler {
     super();
     this.viewData.eventType = EVENT;
     this.viewData.title = PAGE_TITLE;
-    this.viewData.survey = CONFIRMATION_FEEDBACK_LINK;
+    this.viewData.feedback = CONFIRMATION_FEEDBACK_LINK;
   }
   
   async get (req: Request, response: Response): Promise<Object> {
