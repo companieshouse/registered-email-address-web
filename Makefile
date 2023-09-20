@@ -28,6 +28,10 @@ sonar:
 test:
 	npm run coverage
 
+.PHONY: test-unit
+test:
+	npm run coverage
+
 .PHONY: package
 package: build
 ifndef version
@@ -48,7 +52,7 @@ endif
 	rm -rf $(tmpdir)
 
 .PHONY: dist
-dist: lint test clean package
+dist: lint test-unit clean package
 
 .PHONY: update_submodules
 update_submodules:
