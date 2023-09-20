@@ -64,7 +64,7 @@ locals {
     { "name": "CDN_HOST", "value": "//${var.cdn_host}" },
     { "name": "HUMAN_LOG", "value": "${var.human_log}" },
     { "name": "API_URL", "value": "${var.api_url}" },
-    { "name": "SESSION_COUNTDOWN": "${var.session_countdown}" },
-    { "name": "SESSION_TIMEOUT": "${var.session_timeout}" }
+    { "name": "SESSION_COUNTDOWN", "value": "${var.session_countdown}" },
+    { "name": "SESSION_TIMEOUT", "value": "${var.session_timeout}" }
   ]
 }
