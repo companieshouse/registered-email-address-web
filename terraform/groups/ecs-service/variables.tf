@@ -64,7 +64,8 @@ variable "cdn_host" {
 }
 variable "registered_email_address_web_version" {
   type        = string
-  description = "The version of the overseas entities web container to run."
+  description = "The version of the registered email address web container to run."
+  default = "latest"
 }
 variable "piwik_url" {
   type        = string
@@ -117,8 +118,10 @@ variable "show_service_offline_page" {
 
 variable "session_countdown" {
   type = string
+  default = "1"
 }
 
 variable "session_timeout" {
   type = string
+  default = "30"
 }
