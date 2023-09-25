@@ -64,11 +64,13 @@ variable "cdn_host" {
 }
 
 variable "cdn_url_css" {
-  type = string
+  type    = string
+  default = "/css"
 }
 
 variable "cdn_url_js" {
-  type = string
+  type    = string
+  default = "/js"
 }
 variable "registered_email_address_web_version" {
   type        = string
