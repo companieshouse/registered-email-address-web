@@ -32,6 +32,10 @@ test:
 test:
 	npm run coverage
 
+.PHONY: security-check
+security-check:
+	npm audit
+
 .PHONY: package
 package: build
 ifndef version
