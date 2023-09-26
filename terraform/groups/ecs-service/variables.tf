@@ -76,12 +76,6 @@ variable "registered_email_address_web_version" {
   type        = string
   description = "The version of the registered email address web container to run."
 }
-variable "piwik_url" {
-  type = string
-}
-variable "piwik_site_id" {
-  type = string
-}
 
 variable "cookie_domain" {
   type = string
@@ -104,30 +98,34 @@ variable "default_session_expiration" {
 }
 variable "api_url" {
   type    = string
-  default = null
+  default = "http://api.chs.local:4001"
 }
 
 variable "session_timeout" {
   type    = string
   default = "30"
 }
+variable "session_countdown" {
+  type    = string
+  default = "1"
+}
 
 variable "pikwik_url" {
   type    = string
-  default = null
+  default = "https://matomo.platform.aws.chdev.org"
 }
 
 variable "pikwik_site_id" {
   type    = string
-  default = null
+  default = "24"
 }
 
 variable "pikwik_start_goal_id" {
   type    = string
-  default = null
+  default = "3"
 }
 
 variable "oracle_query_api_url" {
   type    = string
-  default = null
+  default = "http://api.chs.local:4001"
 }
