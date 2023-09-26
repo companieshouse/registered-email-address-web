@@ -107,7 +107,7 @@ variable "session_timeout" {
 }
 variable "session_countdown" {
   type    = string
-  default = "1"
+  default = "60"
 }
 
 variable "pikwik_url" {
