@@ -57,10 +57,12 @@ variable "log_level" {
 }
 
 variable "chs_url" {
-  type = string
+  type    = string
+  default = "http://chs.local"
 }
 variable "cdn_host" {
-  type = string
+  type    = string
+  default = "cdn.chs.local"
 }
 
 variable "cdn_url_css" {
