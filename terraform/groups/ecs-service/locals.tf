@@ -17,6 +17,7 @@ locals {
     "chs_api_key"   = local.service_secrets["chs_api_key"]
     "account_url"   = local.service_secrets["account_url"]
     "cache_server"  = local.service_secrets["cache_server"]
+    "chs_url"       = local.service_secrets["chs_url"]
     "cookie_secret" = local.service_secrets["cookie_secret"]
     "cookie_domain" = local.service_secrets["cookie_domain"]
     "cookie_name"   = local.service_secrets["cookie_name"]
@@ -26,6 +27,7 @@ locals {
   chs_api_key   = local.service_secrets["chs_api_key"]
   account_url   = local.service_secrets["account_url"]
   cache_server  = local.service_secrets["cache_server"]
+  chs_url       = local.service_secrets["chs_url"]
   cookie_secret = local.service_secrets["cookie_secret"]
   cookie_domain = local.service_secrets["cookie_domain"]
   cookie_name   = local.service_secrets["cookie_name"]
@@ -50,6 +52,7 @@ locals {
     { "name" : "CHS_API_KEY", "valueFrom" : "${local.service_secrets_arn_map.chs_api_key}" },
     { "name" : "CACHE_SERVER", "valueFrom" : "${local.service_secrets_arn_map.cache_server}" },
     { "name" : "ACCOUNT_URL", "valueFrom" : "${local.service_secrets_arn_map.account_url}" },
+    { "name" : "CHS_URL", "valueFrom" : "${local.service_secrets_arn_map.chs_url}" }
   ]
 
   task_environment = [
