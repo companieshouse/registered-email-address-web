@@ -26,7 +26,6 @@ locals {
   chs_api_key   = local.service_secrets["chs_api_key"]
   account_url   = local.service_secrets["account_url"]
   cache_server  = local.service_secrets["cache_server"]
-  chs_url       = local.service_secrets["chs_url"]
   cookie_secret = local.service_secrets["cookie_secret"]
   cookie_domain = local.service_secrets["cookie_domain"]
   cookie_name   = local.service_secrets["cookie_name"]
@@ -64,9 +63,9 @@ locals {
     { "name" : "CDN_URL_CSS", "value" : "${var.cdn_url_css}" },
     { "name" : "CDN_URL_JS", "value" : "${var.cdn_url_js}" },
     { "name" : "DEFAULT_SESSION_EXPIRATION", "value" : "${var.default_session_expiration}" },
-    { "name" : "PIKWIK_URL", "value" : "${var.pikwik_url}" },
-    { "name" : "PIKWIK_SITE_ID", "value" : "${var.pikwik_site_id}" },
-    { "name" : "PIKWIK_GOAL_ID", "value" : "${var.pikwik_start_goal_id}" },
+    { "name:" : "PIKWIK_URL", "value" : "${var.pikwik_url}" },
+    { "name:" : "PIKWIK_SITE_ID", "value" : "${var.pikwik_site_id}" },
+    { "name:" : "PIKWIK_GOAL_ID", "value" : "${var.pikwik_start_goal_id}" },
     { "name" : "ORACLE_QUERY_API_URL", "value" : "${var.oracle_query_api_url}" }
   ]
 }
