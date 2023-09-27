@@ -14,21 +14,23 @@ locals {
   service_secrets = jsondecode(data.vault_generic_secret.service_secrets.data_json)
 
   parameter_store_secrets = {
-    "chs_api_key"   = local.service_secrets["chs_api_key"]
-    "account_url"   = local.service_secrets["account_url"]
-    "cache_server"  = local.service_secrets["cache_server"]
-    "cookie_secret" = local.service_secrets["cookie_secret"]
-    "cookie_domain" = local.service_secrets["cookie_domain"]
-    "cookie_name"   = local.service_secrets["cookie_name"]
+    "chs_api_key"          = local.service_secrets["chs_api_key"]
+    "chs_internal_api_key" = local.service_secrets["chs_internal_api_key"]
+    "account_url"          = local.service_secrets["account_url"]
+    "cache_server"         = local.service_secrets["cache_server"]
+    "cookie_secret"        = local.service_secrets["cookie_secret"]
+    "cookie_domain"        = local.service_secrets["cookie_domain"]
+    "cookie_name"          = local.service_secrets["cookie_name"]
   }
 
-  vpc_name      = local.service_secrets["vpc_name"]
-  chs_api_key   = local.service_secrets["chs_api_key"]
-  account_url   = local.service_secrets["account_url"]
-  cache_server  = local.service_secrets["cache_server"]
-  cookie_secret = local.service_secrets["cookie_secret"]
-  cookie_domain = local.service_secrets["cookie_domain"]
-  cookie_name   = local.service_secrets["cookie_name"]
+  vpc_name             = local.service_secrets["vpc_name"]
+  chs_api_key          = local.service_secrets["chs_api_key"]
+  chs_internal_api_key = local.service_secrets["chs_internal_api_key"]
+  account_url          = local.service_secrets["account_url"]
+  cache_server         = local.service_secrets["cache_server"]
+  cookie_secret        = local.service_secrets["cookie_secret"]
+  cookie_domain        = local.service_secrets["cookie_domain"]
+  cookie_name          = local.service_secrets["cookie_name"]
 
   # create a map of secret name => secret arn to pass into ecs service module
   # using the trimprefix function to remove the prefixed path from the secret name
@@ -48,6 +50,7 @@ locals {
     { "name" : "COOKIE_DOMAIN", "valueFrom" : "${local.service_secrets_arn_map.cookie_domain}" },
     { "name" : "COOKIE_NAME", "valueFrom" : "${local.service_secrets_arn_map.cookie_name}" },
     { "name" : "CHS_API_KEY", "valueFrom" : "${local.service_secrets_arn_map.chs_api_key}" },
+    { "name" : "CHS_INTERNAL_API_KEY", "valueFrom" : "${local.service_secrets_arn_map.chs_internal_api_key}" },
     { "name" : "CACHE_SERVER", "valueFrom" : "${local.service_secrets_arn_map.cache_server}" },
     { "name" : "ACCOUNT_URL", "valueFrom" : "${local.service_secrets_arn_map.account_url}" },
   ]
