@@ -87,6 +87,7 @@ app.use(cookieParser());
 app.use(`${HOME_URL}*`, session_middleware);
 
 // Login redirect for company and email paths and also signout page
+app.use(cookieParser());
 const userAuthRegex = new RegExp(`^((${COMPANY_BASE_URL})|(${EMAIL_BASE_URL}).+)|(${SIGN_OUT_URL})`);
 app.use(userAuthRegex, authentication_middleware);
 
