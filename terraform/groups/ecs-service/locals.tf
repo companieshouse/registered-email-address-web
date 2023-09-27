@@ -6,7 +6,7 @@ locals {
   container_port            = "3000" # default node port required here until prod docker container is built allowing port change via env var
   docker_repo               = "registered-email-address-web"
   lb_listener_rule_priority = 39
-  lb_listener_paths         = ["/registered-email-address/*"]
+  lb_listener_paths         = ["/registered-email-address*"]
   healthcheck_path          = "/registered-email-address" #healthcheck path for registered-email-address web
   healthcheck_matcher       = "200-302"
 
