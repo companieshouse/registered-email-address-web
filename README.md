@@ -56,3 +56,5 @@ In order to run tests locally you will need to do the following:
 ### Environment Variables
 SESSION_TIMEOUT=<browser timeout in seconds> - default if not set=3600
 SESSION_COUNTDOWN=<length of countdown in seconds> - timeout popup before signing out - default if not set=60 seconds
+
+
