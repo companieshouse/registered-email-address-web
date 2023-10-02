@@ -112,19 +112,19 @@ variable "session_countdown" {
   default = "600"
 }
 
-variable "pikwik_url" {
+variable "piwik_url" {
   type    = string
   default = "https://matomo.platform.aws.chdev.org"
 }
 
-variable "pikwik_site_id" {
+variable "piwik_site_id" {
   type    = string
   default = "24"
 }
 
-variable "pikwik_start_goal_id" {
+variable "piwik_start_goal_id" {
   type    = string
-  default = "3"
+  default = "32"
 }
 
 variable "oracle_query_api_url" {
