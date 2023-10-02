@@ -66,9 +66,9 @@ locals {
     { "name" : "CDN_URL_CSS", "value" : "${var.cdn_url_css}" },
     { "name" : "CDN_URL_JS", "value" : "${var.cdn_url_js}" },
     { "name" : "DEFAULT_SESSION_EXPIRATION", "value" : "${var.default_session_expiration}" },
-    { "name" : "PIKWIK_URL", "value" : "${var.pikwik_url}" },
-    { "name" : "PIKWIK_SITE_ID", "value" : "${var.pikwik_site_id}" },
-    { "name" : "PIKWIK_GOAL_ID", "value" : "${var.pikwik_start_goal_id}" },
+    { "name" : "PIWIK_URL", "value" : "${var.piwik_urll}" },
+    { "name" : "PIWIK_SITE_ID", "value" : "${var.piwik_site_id}" },
+    { "name" : "PIWIK_GOAL_ID", "value" : "${var.pikwik_start_goal_id}" },
     { "name" : "ORACLE_QUERY_API_URL", "value" : "${var.oracle_query_api_url}" }
   ]
 }
