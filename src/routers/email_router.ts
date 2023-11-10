@@ -7,13 +7,14 @@ import {CheckAnswerHandler} from "./handlers/email/check_answer";
 import {
   CHANGE_EMAIL_ADDRESS_URL,
   CHECK_ANSWER_URL,
+  CONFIRMATION_STATEMENT_RETURN_URL,
   EMAIL_CHECK_ANSWER_URL,
-  THERE_IS_A_PROBLEM_URL,
   EMAIL_UPDATE_SUBMITTED_URL,
+  THERE_IS_A_PROBLEM_URL,
   UPDATE_SUBMITTED
 } from "../config";
 
-import { CONFIRM_EMAIL_CHANGE_ERROR } from "../constants/app_const";
+import {CONFIRM_EMAIL_CHANGE_ERROR} from "../constants/app_const";
 
 const email_router: Router = Router();
 const emailRouterViews: string = "router-views/email/";
@@ -73,6 +74,14 @@ email_router.get(UPDATE_SUBMITTED, async (req: Request, res: Response, next: Nex
   const handler = new UpdateSubmittedHandler();
   await handler.get(req, res).then((viewData) => {
     res.render(`${emailRouterViews}` + UPDATE_SUBMITTED, viewData);
+  });
+});
+
+// POST: /update-submitted
+email_router.post(UPDATE_SUBMITTED, async (req: Request, res: Response, next: NextFunction) => {
+  const handler = new UpdateSubmittedHandler();
+  await handler.post(req, res).then((viewData) => {
+    res.redirect(CONFIRMATION_STATEMENT_RETURN_URL);
   });
 });
 
