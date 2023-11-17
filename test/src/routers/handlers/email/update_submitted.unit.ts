@@ -50,14 +50,14 @@ describe("Registered email address update - test GET method", () => {
 
     // set submission id in session
     request.session?.setExtraData(SUBMISSION_ID, TEST_SUBMISSION_ID);
-    request.session?.setExtraData(RETURN_TO_CONFIRMATION_STATEMENT, "true");
+    request.session?.setExtraData(RETURN_TO_CONFIRMATION_STATEMENT, true);
 
     await updateSubmittedHandler.get(request, response).then((updateSubmittedResponse) => {
       const updateSubmittedResponseJson = JSON.parse(JSON.stringify(updateSubmittedResponse));
 
       expect(updateSubmittedResponseJson.userEmail).toEqual(TEST_USER_EMAIL);
       expect(updateSubmittedResponseJson.submissionID).toEqual(TEST_SUBMISSION_ID);
-      expect(updateSubmittedResponseJson.returnToConfirmationStatement).toEqual("true");
+      expect(updateSubmittedResponseJson.returnToConfirmationStatement).toEqual(true);
     });
   });
 
@@ -89,11 +89,11 @@ describe("Registered email address update - test GET method", () => {
       })
     });
 
-    request.session?.setExtraData(RETURN_TO_CONFIRMATION_STATEMENT, "true");
+    request.session?.setExtraData(RETURN_TO_CONFIRMATION_STATEMENT, true);
 
     await updateSubmittedHandler.post(request, response).then((updateSubmittedResponse) => {
       const registeredEmailAddressSubmitted: string | undefined = request.session?.getExtraData("registeredEmailAddressSubmitted");
-      expect(registeredEmailAddressSubmitted).toEqual("true");
+      expect(registeredEmailAddressSubmitted).toEqual(true);
     });
   });
 

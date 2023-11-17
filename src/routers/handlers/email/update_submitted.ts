@@ -47,10 +47,10 @@ export class UpdateSubmittedHandler extends GenericHandler {
   async post(req: Request, response: Response): Promise<any> {
     logger.info(`POST return to confirmation statement`);
     const session: Session = req.session as Session;
-    const returnToConfirmationStatement: string = session.getExtraData(RETURN_TO_CONFIRMATION_STATEMENT) as string;
+    const returnToConfirmationStatement: boolean = session.getExtraData(RETURN_TO_CONFIRMATION_STATEMENT) as boolean;
 
-    if (returnToConfirmationStatement === "true") {
-      session.setExtraData(REGISTERED_EMAIL_ADDRESS_SUBMITTED, "true");
+    if (returnToConfirmationStatement === true) {
+      session.setExtraData(REGISTERED_EMAIL_ADDRESS_SUBMITTED, true);
     }
 
     return Promise.resolve(this.viewData);

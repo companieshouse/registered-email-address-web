@@ -7,6 +7,7 @@ export const INVALID_COMPANY_REASON: string = "invalidCompanyReason";
 export const RETURN_URL: string = 'returnToUrl';
 export const SUBMISSION_ID: string = "submissionID";
 export const RETURN_TO_CONFIRMATION_STATEMENT: string = "returnToConfirmationStatement";
+export const CONFIRMATION_STATEMENT_RETURN_URL: string = "confirmationStatementReturnUrl";
 export const REGISTERED_EMAIL_ADDRESS_SUBMITTED: string = "registeredEmailAddressSubmitted";
 
 export const THERE_IS_A_PROBLEM_ERROR: string = "There is a problem";

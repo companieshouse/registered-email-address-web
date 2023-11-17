@@ -3,6 +3,7 @@ import request from "supertest";
 import app from "../../../src/app";
 import {EMAIL_CHANGE_EMAIL_ADDRESS_URL, EMAIL_CHECK_ANSWER_URL, EMAIL_UPDATE_SUBMITTED_URL} from "../../../src/config";
 import {
+  CONFIRMATION_STATEMENT_RETURN_URL,
   CONFIRM_EMAIL_CHANGE_ERROR,
   FAILED_TO_CREATE_REA_ERROR,
   RETURN_TO_CONFIRMATION_STATEMENT
@@ -179,14 +180,16 @@ describe("Email router tests", () => {
 
     it("Should navigate back to Confirmation Statement service when originally called from it", async () => {
       const getSpy = jest.spyOn(UpdateSubmittedHandler.prototype, 'post').mockResolvedValue({title: "Application submitted"});
+      const CS_RETURN_URL_VALUE = "/confirmation-statement/active-submission-details-go-here/return-from-rea";
 
-      session.setExtraData(RETURN_TO_CONFIRMATION_STATEMENT, "true");
+      session.setExtraData(RETURN_TO_CONFIRMATION_STATEMENT, true);
+      session.setExtraData(CONFIRMATION_STATEMENT_RETURN_URL, CS_RETURN_URL_VALUE);
 
       await request(app)
         .post(EMAIL_UPDATE_SUBMITTED_URL)
         .then((response) => {
           expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
-          expect(response.text).toContain("Found. Redirecting to /confirmation-statement/return-from-rea");
+          expect(response.text).toContain(`Found. Redirecting to ${CS_RETURN_URL_VALUE}`);
           expect(getSpy).toHaveBeenCalled();
           expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
         });

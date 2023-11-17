@@ -10,6 +10,7 @@ import {formatValidationError} from "../../../utils/error/format_validation_erro
 import {
   COMPANY_NUMBER,
   COMPANY_PROFILE,
+  CONFIRMATION_STATEMENT_RETURN_URL,
   EMAIL_ADDRESS_INVALID,
   NEW_EMAIL_ADDRESS,
   NO_EMAIL_ADDRESS_FOUND,
@@ -25,7 +26,6 @@ import {
 import {
   COMPANY_BASE_URL,
   CONFIRM_URL,
-  CONFIRMATION_STATEMENT_RETURN_URL,
   DESCRIPTION,
   REFERENCE
 } from "../../../config";
@@ -62,17 +62,18 @@ export class ChangeEmailAddressHandler extends GenericHandler {
     const companyEmailAddress: RegisteredEmailAddress | undefined = session.getExtraData(REGISTERED_EMAIL_ADDRESS);
     const companyProfile: CompanyProfile | undefined = session.getExtraData(COMPANY_PROFILE);
 
-    session.setExtraData(REGISTERED_EMAIL_ADDRESS_SUBMITTED, "false");
+    session.setExtraData(REGISTERED_EMAIL_ADDRESS_SUBMITTED, false);
 
     if (companyEmailAddress && companyNumber && companyProfile) {
       this.viewData.companyEmailAddress = companyEmailAddress;
       this.viewData.companyName = companyProfile.companyName.toUpperCase();
       this.viewData.companyNumber = companyProfile.companyNumber;
 
-      const returnToConfirmationStatement: string = session.getExtraData(RETURN_TO_CONFIRMATION_STATEMENT) as string;
+      const returnToConfirmationStatement: boolean = session.getExtraData(RETURN_TO_CONFIRMATION_STATEMENT) as boolean;
+      const confirmationStatementReturnUrl: string = session.getExtraData(CONFIRMATION_STATEMENT_RETURN_URL) as string;
 
-      if (returnToConfirmationStatement === "true") {
-        this.viewData.backUri = CONFIRMATION_STATEMENT_RETURN_URL;
+      if (returnToConfirmationStatement === true && confirmationStatementReturnUrl) {
+        this.viewData.backUri = confirmationStatementReturnUrl;
       }
 
       // create transaction record

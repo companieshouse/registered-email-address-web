@@ -1,4 +1,3 @@
-import {CONFIRMATION_STATEMENT_RETURN_URL} from "../../../../../src/config";
 import "reflect-metadata";
 import {Request, Response} from "express";
 import {createRequest, createResponse, MockRequest, MockResponse} from 'node-mocks-http';
@@ -8,6 +7,7 @@ import {Session} from "@companieshouse/node-session-handler";
 import {
   COMPANY_NUMBER,
   COMPANY_PROFILE,
+  CONFIRMATION_STATEMENT_RETURN_URL,
   EMAIL_ADDRESS_INVALID,
   NO_EMAIL_ADDRESS_FOUND,
   NO_EMAIL_ADDRESS_SUPPLIED,
@@ -37,6 +37,7 @@ const CREATE_TRANSACTION_ERROR: string = TRANSACTION_CREATE_ERROR + COMPANY_NO;
 const INVALID_EMAIL_ADDRESS: string = "test-test.co.biz";
 const PROFILE = validCompanyProfile;
 const TEST_COMPANY_NAME: string = "TEST COMPANY";
+const CS_RETURN_URL_VALUE = "/confirmation-statement/active-submission-details-go-here/return-from-rea";
 
 // create form validator instance
 const formValidator = new FormValidator();
@@ -143,12 +144,13 @@ describe("Change email address - tests", () => {
       request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
       request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
       request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
-      request.session?.setExtraData(RETURN_TO_CONFIRMATION_STATEMENT, "true");
+      request.session?.setExtraData(RETURN_TO_CONFIRMATION_STATEMENT, true);
+      request.session?.setExtraData(CONFIRMATION_STATEMENT_RETURN_URL, CS_RETURN_URL_VALUE);
 
       await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {
         const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
         expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
-        expect(changeEmailAddressResponseJson.backUri).toEqual(CONFIRMATION_STATEMENT_RETURN_URL);
+        expect(changeEmailAddressResponseJson.backUri).toEqual(CS_RETURN_URL_VALUE);
         expect(changeEmailAddressResponseJson.userEmail).toEqual(TEST_EMAIL_EXISTING);
         expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
         expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);

@@ -57,7 +57,6 @@ export const COMPANY_INVALID_PAGE = "invalid";
 export const SIGN_OUT_PAGE = `signout`;
 export const ACCESSIBILITY_STATEMENT_PAGE = "accessibility-statement";
 export const THERE_IS_A_PROBLEM_PAGE = "there-is-a-problem";
-export const CS_HOME_PAGE = "/confirmation-statement";
 
 
 // ROUTING PATHS
@@ -70,7 +69,6 @@ export const INVALID_URL = "/invalid";
 export const CHANGE_EMAIL_ADDRESS_URL = "/change-email-address";
 export const CHECK_ANSWER_URL = "/check-your-answer";
 export const UPDATE_SUBMITTED = "/update-submitted";
-export const CONFIRMATION_STATEMENT_RETURN = `return-from-rea`;
 
 // FULL URLS
 export const SIGN_OUT_URL = `${HOME_URL}/${SIGN_OUT_PAGE}`;
@@ -84,4 +82,3 @@ export const ACCESSIBILITY_STATEMENT_URL = `${HOME_URL}/${ACCESSIBILITY_STATEMEN
 export const EMAIL_UPDATE_SUBMITTED_URL = `${HOME_URL}/${EMAIL_UPDATE_SUBMITTED}`;
 export const THERE_IS_A_PROBLEM_URL = `${HOME_URL}/${THERE_IS_A_PROBLEM_PAGE}`;
 export const COMPANY_LOOKUP_URL = `${COMPANY_LOOKUP_PAGE}/search?forward=${COMPANY_CONFIRM_URL}?companyNumber={companyNumber}`;
-export const CONFIRMATION_STATEMENT_RETURN_URL = `${CS_HOME_PAGE}/${CONFIRMATION_STATEMENT_RETURN}`;
