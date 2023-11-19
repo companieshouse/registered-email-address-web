@@ -96,7 +96,7 @@ describe("Test ConfirmCompanyHandler", () => {
 
     //Set Company Number in Query
     request.query = {companyNumber : '12345678'};
-  
+
     await confirmCompanyHandler.get(request, response).then((confirmCompanyResponse) => {
       const confirmCompanyResponseJson = JSON.parse(JSON.stringify(confirmCompanyResponse));
       expect(confirmCompanyResponseJson.company.companyName).toEqual('Test Company');
@@ -135,7 +135,7 @@ describe("Test ConfirmCompanyHandler", () => {
   });
 
   it("POST Request in ConfirmCompanyHandler - Company has invalid company type", async () => {
-    //set Company Profile in session    
+    //set Company Profile in session
     const invalidCompany = {type : "invalid-company-type"};
     request.session?.setExtraData(constants.COMPANY_PROFILE, invalidCompany);
 
@@ -146,7 +146,7 @@ describe("Test ConfirmCompanyHandler", () => {
   });
 
   it("POST Request in ConfirmCompanyHandler - Company has invalid company status", async () => {
-    //set Company Profile in session    
+    //set Company Profile in session
     const invalidCompany = {
       type : "ltd",
       companyStatus : "invalid-company-staus"};
@@ -162,9 +162,9 @@ describe("Test ConfirmCompanyHandler", () => {
     //mock the email response
     mockGetCompanyEmail.mockRejectedValueOnce(clone(EmailNotFoundReponse));
 
-    //set Company Profile in session    
+    //set Company Profile in session
     const invalidCompany = {
-      type : "ltd",
+      type : "llp",
       companyStatus : "active",
       companyNumber : "12345678"
     };
@@ -182,4 +182,4 @@ describe("Test ConfirmCompanyHandler", () => {
   });
 
 });
-    
+
