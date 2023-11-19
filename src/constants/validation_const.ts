@@ -18,6 +18,7 @@ export const invalidCompanyTypePage = {
         <li>private limited company</li>
         <li>public limited company</li>
         <li>private unlimited company</li>
+        <li>limited liability partnership</li>
     </ul>  
 
     <p class="govuk-body">If this is the wrong company, <a href="` + config.COMPANY_NUMBER_URL + `" data-event-id="enter-a-different-company-number-link" class="govuk-link">go back and enter a different company number </a>.</p>
