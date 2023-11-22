@@ -2,7 +2,6 @@ jest.mock("../../src/services/company/company_email_service");
 
 import { Resource } from "@companieshouse/api-sdk-node";
 import {RegisteredEmailAddress} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
-import { ApiErrorResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 import { StatusCodes } from 'http-status-codes';
 
 const email: string = "test@test.co.biz";
@@ -18,10 +17,10 @@ export const validEmailSDKResource: Resource<RegisteredEmailAddress> = {
   resource: validEmail
 };
 
-export const EmailNotFoundReponse: ApiErrorResponse = {
+export const EmailNotFoundResponse: Resource<RegisteredEmailAddress> = {
   httpStatusCode: StatusCodes.NOT_FOUND
 };
 
-export const EmailErrorReponse: ApiErrorResponse = {
+export const EmailErrorResponse: Resource<RegisteredEmailAddress> = {
   httpStatusCode: StatusCodes.INTERNAL_SERVER_ERROR
 };
