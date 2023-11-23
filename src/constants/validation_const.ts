@@ -12,7 +12,7 @@ export const INVALID_COMPANY_SERVICE_UNAVAILABLE = "invalidCompanyServiceUnavail
 export const COMPANY_NAME_PLACEHOLDER = "COMPANY_NAME_PLACEHOLDER";
 
 export const invalidCompanyTypePage = {
-  pageHeader: "Only limited and unlimited companies can use this service",
+  pageHeader: "Only certain company types can use this service",
   pageBody: `<p class="govuk-body">You can only update a registered email address for ` + COMPANY_NAME_PLACEHOLDER + ` if it's a:</p>
     <ul class="govuk-list govuk-list--bullet">
         <li>private limited company</li>
@@ -21,6 +21,7 @@ export const invalidCompanyTypePage = {
         <li>limited liability partnership</li>
     </ul>  
 
+    <p class="govuk-body">Overseas entities that need to update their email address will need to <a href="https://www.gov.uk/guidance/file-an-overseas-entity-update-statement" data-event-id="overseas-entity-update-statement-link" class="govuk-link">file an overseas entity update statement</a>.</p>
     <p class="govuk-body">If this is the wrong company, <a href="` + config.COMPANY_NUMBER_URL + `" data-event-id="enter-a-different-company-number-link" class="govuk-link">go back and enter a different company number </a>.</p>
     <p class="govuk-body"><a href="https://www.gov.uk/contact-companies-house" data-event-id="contact-us-link" class="govuk-link">Contact us</a> if you have any questions.</p>
     `
