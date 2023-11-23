@@ -1,7 +1,3 @@
-jest.mock("@companieshouse/api-sdk-node");
-jest.mock("../../../../../src/services/api/api_service");
-jest.mock("../../../../../src/utils/common/logger");
-
 import "reflect-metadata";
 import {Request, Response} from "express";
 import {createRequest, createResponse, MockRequest, MockResponse} from 'node-mocks-http';
@@ -11,10 +7,12 @@ import {Session} from "@companieshouse/node-session-handler";
 import {
   COMPANY_NUMBER,
   COMPANY_PROFILE,
+  CONFIRMATION_STATEMENT_RETURN_URL,
   EMAIL_ADDRESS_INVALID,
   NO_EMAIL_ADDRESS_FOUND,
   NO_EMAIL_ADDRESS_SUPPLIED,
   REGISTERED_EMAIL_ADDRESS,
+  RETURN_TO_CONFIRMATION_STATEMENT,
   SUBMISSION_ID,
   TRANSACTION_CREATE_ERROR,
   UPDATE_EMAIL_ERROR_ANCHOR
@@ -27,6 +25,10 @@ import {createAndLogError} from "../../../../../src/utils/common/logger";
 import {validCompanyProfile} from "../../../../mocks/company_profile_mock";
 import {StatusCodes} from "http-status-codes";
 
+jest.mock("@companieshouse/api-sdk-node");
+jest.mock("../../../../../src/services/api/api_service");
+jest.mock("../../../../../src/utils/common/logger");
+
 const COMPANY_NO: string = "12345678";
 const TEST_EMAIL_EXISTING: string = "test@test.co.biz";
 const TEST_EMAIL_UPDATE: string = "new_test@test.co.biz";
@@ -35,6 +37,7 @@ const CREATE_TRANSACTION_ERROR: string = TRANSACTION_CREATE_ERROR + COMPANY_NO;
 const INVALID_EMAIL_ADDRESS: string = "test-test.co.biz";
 const PROFILE = validCompanyProfile;
 const TEST_COMPANY_NAME: string = "TEST COMPANY";
+const CS_RETURN_URL_VALUE = "/confirmation-statement/active-submission-details-go-here/return-from-rea";
 
 // create form validator instance
 const formValidator = new FormValidator();
@@ -75,7 +78,7 @@ const clone = (objectToClone: any): any => {
 describe("Change email address - tests", () => {
 
   describe("Registered email address update - test GET method", () => {
-  // clear down mocks
+    // clear down mocks
     beforeEach(() => {
       jest.clearAllMocks();
       changeEmailAddressHandler = new ChangeEmailAddressHandler(
@@ -92,7 +95,7 @@ describe("Change email address - tests", () => {
     });
 
     it("Handle error returned from creating transaction record", async () => {
-    // build required transaction response for test
+      // build required transaction response for test
       mockPostTransactionResponse.mockResolvedValueOnce(clone(EmailErrorReponse));
       //set company number in session
       request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
@@ -134,6 +137,27 @@ describe("Change email address - tests", () => {
       });
     });
 
+    it("Registered email address update - called from Confirmation Statement service", async () => {
+      validTransactionSDKResource.httpStatusCode = StatusCodes.CREATED;
+      mockPostTransactionResponse.mockResolvedValueOnce(clone(validTransactionSDKResource));
+      //set email in session
+      request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
+      request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
+      request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
+      request.session?.setExtraData(RETURN_TO_CONFIRMATION_STATEMENT, true);
+      request.session?.setExtraData(CONFIRMATION_STATEMENT_RETURN_URL, CS_RETURN_URL_VALUE);
+
+      await changeEmailAddressHandler.get(request, response).then((changeEmailAddressResponse) => {
+        const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
+        expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+        expect(changeEmailAddressResponseJson.backUri).toEqual(CS_RETURN_URL_VALUE);
+        expect(changeEmailAddressResponseJson.userEmail).toEqual(TEST_EMAIL_EXISTING);
+        expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
+        expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
+        expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+      });
+    });
+
     it("Registered email address update - company email not in session", async () => {
       validTransactionSDKResource.httpStatusCode = StatusCodes.CREATED;
       mockPostTransactionResponse.mockResolvedValueOnce(clone(validTransactionSDKResource));
@@ -154,7 +178,7 @@ describe("Change email address - tests", () => {
     });
 
     it("Valid transaction created", async () => {
-    // build required transaction response for test
+      // build required transaction response for test
       validTransactionSDKResource.httpStatusCode = StatusCodes.CREATED;
       mockPostTransactionResponse.mockResolvedValueOnce(clone(validTransactionSDKResource));
       mockGetCompanyEmailResponse.mockResolvedValueOnce(clone(validEmailSDKResource));
@@ -179,7 +203,7 @@ describe("Change email address - tests", () => {
   });
 
   describe("Registered email address update - test POST method", () => {
-  // clear down mocks
+    // clear down mocks
     beforeEach(() => {
       jest.clearAllMocks();
       changeEmailAddressHandler = new ChangeEmailAddressHandler(
@@ -196,7 +220,7 @@ describe("Change email address - tests", () => {
     });
 
     it("No email in POST request body - return view data error", async () => {
-    //set email address in request body to empty
+      //set email address in request body to empty
       request.body.changeEmailAddress = "";
       request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
       request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
@@ -218,7 +242,7 @@ describe("Change email address - tests", () => {
     });
 
     it("Updated email address supplied does not match expected pattern - return view data error", async () => {
-    //set email address in request body to invalid pattern
+      //set email address in request body to invalid pattern
       request.body.changeEmailAddress = INVALID_EMAIL_ADDRESS;
       request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
       request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
@@ -240,7 +264,7 @@ describe("Change email address - tests", () => {
     });
 
     it("Valid email address supplied", async () => {
-    //set email address in request body to invalid pattern
+      //set email address in request body to invalid pattern
       request.body.changeEmailAddress = TEST_EMAIL_UPDATE;
       request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
       request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);

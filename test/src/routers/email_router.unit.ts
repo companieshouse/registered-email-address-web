@@ -1,20 +1,19 @@
 import mocks from "../../mocks/all_middleware_mock";
 import request from "supertest";
 import app from "../../../src/app";
+import {EMAIL_CHANGE_EMAIL_ADDRESS_URL, EMAIL_CHECK_ANSWER_URL, EMAIL_UPDATE_SUBMITTED_URL} from "../../../src/config";
 import {
-  EMAIL_CHANGE_EMAIL_ADDRESS_URL,
-  EMAIL_CHECK_ANSWER_URL,
-  EMAIL_UPDATE_SUBMITTED_URL
-} from "../../../src/config";
-import {
+  CONFIRMATION_STATEMENT_RETURN_URL,
   CONFIRM_EMAIL_CHANGE_ERROR,
-  FAILED_TO_CREATE_REA_ERROR
+  FAILED_TO_CREATE_REA_ERROR,
+  RETURN_TO_CONFIRMATION_STATEMENT
 } from "../../../src/constants/app_const";
 import {HttpResponse} from "@companieshouse/api-sdk-node/dist/http/http-client";
 import {StatusCodes} from "http-status-codes";
 import {CheckAnswerHandler} from "../../../src/routers/handlers/email/check_answer";
 import {ChangeEmailAddressHandler} from "../../../src/routers/handlers/email/change_email_address";
 import {UpdateSubmittedHandler} from "../../../src/routers/handlers/email/update_submitted";
+import {session} from "../../mocks/session_middleware_mock";
 
 const okResponse: HttpResponse = {status: StatusCodes.OK};
 const movedTemporarilyResponse: HttpResponse = {status: StatusCodes.MOVED_TEMPORARILY};
@@ -96,7 +95,7 @@ describe("Email router tests", () => {
 
       it("Should navigate to confirm email page", async () => {
         const getSpy = jest.spyOn(CheckAnswerHandler.prototype, 'get')
-          .mockResolvedValue({title : "Check your answer before submitting this filing" });
+          .mockResolvedValue({title: "Check your answer before submitting this filing"});
 
         await request(app)
           .get(EMAIL_CHECK_ANSWER_URL)
@@ -118,7 +117,7 @@ describe("Email router tests", () => {
               text: "wrong deliberately"
             }]
           },
-          title : "Check your answer before submitting this filing"
+          title: "Check your answer before submitting this filing"
         };
         const postSpy = jest.spyOn(CheckAnswerHandler.prototype, 'post').mockRejectedValue(errorObject);
 
@@ -167,13 +166,30 @@ describe("Email router tests", () => {
     const PAGE_HEADING = "Application submitted – Update a registered email address";
 
     it("Should navigate to update submitted page", async () => {
-      const getSpy = jest.spyOn(UpdateSubmittedHandler.prototype, 'get').mockResolvedValue({title : "Application submitted"});
+      const getSpy = jest.spyOn(UpdateSubmittedHandler.prototype, 'get').mockResolvedValue({title: "Application submitted"});
 
       await request(app)
         .get(EMAIL_UPDATE_SUBMITTED_URL)
         .then((response) => {
           expect(response.status).toBe(StatusCodes.OK);
           expect(response.text).toContain(PAGE_HEADING);
+          expect(getSpy).toHaveBeenCalled();
+          expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+        });
+    });
+
+    it("Should navigate back to Confirmation Statement service when originally called from it", async () => {
+      const getSpy = jest.spyOn(UpdateSubmittedHandler.prototype, 'post').mockResolvedValue({title: "Application submitted"});
+      const CS_RETURN_URL_VALUE = "/confirmation-statement/active-submission-details-go-here/return-from-rea";
+
+      session.setExtraData(RETURN_TO_CONFIRMATION_STATEMENT, true);
+      session.setExtraData(CONFIRMATION_STATEMENT_RETURN_URL, CS_RETURN_URL_VALUE);
+
+      await request(app)
+        .post(EMAIL_UPDATE_SUBMITTED_URL)
+        .then((response) => {
+          expect(response.status).toBe(StatusCodes.MOVED_TEMPORARILY);
+          expect(response.text).toContain(`Found. Redirecting to ${CS_RETURN_URL_VALUE}`);
           expect(getSpy).toHaveBeenCalled();
           expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
         });
