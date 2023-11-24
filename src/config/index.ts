@@ -1,11 +1,11 @@
-import { getEnvironmentValue } from "../utils/environment/environment_value";
+import {getEnvironmentValue} from "../utils/environment/environment_value";
 
 // URL params
 export enum urlParams {
-    PARAM_COMPANY_NUMBER = "companyNumber",
-    PARAM_TRANSACTION_ID = "transactionId",
-    PARAM_SUBMISSION_ID = "submissionId",
-    PARAM_APPOINTMENT_ID = "appointmentId"
+  PARAM_COMPANY_NUMBER = "companyNumber",
+  PARAM_TRANSACTION_ID = "transactionId",
+  PARAM_SUBMISSION_ID = "submissionId",
+  PARAM_APPOINTMENT_ID = "appointmentId"
 }
 
 // Transaction statuses
@@ -38,7 +38,7 @@ export const SESSION_COUNTDOWN = getEnvironmentValue("SESSION_COUNTDOWN");
 export const ORACLE_QUERY_API_URL = getEnvironmentValue("ORACLE_QUERY_API_URL", "http://api.chs.local:4001");
 
 export const FEEDBACK_LINK = "https://www.smartsurvey.co.uk/s/update-reg-email-addr-fdbck/";
-export const CONFIRMATION_FEEDBACK_LINK =  'https://www.smartsurvey.co.uk/s/update-reg-email-addr-conf/';
+export const CONFIRMATION_FEEDBACK_LINK = 'https://www.smartsurvey.co.uk/s/update-reg-email-addr-conf/';
 export const DESCRIPTION = "Update Registered Email Address Transaction";
 export const REFERENCE = "UpdateRegisteredEmailAddressReference_";
 export const STATIC_SUBMISSION_ID = "72hw92jw992km90mw9002m22";
@@ -47,7 +47,7 @@ export const VALID_EMAIL_REGEX_PATTERN = ".+[@].+[.].+";
 // TEMPLATES
 export const HOME_PAGE = "home";
 export const REA_HOME_PAGE = "/registered-email-address";
-export const COMPANY_LOOKUP_PAGE  = "/company-lookup";
+export const COMPANY_LOOKUP_PAGE = "/company-lookup";
 export const COMPANY_NUMBER_PAGE = "company/number";
 export const COMPANY_CONFIRM_PAGE = "company/confirm";
 export const EMAIL_CHANGE_EMAIL_ADDRESS = "email/change-email-address";

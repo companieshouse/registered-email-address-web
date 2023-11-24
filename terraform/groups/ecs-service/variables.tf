@@ -109,7 +109,7 @@ variable "session_timeout" {
 }
 variable "session_countdown" {
   type    = string
-  default = "600"
+  default = "60"
 }
 
 variable "piwik_url" {
