@@ -18,7 +18,7 @@ import {
   UPDATE_EMAIL_ERROR_ANCHOR
 } from "../../../../../src/constants/app_const";
 import {transactionId, validTransactionSDKResource} from "../../../../mocks/transaction_mock";
-import {EmailErrorReponse, validEmailSDKResource} from "../../../../mocks/company_email_mock";
+import {EmailErrorResponse, validEmailSDKResource} from "../../../../mocks/company_email_mock";
 import {createApiClient} from "@companieshouse/api-sdk-node";
 import {createPublicOAuthApiClient} from "../../../../../src/services/api/api_service";
 import {createAndLogError} from "../../../../../src/utils/common/logger";
@@ -96,7 +96,8 @@ describe("Change email address - tests", () => {
 
     it("Handle error returned from creating transaction record", async () => {
       // build required transaction response for test
-      mockPostTransactionResponse.mockResolvedValueOnce(clone(EmailErrorReponse));
+      mockPostTransactionResponse.mockResolvedValueOnce(clone(EmailErrorResponse));
+
       //set company number in session
       request.session?.setExtraData(COMPANY_NUMBER, COMPANY_NO);
       request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
