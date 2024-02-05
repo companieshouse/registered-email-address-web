@@ -33,7 +33,7 @@ const USER_EMAIL: string = "test_user@test.co.biz";
 const ID = "12345";
 const COMPANY_NUMBER = "12345678";
 const COMPANY_TYPE: string = "llp";
-const STATEMENT_TEXT: string = "The new email address is an appropriate email address as outlined in section 88A(2) of the Companies Act 2006."
+const STATEMENT_TEXT: string = "The new email address is an appropriate email address as outlined in section 88A(2) of the Companies Act 2006.";
 const LLP_STATEMENT_TEXT: string = "The new email address is an appropriate email address within the meaning given by section 2(5) of the Limited Liability Partnerships Act 2000.";
 const BACK_LINK_PATH: string = "/registered-email-address/email/change-email-address";
 const TITLE: string = "Error: Check your answer";
@@ -87,7 +87,7 @@ describe("Check answer - tests", () => {
         expect(dataJson.statementText).toEqual(STATEMENT_TEXT);
       });
     });
-/*
+    /*
     it("Should display the LLP Act Statement Text for an LLP company", async () => {
       request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
       //how to change company type from ltd to llp?
@@ -100,7 +100,7 @@ describe("Check answer - tests", () => {
         //expect(dataJson.statementText).toEqual(LLP_STATEMENT_TEXT);
       });
     });
-*/
+    */
     describe("POST method tests", () => {
 
       it("Should reject incomplete data", async () => {
