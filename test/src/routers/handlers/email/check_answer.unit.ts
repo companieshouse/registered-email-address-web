@@ -9,6 +9,7 @@ import {
   COMPANY_PROFILE,
   CONFIRM_EMAIL_CHANGE_ERROR,
   NEW_EMAIL_ADDRESS,
+  NEW_COMPANY_TYPE,
   SUBMISSION_ID
 } from "../../../../../src/constants/app_const";
 import {validCompanyProfile} from "../../../../mocks/company_profile_mock";
@@ -20,6 +21,7 @@ import {
 } from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
 import {StatusCodes} from "http-status-codes";
 import {ApiResponse} from "@companieshouse/api-sdk-node/dist/services/resource";
+import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 
 jest.mock("../../../../../src/services/email/email_registered_service");
 jest.mock("../../../../../src/services/transaction/transaction_service");
@@ -30,6 +32,9 @@ const COMPANY_NAME: string = "TEST COMPANY";
 const USER_EMAIL: string = "test_user@test.co.biz";
 const ID = "12345";
 const COMPANY_NUMBER = "12345678";
+const COMPANY_TYPE: string = "llp";
+const STATEMENT_TEXT: string = "The new email address is an appropriate email address as outlined in section 88A(2) of the Companies Act 2006."
+const LLP_STATEMENT_TEXT: string = "The new email address is an appropriate email address within the meaning given by section 2(5) of the Limited Liability Partnerships Act 2000.";
 const BACK_LINK_PATH: string = "/registered-email-address/email/change-email-address";
 const TITLE: string = "Error: Check your answer";
 const TRANSACTION_ID = "178417-909116-690426";
@@ -76,6 +81,26 @@ describe("Check answer - tests", () => {
       });
     });
 
+    it("Should display the Companies Act Statement Text by default", async () => {
+      await checkAnswerHandler.get(request, response).then((data) => {
+        const dataJson = JSON.parse(JSON.stringify(data));
+        expect(dataJson.statementText).toEqual(STATEMENT_TEXT);
+      });
+    });
+/*
+    it("Should display the LLP Act Statement Text for an LLP company", async () => {
+      request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
+      //how to change company type from ltd to llp?
+      //request.session?.setExtraData(NEW_COMPANY_TYPE, COMPANY_TYPE);
+      request.body.type = COMPANY_TYPE;
+
+      await checkAnswerHandler.get(request, response).then((data) => {
+        const dataJson = JSON.parse(JSON.stringify(data));
+        expect(dataJson.type).toEqual(COMPANY_TYPE);
+        //expect(dataJson.statementText).toEqual(LLP_STATEMENT_TEXT);
+      });
+    });
+*/
     describe("POST method tests", () => {
 
       it("Should reject incomplete data", async () => {
