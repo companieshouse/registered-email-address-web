@@ -46,10 +46,10 @@ export class CheckAnswerHandler extends GenericHandler {
     this.viewData.companyName = companyProfile?.companyName.toUpperCase();
     this.viewData.companyNumber = companyProfile?.companyNumber;
 
+    this.viewData.statementText = "The new email address is an appropriate email address as outlined in section 88A(2) of the Companies Act 2006.";
+    
     if (companyProfile?.type === "llp") {
       this.viewData.statementText = "The new email address is an appropriate email address within the meaning given by section 2(5) of the Limited Liability Partnerships Act 2000.";
-    } else {
-      this.viewData.statementText = "The new email address is an appropriate email address as outlined in section 88A(2) of the Companies Act 2006.";
     }
 
     return Promise.resolve(this.viewData);
