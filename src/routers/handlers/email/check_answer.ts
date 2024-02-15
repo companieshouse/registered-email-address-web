@@ -74,6 +74,13 @@ export class CheckAnswerHandler extends GenericHandler {
 
     if (acceptAppropriateEmailAddressStatement === undefined) {
       this.viewData.title = "Error: " + PAGE_TITLE;
+
+      if (companyProfile?.type === "llp") {
+        this.viewData.statementText = "The new email address is an appropriate email address within the meaning given by section 2(5) of the Limited Liability Partnerships Act 2000.";
+      } else {
+        this.viewData.statementText = "The new email address is an appropriate email address as outlined in section 88A(2) of the Companies Act 2006.";
+      }
+      
       this.viewData.statementError = CONFIRM_EMAIL_CHANGE_ERROR;
       this.viewData.errors = formatValidationError(CHECK_ANSWER_ERROR_KEY, CHECK_ANSWER_ERROR_ANCHOR, CONFIRM_EMAIL_CHANGE_ERROR);
       return Promise.reject(this.viewData);
