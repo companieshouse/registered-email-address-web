@@ -12,7 +12,7 @@ import {
   RETURN_TO_CONFIRMATION_STATEMENT,
   SUBMISSION_ID
 } from "../../../constants/app_const";
-import {CONFIRMATION_FEEDBACK_LINK} from "../../../config";
+import {ACCOUNT_URL, CONFIRMATION_FEEDBACK_LINK} from "../../../config";
 
 const EVENT = "update-submitted-event";
 const PAGE_TITLE = "Application submitted – Update a registered email address";
@@ -30,6 +30,7 @@ export class UpdateSubmittedHandler extends GenericHandler {
     logger.info(`GET request to serve update submitted page`);
     const session: Session = req.session as Session;
     this.viewData.userEmail = session.data.signin_info?.user_profile?.email;
+    this.viewData.userAccountUrl = ACCOUNT_URL + "/user/account";
     this.viewData.backUri = undefined;
     this.viewData.submissionID = session.getExtraData(SUBMISSION_ID);
     this.viewData.returnToConfirmationStatement = session.getExtraData(RETURN_TO_CONFIRMATION_STATEMENT);
