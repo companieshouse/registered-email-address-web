@@ -1,14 +1,6 @@
 environment = "cidev"
 aws_profile = "development-eu-west-2"
 
+# service configs
+use_set_environment_files = true
 log_level = "debug"
-chs_url = "https://cidev.aws.chdev.org"
-piwik_url = "https://matomo.platform.aws.chdev.org/"
-piwik_site_id = "7"
-piwik_start_goal_id = "32"
-cdn_host = "d3uvya5a8a1ncx.cloudfront.net"
-human_log = "1"
-cookie_domain = "cidev.aws.chdev.org"
-cookie_expiration_in_seconds = "3600"
-api_url = "https://api.cidev.aws.chdev.org"
-oracle_query_api_url = "https://standalone.cidev.aws.chdev.org:18565"
