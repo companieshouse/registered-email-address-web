@@ -1,6 +1,6 @@
 import { Resource } from "@companieshouse/api-sdk-node";
 import { createPrivateApiClient } from "../api/private-get-rea";
-import { CHS_API_KEY, ORACLE_QUERY_API_URL } from "../../config";
+import {CHS_API_KEY, CHS_INTERNAL_API_KEY, ORACLE_QUERY_API_URL} from "../../config";
 import { logger } from "../../utils/common/logger";
 import { StatusCodes } from 'http-status-codes';
 import {RegisteredEmailAddress} from "@companieshouse/api-sdk-node/dist/services/registered-email-address/types";
@@ -11,7 +11,7 @@ import {RegisteredEmailAddress} from "@companieshouse/api-sdk-node/dist/services
 * @param companyNumber the company number to look up
 */
 export const getCompanyEmail = async (companyNumber: string): Promise<Resource<RegisteredEmailAddress>> => {
-  const privateApiClient = createPrivateApiClient(CHS_API_KEY, undefined, ORACLE_QUERY_API_URL );
+  const privateApiClient = createPrivateApiClient(CHS_INTERNAL_API_KEY, undefined, ORACLE_QUERY_API_URL );
 
   logger.debug(`Looking for registered email address with company number ${companyNumber}`);
   const sdkResponse: Resource<RegisteredEmailAddress> = await privateApiClient.registeredEmailAddress.getRegisteredEmailAddress(companyNumber);

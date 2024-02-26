@@ -25,6 +25,7 @@ export const CACHE_SERVER = getEnvironmentValue("CACHE_SERVER", "localhost:6379"
 export const COOKIE_SECRET = getEnvironmentValue("COOKIE_SECRET", "ChGovUk-XQrbf3sLj2abFxIY2TlapsJ");
 export const COOKIE_DOMAIN = getEnvironmentValue("COOKIE_DOMAIN", "chs.local");
 export const CHS_API_KEY = getEnvironmentValue("CHS_API_KEY", "chs.api.key");
+export const CHS_INTERNAL_API_KEY = getEnvironmentValue("CHS_INTERNAL_API_KEY", "internal.chs.api.key");
 export const COOKIE_NAME = getEnvironmentValue("COOKIE_NAME", "__SID");
 export const DEFAULT_SESSION_EXPIRATION = getEnvironmentValue("DEFAULT_SESSION_EXPIRATION", "3600");
 export const PIWIK_URL = getEnvironmentValue("PIWIK_URL", "https://matomo.platform.aws.chdev.org");
