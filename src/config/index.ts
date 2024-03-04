@@ -37,6 +37,7 @@ export const ACCOUNT_URL = getEnvironmentValue("ACCOUNT_URL", "http://account.ch
 export const SESSION_TIMEOUT = getEnvironmentValue("SESSION_TIMEOUT");
 export const SESSION_COUNTDOWN = getEnvironmentValue("SESSION_COUNTDOWN");
 export const ORACLE_QUERY_API_URL = getEnvironmentValue("ORACLE_QUERY_API_URL", "http://api.chs.local:4001");
+export const WEBFILING_URL = getEnvironmentValue("WEBFILING_URL", "https://ewf-kermit.companieshouse.gov.uk/");
 
 export const FEEDBACK_LINK = "https://www.smartsurvey.co.uk/s/update-reg-email-addr-fdbck/";
 export const CONFIRMATION_FEEDBACK_LINK = 'https://www.smartsurvey.co.uk/s/update-reg-email-addr-conf/';
