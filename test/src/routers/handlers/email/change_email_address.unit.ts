@@ -289,6 +289,28 @@ describe("Change email address - tests", () => {
       });
     });
 
+    it("Updated email address supplied does not match expected pattern - return view data error", async () => {
+      //set email address in request body to invalid pattern
+      request.body.changeEmailAddress = INVALID_EMAIL_ADDRESS2;
+      request.session?.setExtraData(COMPANY_PROFILE, PROFILE);
+      request.session?.setExtraData(REGISTERED_EMAIL_ADDRESS, TEST_EMAIL_EXISTING);
+
+      await changeEmailAddressHandler.post(request, response).catch((changeEmailAddressResponse) => {
+        const changeEmailAddressResponseJson = JSON.parse(JSON.stringify(changeEmailAddressResponse));
+
+        expect(changeEmailAddressResponseJson.errors).toBeTruthy;
+        expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(EMAIL_ADDRESS_INVALID);
+        expect(changeEmailAddressResponseJson.errors.errorList).toHaveLength(1);
+        expect(changeEmailAddressResponseJson.errors.errorList[0].href).toEqual(UPDATE_EMAIL_ERROR_ANCHOR);
+        expect(changeEmailAddressResponseJson.errors.errorList[0].text).toEqual(EMAIL_ADDRESS_INVALID);
+        expect(changeEmailAddressResponseJson.backUri).toEqual(BACK_LINK_PATH);
+        expect(changeEmailAddressResponseJson.errors.changeEmailAddress).toEqual(EMAIL_ADDRESS_INVALID);
+        expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
+        expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
+        expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+      });
+    });
+
     it("Valid email address supplied", async () => {
       //set email address in request body to invalid pattern
       request.body.changeEmailAddress = TEST_EMAIL_UPDATE;
