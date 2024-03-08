@@ -113,6 +113,7 @@ export class ChangeEmailAddressHandler extends GenericHandler {
     this.viewData.companyNumber = companyProfile?.companyNumber;
 
     const companyEmailAddressGiven: string = req.body.changeEmailAddress;
+    this.viewData.changeEmailAddress = companyEmailAddressGiven;
 
     const errors: Optional<ValidationErrors> = this.validator.validate(req.body, change_email_address_schema);
 

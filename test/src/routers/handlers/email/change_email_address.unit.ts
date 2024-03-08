@@ -262,6 +262,7 @@ describe("Change email address - tests", () => {
         expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
         expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
         expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+        expect(changeEmailAddressResponseJson.changeEmailAddress).toEqual(INVALID_EMAIL_ADDRESS);
       });
     });
 
@@ -284,6 +285,7 @@ describe("Change email address - tests", () => {
         expect(changeEmailAddressResponseJson.companyName).toEqual(TEST_COMPANY_NAME);
         expect(changeEmailAddressResponseJson.companyNumber).toEqual(COMPANY_NO);
         expect(changeEmailAddressResponseJson.companyEmailAddress).toEqual(TEST_EMAIL_EXISTING);
+        expect(changeEmailAddressResponseJson.changeEmailAddress).toEqual(INVALID_EMAIL_ADDRESS2);
       });
     });
 
