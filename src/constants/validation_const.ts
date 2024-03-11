@@ -8,6 +8,9 @@ export const INVALID_COMPANY_TYPE_REASON = "invalidCompanyType";
 export const INVALID_COMPANY_STATUS_REASON = "invalidCompanyStatus";
 export const INVALID_COMPANY_NO_EMAIL_REASON = "invalidCompanyNoEmail";
 export const INVALID_COMPANY_SERVICE_UNAVAILABLE = "invalidCompanyServiceUnavailable";
+export const VALID_EMAIL_REGEX_PATTERN = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~\\-]+@([^.@][^@\\s]+)$";
+export const HOSTNAME_REGEX = "^(xn|[a-z0-9]+)(-?-[a-z0-9]+)*$";
+export const TLD_PART_REGEX = "^(?:[a-z]{2,63}|xn--[a-z0-9]+(?:-[a-z0-9]+){1,4})(?:$|[^-])";
 
 export const COMPANY_NAME_PLACEHOLDER = "COMPANY_NAME_PLACEHOLDER";
 
