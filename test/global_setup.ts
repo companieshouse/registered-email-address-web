@@ -11,5 +11,5 @@ export default () => {
   process.env.COOKIE_SECRET = "Xy6onkjQWF0TkRn0hfdqUw==";
   process.env.COOKIE_DOMAIN = "cookie domain";
   process.env.CACHE_SERVER = "test";
-  process.env.WEBFILING_URL = "https://ewf-kermit.companieshouse.gov.uk";
+  process.env.WEBFILING_LOGIN_URL = "https://ewf-kermit.companieshouse.gov.uk";
 };

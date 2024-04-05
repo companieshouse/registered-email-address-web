@@ -12,7 +12,7 @@ import {
   RETURN_TO_CONFIRMATION_STATEMENT,
   SUBMISSION_ID
 } from "../../../constants/app_const";
-import {ACCOUNT_URL, CONFIRMATION_FEEDBACK_LINK, WEBFILING_URL} from "../../../config";
+import {ACCOUNT_URL, CONFIRMATION_FEEDBACK_LINK, WEBFILING_LOGIN_URL} from "../../../config";
 
 const EVENT = "update-submitted-event";
 const PAGE_TITLE = "Application submitted – Update a registered email address";
@@ -31,7 +31,7 @@ export class UpdateSubmittedHandler extends GenericHandler {
     const session: Session = req.session as Session;
     this.viewData.userEmail = session.data.signin_info?.user_profile?.email;
     this.viewData.userAccountUrl = ACCOUNT_URL + "/user/account";
-    this.viewData.webfilingLoginUrl = WEBFILING_URL + "/account/login/?realm=/alpha&amp;service=CHWebFiling-Login&amp;authIndexType=service&amp;authIndexValue=CHWebFiling-Login";
+    this.viewData.webfilingLoginUrl = WEBFILING_LOGIN_URL;
     this.viewData.backUri = undefined;
     this.viewData.submissionID = session.getExtraData(SUBMISSION_ID);
     this.viewData.returnToConfirmationStatement = session.getExtraData(RETURN_TO_CONFIRMATION_STATEMENT);

@@ -15,7 +15,7 @@ locals {
   s3_config_bucket            = data.vault_generic_secret.shared_s3.data["config_bucket_name"]
   app_environment_filename    = "registered-email-address-web.env"
   use_set_environment_files   = var.use_set_environment_files
-  webfiling_url               = var.webfiling_url
+  webfiling_login_url               = var.webfiling_login_url
   application_subnet_ids      = data.aws_subnets.application.ids
   application_subnet_pattern  = local.stack_secrets["application_subnet_pattern"]
 

@@ -118,8 +118,8 @@ variable "registered_email_address_web_version" {
   type        = string
   description = "The version of the registered email address web container to run."
 }
-variable "webfiling_url" {
-  default     = "https://ewf-kermit.companieshouse.gov.uk"
+variable "webfiling_login_url" {
+  default     = "https://ewf.companieshouse.gov.uk"
   type        = string
   description = "Url to login to webfiling"
 }
