@@ -4,4 +4,3 @@ aws_profile = "development-eu-west-2"
 # service configs
 use_set_environment_files = true
 log_level = "debug"
-webfiling_login_url = "https://ewf-kermit.companieshouse.gov.uk"
