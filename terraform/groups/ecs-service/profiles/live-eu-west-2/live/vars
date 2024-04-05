@@ -4,4 +4,4 @@ aws_profile = "live-eu-west-2"
 # service configs
 use_set_environment_files = true
 desired_task_count = 2 # use multi instance in staging
-webfiling_url = "https://idam-ui.company-information.service.gov.uk"
+webfiling_login_url = "https://ewf.companieshouse.gov.uk"
