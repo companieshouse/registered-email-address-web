@@ -1,9 +1,17 @@
+{% from "web-security-node/components/csrf-error/macro.njk" import csrfError %}
+
 {% extends "_layouts/shell.njk" %}
 
 {% block main_content %}
 
-  <div class="error">
-    <p>{{ this_data.error_message }}</p>
-  </div>
+  {% if csrfErrors %}
+    {{ csrfError({}) }}
+  {% else %}
 
+    <div class="error">
+      <p>{{ this_data.error_message }}</p>
+    </div>
+
+  {% endif %}
+  
 {% endblock %}

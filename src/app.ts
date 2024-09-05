@@ -2,21 +2,30 @@ import "reflect-metadata";
 import express, {NextFunction, Request, Response} from "express";
 import nunjucks from "nunjucks";
 import path from "path";
+import Redis from 'ioredis';
+
+import { SessionMiddleware, SessionStore } from "@companieshouse/node-session-handler";
+import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
 import { logger } from "./utils/common/logger";
 import router_dispatch from "./router_dispatch";
 import {authentication_middleware} from "./middleware/authentication_middleware";
 import {company_authentication_middleware} from "./middleware/company_authentication_middleware";
 import cookieParser from "cookie-parser";
 import {session_middleware} from "./middleware/session_middleware";
-import {pageNotFound} from "./utils/error/error";
+import { pageNotFound } from "./utils/error/error";
 
 import {
   APPLICATION_NAME,
+  CACHE_SERVER,
   CDN_URL_CSS,
   CDN_URL_JS,
   CDN_HOST,
   CHS_URL,
   COMPANY_BASE_URL,
+  COOKIE_DOMAIN,
+  COOKIE_NAME,
+  COOKIE_SECRET,
+  DEFAULT_SESSION_EXPIRATION,
   EMAIL_BASE_URL,
   HOME_URL,
   PIWIK_URL,
@@ -29,6 +38,7 @@ const app = express();
 app.set("views", [
   path.join(__dirname, "/views"),
   path.join(__dirname, "/node_modules/govuk-frontend"),
+  path.join(__dirname, "/node_modules/@companieshouse"),
   path.join(__dirname, "../node_modules/govuk-frontend")
 ]);
 
@@ -94,6 +104,22 @@ app.use(userAuthRegex, authentication_middleware);
 // Company Auth redirect
 const companyAuthRegex = new RegExp(`^${EMAIL_BASE_URL}/.+`);
 app.use(companyAuthRegex, company_authentication_middleware);
+
+const cookieConfig = {
+  cookieName: '__SID',
+  cookieSecret: COOKIE_SECRET,
+  cookieDomain: COOKIE_DOMAIN,
+  cookieTimeToLiveInSeconds: parseInt(DEFAULT_SESSION_EXPIRATION, 10)
+};
+const sessionStore = new SessionStore(new Redis(`redis://${CACHE_SERVER}`));
+app.use(SessionMiddleware(cookieConfig, sessionStore));
+
+const csrfProtectionMiddleware = CsrfProtectionMiddleware({
+  sessionStore,
+  enabled: false,
+  sessionCookieName: COOKIE_NAME
+});
+app.use(csrfProtectionMiddleware);
 
 // Channel all requests through router dispatch
 router_dispatch(app);
