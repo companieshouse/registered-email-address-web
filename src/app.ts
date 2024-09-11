@@ -38,8 +38,7 @@ const app = express();
 app.set("views", [
   path.join(__dirname, "/views"),
   path.join(__dirname, "/node_modules/govuk-frontend"),
-  path.join(__dirname, "/node_modules/@companieshouse"),
-  path.join(__dirname, "../node_modules/govuk-frontend")
+  path.join(__dirname, "/node_modules/@companieshouse")
 ]);
 
 const nunjucksLoaderOpts = {
