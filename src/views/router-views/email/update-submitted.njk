@@ -34,6 +34,7 @@
 
     {% if true === returnToConfirmationStatement %}
         <form action="" method="post">
+            {{ csrfTokenInput({ csrfToken: csrfToken }) }}
             {{ govukButton({
                 text: 'Return to Confirmation Statement',
                 attributes: {

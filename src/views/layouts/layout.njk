@@ -7,8 +7,7 @@
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk/components/footer/macro.njk" import govukFooter %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-
-
+{% from "web-security-node/components/csrf-token-input/macro.njk" import csrfTokenInput %}
 
 {% block pageTitle %}
   {{ title }} – Update a registered email address – GOV.UK

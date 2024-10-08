@@ -23,6 +23,7 @@
 {% endif %}
 
 <form action="/registered-email-address/signout" method="POST">
+{{ csrfTokenInput({ csrfToken: csrfToken }) }}
 {{ govukRadios({
     classes: "govuk-radios--inline",
     idPrefix: "signout",

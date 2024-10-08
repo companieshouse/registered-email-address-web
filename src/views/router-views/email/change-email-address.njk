@@ -17,6 +17,7 @@
       The current registered email address is <b>{{companyEmailAddress}}</b>
     </div>
     <form method="post">
+      {{ csrfTokenInput({ csrfToken: csrfToken }) }}
       {{
         govukInput({
           describedBy: "change-email-address-hint",

@@ -7,8 +7,12 @@ import router_dispatch from "./router_dispatch";
 import {authentication_middleware} from "./middleware/authentication_middleware";
 import {company_authentication_middleware} from "./middleware/company_authentication_middleware";
 import cookieParser from "cookie-parser";
-import {session_middleware} from "./middleware/session_middleware";
 import {pageNotFound} from "./utils/error/error";
+import { createSessionMiddleware } from "./middleware/session_middleware";
+import { SessionStore } from "@companieshouse/node-session-handler";
+import Redis from "ioredis";
+import { CACHE_SERVER, COOKIE_DOMAIN, COOKIE_NAME, COOKIE_SECRET, DEFAULT_SESSION_EXPIRATION } from "./config";
+import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
 
 import {
   APPLICATION_NAME,
@@ -23,13 +27,22 @@ import {
   PIWIK_SITE_ID,
   SIGN_OUT_URL
 } from "./config";
+import { createCsrfProtectionMiddleware, csrfErrorHandler } from "./middleware/csrf_middleware";
 
 const app = express();
+
+const redis = new Redis(CACHE_SERVER);
+const sessionStore = new SessionStore(redis);
+
+const sessionMiddleware = createSessionMiddleware(sessionStore);
+const csrfProtectionMiddleware = createCsrfProtectionMiddleware(sessionStore);
 
 app.set("views", [
   path.join(__dirname, "/views"),
   path.join(__dirname, "/node_modules/govuk-frontend"),
-  path.join(__dirname, "../node_modules/govuk-frontend")
+  path.join(__dirname, "../node_modules/govuk-frontend"),
+  path.join(__dirname, "/node_modules/@companieshouse/"),
+  path.join(__dirname, "../node_modules/@companieshouse/"),
 ]);
 
 const nunjucksLoaderOpts = {
@@ -84,7 +97,9 @@ process.on("unhandledRejection", (err: any) => {
 
 // Apply middleware
 app.use(cookieParser());
-app.use(`${HOME_URL}*`, session_middleware);
+app.use(sessionMiddleware);
+
+app.use(csrfProtectionMiddleware);
 
 // Login redirect for company and email paths and also signout page
 app.use(cookieParser());
@@ -97,6 +112,9 @@ app.use(companyAuthRegex, company_authentication_middleware);
 
 // Channel all requests through router dispatch
 router_dispatch(app);
+
+
+app.use(csrfErrorHandler);
 
 app.use(pageNotFound);
 
