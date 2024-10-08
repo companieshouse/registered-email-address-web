@@ -26,6 +26,11 @@
         </div>
     </dl>
     <form action="" method="post">
+        {{
+          csrfTokenInput({
+            csrfToken: csrfToken
+          })
+        }}
 
         {{ govukCheckboxes({
             errorMessage: {
