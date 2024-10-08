@@ -7,11 +7,7 @@
       <h1 class="govuk-heading-l">{{company.companyName}}</h1>
 
       <form action="" method="post">
-        {{
-          csrfTokenInput({
-            csrfToken: csrfToken
-          })
-        }}
+        {{ csrfTokenInput({ csrfToken: csrfToken }) }}
 
         {{ govukSummaryList({
           rows: [

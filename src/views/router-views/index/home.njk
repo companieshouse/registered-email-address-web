@@ -17,11 +17,7 @@
       </ul>
       <p class="govuk-body">It takes 5 minutes to update a registered email address.</p>
       <form method="post">
-        {{
-          csrfTokenInput({
-            csrfToken: csrfToken
-          })
-        }}
+        {{ csrfTokenInput({ csrfToken: csrfToken }) }}
         {{
          govukButton({
             attributes: {
