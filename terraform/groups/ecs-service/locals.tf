@@ -10,7 +10,10 @@ locals {
   lb_listener_rule_priority = 39
   lb_listener_paths         = ["/registered-email-address*"]
   healthcheck_path          = "/registered-email-address" #healthcheck path for registered-email-address web
-  healthcheck_matcher         = "200"
+
+  # May be a redirect request if the initial request does not have a session cookie attached to it
+  # therefore a 302/redirection is an acceptable response
+  healthcheck_matcher         = "200,302"
   vpc_name                    = local.stack_secrets["vpc_name"]
   s3_config_bucket            = data.vault_generic_secret.shared_s3.data["config_bucket_name"]
   app_environment_filename    = "registered-email-address-web.env"
