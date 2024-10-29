@@ -61,6 +61,7 @@ export const THERE_IS_A_PROBLEM_PAGE = "there-is-a-problem";
 
 
 // ROUTING PATHS
+export const HEALTHCHECK_URL = "/healthcheck";
 export const HOME_URL = `${REA_HOME_PAGE}`;
 export const COMPANY_BASE_URL = `${REA_HOME_PAGE}/company`;
 export const EMAIL_BASE_URL = `${REA_HOME_PAGE}/email`;

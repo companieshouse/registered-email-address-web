@@ -98,8 +98,12 @@ process.on("unhandledRejection", (err: any) => {
 
 // Apply middleware
 app.use(cookieParser());
+
 app.use(sessionMiddleware);
-app.use(ensureSessionCookiePresentMiddleware);
+
+// Scope to the application routes rather than all routes to not put on
+// healthcheck route since could cause application to become unhealthy
+app.use(`${HOME_URL}*`, ensureSessionCookiePresentMiddleware);
 
 app.use(csrfProtectionMiddleware);
 
