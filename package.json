@@ -32,7 +32,7 @@
   "license": "MIT",
   "dependencies": {
     "@companieshouse/api-sdk-node": "^2.0.147",
-    "@companieshouse/node-session-handler": "^5.0.1",
+    "@companieshouse/node-session-handler": "^5.2.0",
     "@companieshouse/structured-logging-node": "^2.0.1",
     "@companieshouse/web-security-node": "^4.4.0",
     "aws-sdk": "^2.1392.0",

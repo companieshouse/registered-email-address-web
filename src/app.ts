@@ -8,7 +8,7 @@ import {authentication_middleware} from "./middleware/authentication_middleware"
 import {company_authentication_middleware} from "./middleware/company_authentication_middleware";
 import cookieParser from "cookie-parser";
 import {pageNotFound} from "./utils/error/error";
-import { createSessionMiddleware } from "./middleware/session_middleware";
+import { createEnsureSessionCookieSetMiddleware, createSessionMiddleware } from "./middleware/session_middleware";
 import { SessionStore } from "@companieshouse/node-session-handler";
 import Redis from "ioredis";
 import { CACHE_SERVER, COOKIE_DOMAIN, COOKIE_NAME, COOKIE_SECRET, DEFAULT_SESSION_EXPIRATION } from "./config";
@@ -35,6 +35,7 @@ const redis = new Redis(CACHE_SERVER);
 const sessionStore = new SessionStore(redis);
 
 const sessionMiddleware = createSessionMiddleware(sessionStore);
+const ensureSessionCookiePresentMiddleware = createEnsureSessionCookieSetMiddleware();
 const csrfProtectionMiddleware = createCsrfProtectionMiddleware(sessionStore);
 
 app.set("views", [
@@ -97,7 +98,12 @@ process.on("unhandledRejection", (err: any) => {
 
 // Apply middleware
 app.use(cookieParser());
+
 app.use(sessionMiddleware);
+
+// Scope to the application routes rather than all routes to not put on
+// healthcheck route since could cause application to become unhealthy
+app.use(`${HOME_URL}*`, ensureSessionCookiePresentMiddleware);
 
 app.use(csrfProtectionMiddleware);
 
