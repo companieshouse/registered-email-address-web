@@ -53,7 +53,7 @@
     "inversify-dts": "^3.0.0",
     "inversify-express-utils": "^6.4.3",
     "ioredis": "4.16.2",
-    "joi": "^17.9.2",
+    "joi": "^17.13.3",
     "js-yaml": "^3.14.0",
     "luxon": "^3.3.0",
     "nocache": "^4.0.0",

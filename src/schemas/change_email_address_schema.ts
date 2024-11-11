@@ -6,6 +6,10 @@ const change_email_address_schema = joi.object({
     .required()
     .messages({
       "string.empty": emptyCompanyEmailAddressError
+    }),
+  _csrf: joi.string()
+    .messages({
+      "string.empty": "CSRF Token required"
     })
 });
 
