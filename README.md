@@ -56,24 +56,35 @@ By default will assume running within the local Docker environment.
 - `joi` for body validation
 
   If modifying the body being posted to `/change-email-address` the `joi`
-  schema **must** be updated otherwise requests will fail. and the errors may
+  schema **must** be updated otherwise requests will fail and the errors may
   be quite opaque.
 - `govuk-frontend` etc. for providing Nunjucks components used to compose
   the screens.
 
 ## Developing the service locally
 
+### Pre-requites
+
+- Local copy of `docker-chs-development`
+- Populated CHIPS `db2` Database (i.e. from a baseline)
+
+  You will need to know the user schema for this - it takes the form
+  `CAPDEVXX2` for example `CAPDEVJS2`
+
+  If you have not already got such a populated CHIPS db, you will need to
+  request a schema. See
+  <https://github.com/companieshouse/docker-chs-development/blob/master/docs/chips.md>
+
 ### Getting started
 
 To checkout and build the service:
 
-1. Clone [Docker CHS Development](https://github.com/companieshouse/docker-chs-development) and follow the steps in the README. 
-2. Run `chs-dev modules enable registered-email-address`
-3. Run `chs-dev services enable transactions-api`
-4. Run `chs-dev services enable company-lookup-web-ch-gov-uk`
-5. Run `chs-dev development enable registered-email-address-web` (this will allow you to make changes).
-6. Run docker using "chs-dev up" in the docker-chs-development directory.
-7. Open your browser and go to page <http://chs.local/registered-email-address>
+1. Run `chs-dev modules enable registered-email-address`
+2. Run `chs-dev services enable transactions-api`
+3. Run `chs-dev services enable company-lookup-web-ch-gov-uk`
+4. Run `chs-dev development enable registered-email-address-web` (this will allow you to make changes).
+5. Run docker using "chs-dev up" in the docker-chs-development directory.
+6. Open your browser and go to page <http://chs.local/registered-email-address>
 
 NOTE: when testing, you will need a company that already has a registered-email-address that will be returned by the private oracle-query-api
 
@@ -81,7 +92,7 @@ Debugging with IDE - add the following to docker-chs-development/services/module
     ports:
     - 9229:9229
 and configure your IDE accordingly. For VS-CODE, the following can be added to .vscode/launch.json:
- 
+
   ```json
   "configurations": [
     {
@@ -108,7 +119,8 @@ These instructions are for a local docker environment.
 
 In order to run tests locally you will need to do the following:
 
-1. Navigate to /registered-email-address-web/
+1. Navigate to the checked out `registered-email-address-web` repo (within
+  `repositories` of local `docker-chs-development` if in use there)
 2. Run 'git submodule init', followed by 'git submodule update'.
 3. Run 'npm test'
 
@@ -118,9 +130,15 @@ In order to run tests locally you will need to do the following:
 #### Company being used must have a registered email address provided by a Confirmation Statement
 
 You can either submit a Confirmation Statement (with an Email) for a given
-company OR:
+company
 
-1. Open your SQL Developer connection to your Deploy database
+OR
+
+If there is a particular Company you want to use which is not part of the
+aforementioned list the following steps can be performed to amend its email
+address so that it can be used.
+
+1. Open your SQL Developer connection to your CHIPS `db2` Database
 2. Run the following SQL:
 
     ```sql
@@ -155,7 +173,7 @@ company OR:
     {"registered_email_address":"test@demoemail.com"}
     ```
 
-    If this fails, try running the select query against your Deploy database:
+    If this fails, try running the select query against your CHIPS `db2` Database:
 
     ```sql
     SELECT CB.corporate_body_id, CBD.email_address
@@ -165,7 +183,7 @@ company OR:
 
     Again, replacing `<companynum>` with the company number. This will return
     the record modified previously. In which case it is likely your
-    `oracle-query-api` is pointing at cidev and not your deploy database.
+    `oracle-query-api` is pointing at cidev and not your CHIPS `db2` Database.
 
 #### `oracle-query-api` is not pointing at your database
 
