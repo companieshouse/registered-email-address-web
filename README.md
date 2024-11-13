@@ -10,6 +10,18 @@ In order to run the service locally you will need the following:
 - [NodeJS](https://nodejs.org/en/)
 - [Git](https://git-scm.com/downloads)
 
+**When running locally:**
+
+- Local copy of `docker-chs-development`
+- Populated CHIPS `db2` Database (i.e. from a baseline)
+
+  You will need to know the user schema for this - it takes the form
+  `CAPDEVXX2` for example `CAPDEVJS2`
+
+  If you have not already got such a populated CHIPS db, you will need to
+  request a schema. See
+  <https://github.com/companieshouse/docker-chs-development/blob/master/docs/chips.md>
+
 ## Environment Variables
 
 By default will assume running within the local Docker environment.
@@ -62,18 +74,6 @@ By default will assume running within the local Docker environment.
   the screens.
 
 ## Developing the service locally
-
-### Pre-requites
-
-- Local copy of `docker-chs-development`
-- Populated CHIPS `db2` Database (i.e. from a baseline)
-
-  You will need to know the user schema for this - it takes the form
-  `CAPDEVXX2` for example `CAPDEVJS2`
-
-  If you have not already got such a populated CHIPS db, you will need to
-  request a schema. See
-  <https://github.com/companieshouse/docker-chs-development/blob/master/docs/chips.md>
 
 ### Getting started
 
