@@ -13,6 +13,7 @@ In order to run the service locally you will need the following:
 **When running locally:**
 
 - Local copy of `docker-chs-development`
+- [`chs-dev`](https://github.com/companieshouse/chs-dev)
 - Populated CHIPS `db2` Database (i.e. from a baseline)
 
   You will need to know the user schema for this - it takes the form
