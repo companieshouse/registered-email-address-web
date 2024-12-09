@@ -20,8 +20,7 @@
     "sonarqube-pull-request": "sonar-scanner -D sonar.pullrequest.base=main",
     "sonarqube": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); if [[ $branch == \"HEAD\" ]]; then echo $branch && npm run sonarqube-base-branch; else echo $branch && npm run sonarqube-pull-request; fi;",
     "test": "jest --all",
-    "start": "npm run build && node dist/server.js",
-    "start:watch": "nodemon"
+    "start": "npm run build && node dist/server.js"
   },
   "husky": {
     "hooks": {
@@ -36,7 +35,7 @@
     "@companieshouse/structured-logging-node": "^2.0.1",
     "@companieshouse/web-security-node": "^4.4.0",
     "aws-sdk": "^2.1392.0",
-    "axios": "1.6.5",
+    "axios": "^1.7.9",
     "cookie-parser": "1.4.5",
     "dts": "^0.1.1",
     "eslint-plugin-jest": "^27.2.2",
@@ -94,7 +93,7 @@
     "chai-http": "4.3.0",
     "cheerio": "^1.0.0-rc.3",
     "eslint": "^8.43.0",
-    "gulp": "4.0.2",
+    "gulp": "^5.0.0",
     "gulp-clean": "^0.4.0",
     "gulp-concat": "^2.6.1",
     "gulp-sass": "^5.1.0",
