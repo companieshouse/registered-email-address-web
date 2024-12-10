@@ -20,7 +20,8 @@
     "sonarqube-pull-request": "sonar-scanner -D sonar.pullrequest.base=main",
     "sonarqube": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); if [[ $branch == \"HEAD\" ]]; then echo $branch && npm run sonarqube-base-branch; else echo $branch && npm run sonarqube-pull-request; fi;",
     "test": "jest --all",
-    "start": "npm run build && node dist/server.js"
+    "start": "npm run build && node dist/server.js",
+    "start:watch": "nodemon"
   },
   "husky": {
     "hooks": {
@@ -98,6 +99,7 @@
     "husky": "^4.3.8",
     "jest": "^29.4.3",
     "nock": "12.0.3",
+    "nodemon": "3.0.1",
     "nyc": "^15.1.0",
     "sinon": "9.0.2",
     "sinon-chai": "3.5.0",
@@ -110,14 +112,14 @@
   },
   "nodemonConfig": {
     "watch": [
-      "./src",
-      "./assets/src"
+      "./src"
     ],
     "ext": "ts,js,json,njk,scss,env",
     "legacyWatch": true,
     "ignore": [
       "**/*.test.ts"
-    ]
+    ],
+    "exec": "npm run start"
   },
   "directories": {
     "test": "test"
