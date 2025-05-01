@@ -1,5 +1,5 @@
 # registered-email-address-web
-Temp change to test sbom changes
+
 Web front-end for the Registered Email Address service. Provides the ability to change
 the registered email address for a company.
 
