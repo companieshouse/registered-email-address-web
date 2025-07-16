@@ -21,7 +21,8 @@
     "sonarqube": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); if [[ $branch == \"HEAD\" ]]; then echo $branch && npm run sonarqube-base-branch; else echo $branch && npm run sonarqube-pull-request; fi;",
     "test": "jest --all",
     "start": "npm run build && node dist/server.js",
-    "start:watch": "nodemon"
+    "start:watch": "nodemon",
+    "chs-dev": "nodemon --legacy-watch"
   },
   "husky": {
     "hooks": {
