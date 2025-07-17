@@ -7,7 +7,7 @@ import RegisteredEmailAddressService from "./registered_email_address_service";
 export default class PrivateApiClient {
   public readonly registeredEmailAddress: RegisteredEmailAddressService;
 
-  constructor (readonly apiClient: IHttpClient, readonly accountClient: IHttpClient) {
+  constructor (readonly apiClient: IHttpClient) {
     // services on the api domain using the apiClient
     this.registeredEmailAddress = new RegisteredEmailAddressService(apiClient);
   }
