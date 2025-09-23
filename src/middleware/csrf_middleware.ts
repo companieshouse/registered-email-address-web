@@ -23,7 +23,6 @@ export const csrfErrorHandler = (
 
 export const createCsrfProtectionMiddleware = (sessionStore: SessionStore) => 
   CsrfProtectionMiddleware({
-    // @ts-expect-error  Looks like there is a minor version disparity somewhere along but nothing too significant
     sessionStore: sessionStore,
     enabled: true,
     sessionCookieName: COOKIE_NAME
