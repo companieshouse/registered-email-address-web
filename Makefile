@@ -32,7 +32,7 @@ test:
 test:
 	npm run coverage
 
-.PHONY: security-check
+.PHONY: dependency-check
 security-check:
 	npm audit
 
