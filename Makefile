@@ -32,8 +32,12 @@ test:
 test:
 	npm run coverage
 
-.PHONY: dependency-check
+.PHONY: security-check
 security-check:
+	npm audit
+
+.PHONY: dependency-check
+dependency-check:
 	npm audit
 
 .PHONY: package
