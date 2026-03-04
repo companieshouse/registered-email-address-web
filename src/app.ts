@@ -13,6 +13,7 @@ import { SessionStore } from "@companieshouse/node-session-handler";
 import Redis from "ioredis";
 import { CACHE_SERVER, COOKIE_DOMAIN, COOKIE_NAME, COOKIE_SECRET, DEFAULT_SESSION_EXPIRATION } from "./config";
 import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
+import * as config from "./config";
 
 import {
   APPLICATION_NAME,
@@ -71,6 +72,8 @@ njk.addGlobal("chsUrl", CHS_URL);
 njk.addGlobal("PIWIK_URL", PIWIK_URL);
 njk.addGlobal("PIWIK_SITE_ID", PIWIK_SITE_ID);
 njk.addGlobal("SERVICE_NAME", APPLICATION_NAME);
+njk.addGlobal("REA_CONFIG", config);
+
 // If app is behind a front-facing proxy, and to use the X-Forwarded-* headers to determine the connection and the IP address of the client
 app.enable("trust proxy");
 

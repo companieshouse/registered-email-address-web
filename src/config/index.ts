@@ -84,3 +84,6 @@ export const ACCESSIBILITY_STATEMENT_URL = `${HOME_URL}/${ACCESSIBILITY_STATEMEN
 export const EMAIL_UPDATE_SUBMITTED_URL = `${HOME_URL}/${EMAIL_UPDATE_SUBMITTED}`;
 export const THERE_IS_A_PROBLEM_URL = `${HOME_URL}/${THERE_IS_A_PROBLEM_PAGE}`;
 export const COMPANY_LOOKUP_URL = `${COMPANY_LOOKUP_PAGE}/search?forward=${COMPANY_CONFIRM_URL}?companyNumber={companyNumber}`;
+
+// EXTERNAL URLS
+export const CONTACT_US_URL = "https://www.gov.uk/find-contact-details-companies-house";
