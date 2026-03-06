@@ -11,7 +11,6 @@ import {
 import {StatusCodes} from "http-status-codes";
 import {HomeHandler} from "../../../src/routers/handlers/index/home";
 import {SignOutHandler} from "../../../src/routers/handlers/index/signout";
-import * as config from "../../../src/config";
 
 const COMPANY_NUMBER_REDIRECT: string = "Found. Redirecting to /registered-email-address/company/number";
 
@@ -33,7 +32,7 @@ describe("Index router tests -", () => {
           expect(response.text).toContain(PAGE_HEADING);
           expect(response.status).toBe(StatusCodes.OK);
           expect(getSpy).toHaveBeenCalled();
-          expect(response.text).toContain(config.CONTACT_US_URL);
+          expect(response.text).toContain("https://www.gov.uk/find-contact-details-companies-house");
           expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalledTimes(0);
         });
     });
