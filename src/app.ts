@@ -13,7 +13,6 @@ import { SessionStore } from "@companieshouse/node-session-handler";
 import Redis from "ioredis";
 import { CACHE_SERVER, COOKIE_DOMAIN, COOKIE_NAME, COOKIE_SECRET, DEFAULT_SESSION_EXPIRATION } from "./config";
 import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
-import * as config from "./config";
 
 import {
   APPLICATION_NAME,
