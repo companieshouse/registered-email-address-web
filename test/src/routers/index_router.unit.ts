@@ -32,6 +32,7 @@ describe("Index router tests -", () => {
           expect(response.text).toContain(PAGE_HEADING);
           expect(response.status).toBe(StatusCodes.OK);
           expect(getSpy).toHaveBeenCalled();
+          expect(response.text).toContain("https://www.gov.uk/find-contact-details-companies-house");
           expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalledTimes(0);
         });
     });

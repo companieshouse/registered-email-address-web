@@ -71,6 +71,7 @@ njk.addGlobal("chsUrl", CHS_URL);
 njk.addGlobal("PIWIK_URL", PIWIK_URL);
 njk.addGlobal("PIWIK_SITE_ID", PIWIK_SITE_ID);
 njk.addGlobal("SERVICE_NAME", APPLICATION_NAME);
+
 // If app is behind a front-facing proxy, and to use the X-Forwarded-* headers to determine the connection and the IP address of the client
 app.enable("trust proxy");
 
