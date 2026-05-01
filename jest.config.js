@@ -18,7 +18,7 @@ module.exports = {
   },
   globalSetup: './test/global_setup.ts',
   transformIgnorePatterns: [
-    "/node_modules/(?!.*(uuid|@companieshouse/web-security-node).*)",
+    "/node_modules/(?!.*(uuid|@companieshouse/web-security-node|chai).*)",
     "\\.pnp\\.[^\\/]+$"
   ],
 };
