@@ -45,8 +45,8 @@ module.exports = [
             "@typescript-eslint": tsPlugin || undefined
         },
         rules: {
-            indent: ["error", 2],
-            quotes: ["error", "double", { allowTemplateLiterals: true }],
+            // indent: ["error", 2],
+            // quotes: ["error", "double", { allowTemplateLiterals: true }],
             // semi: [1, "never"],
             "no-unused-vars": "off",
             "no-return-assign": "off",
@@ -54,12 +54,12 @@ module.exports = [
             camelcase: "off",
             "padded-blocks": "off",
             "prefer-promise-reject-errors": "off",
-            "no-use-before-define": "off",
-            "@typescript-eslint/no-use-before-define": ["error", {
-                functions: false,
-                classes: false,
-                variables: true
-            }]
+            // "no-use-before-define": "off",
+            // "@typescript-eslint/no-use-before-define": ["error", {
+            //     functions: false,
+            //     classes: false,
+            //     variables: true
+            // }]
         },
         files: ["**/*.ts"]
     },

@@ -29,7 +29,6 @@ company_router.get(NUMBER_URL, (req: Request, res: Response, next: NextFunction)
 // GET: /registered-email-address/company/confirm
 company_router.get(CONFIRM_URL, async (req: Request, res: Response, next: NextFunction) => {
   new ConfirmCompanyHandler().get(req, res).then((viewData) => {
-    // eslint-disable-next-line no-prototype-builtins
     res.render(`${routeViews}` + CONFIRM_URL, viewData);
   });
 });
