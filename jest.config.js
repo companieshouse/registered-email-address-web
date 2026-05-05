@@ -10,6 +10,9 @@ module.exports = {
     '/src/bin/',
   ],
   preset: 'ts-jest',
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  coverageReporters: ['text', 'lcov'],
   testMatch: [
     '**/test/src/**/*.unit.ts',
   ],
