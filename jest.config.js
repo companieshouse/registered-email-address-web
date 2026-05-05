@@ -14,14 +14,15 @@ module.exports = {
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov'],
   testMatch: [
-    '**/test/src/**/*.unit.ts',
+    '**/?(*.)+(spec|test|unit).ts?(x)',
   ],
   transform: {
-    "^.+\\.[tj]sx?$": "ts-jest"
+    '^.+\\.[tj]sx?$': 'ts-jest'
   },
   globalSetup: './test/global_setup.ts',
   transformIgnorePatterns: [
     "/node_modules/(?!.*(uuid|@companieshouse/web-security-node|chai).*)",
-    "\\.pnp\\.[^\\/]+$"
+    "\\.pnp\\.[^\\/]+$",
+    "/test/mocks/.*\\\\.js$"
   ],
 };
