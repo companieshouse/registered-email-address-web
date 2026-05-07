@@ -10,13 +10,19 @@ module.exports = {
     '/src/bin/',
   ],
   preset: 'ts-jest',
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  coverageReporters: ['text', 'lcov'],
   testMatch: [
-    '**/test/src/**/*.unit.ts',
+    '**/?(*.)+(spec|test|unit).ts?(x)',
   ],
-  globals: {
-    'ts-jest': {
-      diagnostics: true
-    }
+  transform: {
+    '^.+\\.[tj]sx?$': 'ts-jest'
   },
-  globalSetup: './test/global_setup.ts'
-}
+  globalSetup: './test/global_setup.ts',
+  transformIgnorePatterns: [
+    "/node_modules/(?!.*(uuid|@companieshouse/web-security-node|chai).*)",
+    "\\.pnp\\.[^\\/]+$",
+    "/test/mocks/.*\\\\.js$"
+  ],
+};

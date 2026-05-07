@@ -49,7 +49,6 @@ export class ConfirmCompanyHandler extends GenericHandler {
       try {
         const companyNumber: string = req.query.companyNumber?.toString() ?? "";
         companyProfile = await getCompanyProfile(companyNumber);
-        // eslint-disable-next-line no-unused-expressions
         session?.setExtraData(COMPANY_NUMBER, companyProfile.companyNumber);
         session?.setExtraData(COMPANY_PROFILE, companyProfile);
         this.buildPageOptions(session, companyProfile);
