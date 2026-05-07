@@ -1,33 +1,38 @@
 {
   "compilerOptions": {
+    "target": "ES2017",
     "module": "commonjs",
-    "strict": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
     "pretty": true,
     "sourceMap": true,
-    "inlineSources": true,
-    "allowJs": true,
     "outDir": "./dist",
     "baseUrl": "./src",
-    "removeComments": true,
-    "experimentalDecorators": true,
-    "esModuleInterop": true,
-    "target": "es6",
-    "emitDecoratorMetadata": true,
-    "moduleResolution": "node",
-    "importHelpers": true,
     "skipLibCheck": true,
-    "plugins": [
-      {
-        "name": "typescript-tslint-plugin"
-      }
-    ],
-    "paths": {
-      "app/*": ["./*"],
-      "test/*": ["../test/*"]
-    }
-  }
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictNullChecks": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  },
+  "paths": {
+    "app/*": ["./*"],
+    "test/*": ["../test/*"]
+  },
+  "ts-node": {
+    "esm": true
+  },
+  "lib": ["esnext"],
+  "include": [
+    "./src/**/*.ts",
+    "node_modules/inversify/type_definitions/inversify/inversify.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "tests",
+    "dist"
+  ]
 }
