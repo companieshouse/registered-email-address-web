@@ -203,3 +203,8 @@ Ensuring these are set correctly for your user (i.e. replace `XX` with your
 initials).
 
 Rerun `chs-dev up`
+
+## Formatting & Linting
+
+This repo uses ESLint and Prettier for code linting and formatting, and are configured to run automatically via a pre-commit hook.
+You can by-pass the pre-commit hook using the `--no-verify` option in the `git` CLI.

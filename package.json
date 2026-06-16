@@ -24,12 +24,11 @@
     "test": "jest --all",
     "start": "npm run build && node dist/server.js",
     "start:watch": "nodemon",
-    "chs-dev": "nodemon --legacy-watch"
+    "chs-dev": "nodemon --legacy-watch",
+    "prepare": "husky"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint && npm test"
-    }
+  "lint-staged": {
+    "*.{ts,json}": ["prettier --write"]
   },
   "author": "Dale Bradley <dbradley@companieshouse.gov.uk>",
   "license": "MIT",
@@ -107,6 +106,7 @@
     "gulp-clean": "^0.4.0",
     "husky": "^9.1.7",
     "jest": "^30.4.2",
+    "lint-staged": "^17.0.7",
     "nock": "14.0.15",
     "nodemon": "3.1.14",
     "nyc": "^18.0.0",
