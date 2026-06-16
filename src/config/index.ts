@@ -1,16 +1,16 @@
-import {getEnvironmentValue} from "../utils/environment/environment_value";
+import { getEnvironmentValue } from "../utils/environment/environment_value";
 
 // URL params
 export enum urlParams {
-  PARAM_COMPANY_NUMBER = "companyNumber",
-  PARAM_TRANSACTION_ID = "transactionId",
-  PARAM_SUBMISSION_ID = "submissionId",
-  PARAM_APPOINTMENT_ID = "appointmentId"
+    PARAM_COMPANY_NUMBER = "companyNumber",
+    PARAM_TRANSACTION_ID = "transactionId",
+    PARAM_SUBMISSION_ID = "submissionId",
+    PARAM_APPOINTMENT_ID = "appointmentId",
 }
 
 // Transaction statuses
 export const transactionStatuses = {
-  CLOSED: "closed"
+    CLOSED: "closed",
 };
 
 // APP CONFIGs
@@ -40,7 +40,7 @@ export const ORACLE_QUERY_API_URL = getEnvironmentValue("ORACLE_QUERY_API_URL", 
 export const WEBFILING_LOGIN_URL = getEnvironmentValue("WEBFILING_LOGIN_URL", "https://ewf.companieshouse.gov.uk/");
 
 export const FEEDBACK_LINK = "https://www.smartsurvey.co.uk/s/update-reg-email-addr-fdbck/";
-export const CONFIRMATION_FEEDBACK_LINK = 'https://www.smartsurvey.co.uk/s/update-reg-email-addr-conf/';
+export const CONFIRMATION_FEEDBACK_LINK = "https://www.smartsurvey.co.uk/s/update-reg-email-addr-conf/";
 export const DESCRIPTION = "Update Registered Email Address Transaction";
 export const REFERENCE = "UpdateRegisteredEmailAddressReference_";
 export const STATIC_SUBMISSION_ID = "72hw92jw992km90mw9002m22";
@@ -58,7 +58,6 @@ export const COMPANY_INVALID_PAGE = "invalid";
 export const SIGN_OUT_PAGE = `signout`;
 export const ACCESSIBILITY_STATEMENT_PAGE = "accessibility-statement";
 export const THERE_IS_A_PROBLEM_PAGE = "there-is-a-problem";
-
 
 // ROUTING PATHS
 export const HEALTHCHECK_URL = "/healthcheck";

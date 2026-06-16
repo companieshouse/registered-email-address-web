@@ -4,7 +4,7 @@ export const COMPANY_NUMBER: string = "companyNumber";
 export const REGISTERED_EMAIL_ADDRESS: string = "registeredEmailAddress";
 export const NEW_EMAIL_ADDRESS: string = "newEmailAddress";
 export const INVALID_COMPANY_REASON: string = "invalidCompanyReason";
-export const RETURN_URL: string = 'returnToUrl';
+export const RETURN_URL: string = "returnToUrl";
 export const SUBMISSION_ID: string = "submissionID";
 export const RETURN_TO_CONFIRMATION_STATEMENT: string = "returnToConfirmationStatement";
 export const CONFIRMATION_STATEMENT_RETURN_URL: string = "confirmationStatementReturnUrl";
@@ -20,7 +20,8 @@ export const TRANSACTION_CLOSE_ERROR: string = "Unable to close a transaction re
 export const CONFIRM_EMAIL_CHANGE_ERROR: string = "You need to accept the registered email address statement";
 export const FAILED_TO_CREATE_REA_ERROR: string = "Failed to create Registered Email Address Resource for company ";
 export const FAILED_TO_FIND_RETURN_URL_ERROR: string = "Unable to find return page";
-export const PRIVATE_API_ERROR: string = "You cannot set both api key and oauth token to create a client. Please use one or the other";
+export const PRIVATE_API_ERROR: string =
+    "You cannot set both api key and oauth token to create a client. Please use one or the other";
 
 // erroring constants
 export const UPDATE_EMAIL_ERROR_KEY: string = "changeEmailAddress";

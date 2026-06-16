@@ -4,14 +4,13 @@ jest.mock("../../../../../src/utils/common/logger");
 
 import "reflect-metadata";
 import { Request, Response } from "express";
-import { createRequest, createResponse, MockRequest, MockResponse } from 'node-mocks-http';
+import { createRequest, createResponse, MockRequest, MockResponse } from "node-mocks-http";
 import { SignOutHandler } from "../../../../../src/routers/handlers/index/signout";
 import { Session } from "@companieshouse/node-session-handler";
 import { createAndLogError } from "../../../../../src/utils/common/logger";
 import { FAILED_TO_FIND_RETURN_URL_ERROR, RETURN_URL } from "../../../../../src/constants/app_const";
 
-const TEST_BACK_LINK =  "test/any";
-
+const TEST_BACK_LINK = "test/any";
 
 // default handler instance
 let signOutHandler: SignOutHandler;
@@ -27,65 +26,60 @@ let response: MockResponse<Response>;
 
 // clone response processor
 const clone = (objectToClone: any): any => {
-  return JSON.parse(JSON.stringify(objectToClone));
+    return JSON.parse(JSON.stringify(objectToClone));
 };
 
 describe("Test ConfirmCompanyHandler", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-    signOutHandler = new SignOutHandler();
-    // session instance
-    session = new Session();
-    // mock request/responses
-    request = createRequest({
-      session: session,
-      headers : {
-        referer :  TEST_BACK_LINK
-      }
-    });    
-    response = createResponse();
-
-  });
-
-  it("GET signout page - Get signout page", async () => {
-    //set Company Profile in session
-    await signOutHandler.get(request, response).then((response) => {
-      const responseJson = JSON.parse(JSON.stringify(response));
-      expect(responseJson.backUri).toEqual(TEST_BACK_LINK);
-      expect(responseJson.signoutBanner).toBeTruthy();
-
+    beforeEach(() => {
+        jest.clearAllMocks();
+        signOutHandler = new SignOutHandler();
+        // session instance
+        session = new Session();
+        // mock request/responses
+        request = createRequest({
+            session: session,
+            headers: {
+                referer: TEST_BACK_LINK,
+            },
+        });
+        response = createResponse();
     });
-  });
 
-  it("Default signout page - no radio button selection, show noInputSelectedError ", async () => {
-    //set Company Profile in session
-    session.setExtraData(RETURN_URL, TEST_BACK_LINK);
-    await signOutHandler.default(request, response).then((response) => {
-      const responseJson = JSON.parse(JSON.stringify(response));
-      expect(responseJson.backUri).toEqual(TEST_BACK_LINK);
-      expect(responseJson.noInputSelectedError).toBeTruthy();
-      expect(responseJson.signoutBanner).toBeTruthy();
+    it("GET signout page - Get signout page", async () => {
+        //set Company Profile in session
+        await signOutHandler.get(request, response).then(response => {
+            const responseJson = JSON.parse(JSON.stringify(response));
+            expect(responseJson.backUri).toEqual(TEST_BACK_LINK);
+            expect(responseJson.signoutBanner).toBeTruthy();
+        });
     });
-  });
 
-  it("Default signout page - no radio button selection, show error ", async () => {
-    //set Company Profile in session
-    session.setExtraData(RETURN_URL, TEST_BACK_LINK);
-    await signOutHandler.default(request, response).then((response) => {
-      const responseJson = JSON.parse(JSON.stringify(response));
-      expect(responseJson.backUri).toEqual(TEST_BACK_LINK);
-      expect(responseJson.noInputSelectedError).toBeTruthy();
-      expect(responseJson.signoutBanner).toBeTruthy();
+    it("Default signout page - no radio button selection, show noInputSelectedError ", async () => {
+        //set Company Profile in session
+        session.setExtraData(RETURN_URL, TEST_BACK_LINK);
+        await signOutHandler.default(request, response).then(response => {
+            const responseJson = JSON.parse(JSON.stringify(response));
+            expect(responseJson.backUri).toEqual(TEST_BACK_LINK);
+            expect(responseJson.noInputSelectedError).toBeTruthy();
+            expect(responseJson.signoutBanner).toBeTruthy();
+        });
     });
-  });
 
-  it("Default signout page - no radio button selection, and no back link provided in session throw error ", async () => {
-    //set Company Profile in session
-    await signOutHandler.default(request, response).catch((e) => {
-      expect(e).toEqual(FAILED_TO_FIND_RETURN_URL_ERROR);
+    it("Default signout page - no radio button selection, show error ", async () => {
+        //set Company Profile in session
+        session.setExtraData(RETURN_URL, TEST_BACK_LINK);
+        await signOutHandler.default(request, response).then(response => {
+            const responseJson = JSON.parse(JSON.stringify(response));
+            expect(responseJson.backUri).toEqual(TEST_BACK_LINK);
+            expect(responseJson.noInputSelectedError).toBeTruthy();
+            expect(responseJson.signoutBanner).toBeTruthy();
+        });
     });
-  });
 
-
-
+    it("Default signout page - no radio button selection, and no back link provided in session throw error ", async () => {
+        //set Company Profile in session
+        await signOutHandler.default(request, response).catch(e => {
+            expect(e).toEqual(FAILED_TO_FIND_RETURN_URL_ERROR);
+        });
+    });
 });
