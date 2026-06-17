@@ -39,7 +39,7 @@ const EVENT = "change-email-address-event";
 
 export class ChangeEmailAddressHandler extends GenericHandler {
     constructor(
-        @inject(FormValidator) private validator: FormValidator,
+        @inject(FormValidator) private readonly validator: FormValidator,
         userEmail: string | undefined
     ) {
         super();

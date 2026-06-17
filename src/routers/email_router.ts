@@ -13,11 +13,7 @@ import {
     UPDATE_SUBMITTED,
 } from "../config";
 
-import {
-    CONFIRMATION_STATEMENT_RETURN_URL,
-    CONFIRM_EMAIL_CHANGE_ERROR,
-    RETURN_TO_CONFIRMATION_STATEMENT,
-} from "../constants/app_const";
+import { CONFIRMATION_STATEMENT_RETURN_URL, CONFIRM_EMAIL_CHANGE_ERROR } from "../constants/app_const";
 
 const email_router: Router = Router();
 const emailRouterViews: string = "router-views/email/";
