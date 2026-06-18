@@ -153,7 +153,7 @@ describe("transaction service tests", () => {
             } as Resource<CompanyProfile>);
 
             await expect(
-                putTransaction(session, COMPANY_NUMBER, DESCRIPTION, REFERENCE, "closed", OBJECT_ID)
+                putTransaction(session, COMPANY_NUMBER, TRANSACTION_ID, DESCRIPTION, "closed", OBJECT_ID)
             ).rejects.toEqual({ httpStatusCode: StatusCodes.SERVICE_UNAVAILABLE });
         });
     });
