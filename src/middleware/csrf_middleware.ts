@@ -6,24 +6,19 @@ import { StatusCodes } from "http-status-codes";
 
 const csrfErrorTemplateName = "partials/error_403";
 
-export const csrfErrorHandler = (
-  err: CsrfError | Error,
-  _: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  if (!(err instanceof CsrfError)) {
-    return next(err);
-  }
+export const csrfErrorHandler = (err: CsrfError | Error, _: Request, res: Response, next: NextFunction) => {
+    if (!(err instanceof CsrfError)) {
+        return next(err);
+    }
 
-  return res.status(StatusCodes.FORBIDDEN).render(csrfErrorTemplateName, {
-    csrfErrors: true,
-  });
+    return res.status(StatusCodes.FORBIDDEN).render(csrfErrorTemplateName, {
+        csrfErrors: true,
+    });
 };
 
-export const createCsrfProtectionMiddleware = (sessionStore: SessionStore) => 
-  CsrfProtectionMiddleware({
-    sessionStore: sessionStore,
-    enabled: true,
-    sessionCookieName: COOKIE_NAME
-  });
+export const createCsrfProtectionMiddleware = (sessionStore: SessionStore) =>
+    CsrfProtectionMiddleware({
+        sessionStore: sessionStore,
+        enabled: true,
+        sessionCookieName: COOKIE_NAME,
+    });

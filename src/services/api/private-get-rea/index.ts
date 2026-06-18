@@ -6,15 +6,14 @@ import { RequestClient, HttpClientOptions } from "@companieshouse/api-sdk-node/d
  * Creates a new API Client.
  */
 export const createPrivateApiClient = (): PrivateApiClient => {
+    // the http client adapter for the api domain
+    const apiOptions: HttpClientOptions = {
+        apiKey: CHS_INTERNAL_API_KEY,
+        baseUrl: ORACLE_QUERY_API_URL,
+        oauthToken: undefined,
+    };
+    const apiHttpClient = new RequestClient(apiOptions);
 
-  // the http client adapter for the api domain
-  const apiOptions: HttpClientOptions = {
-    apiKey: CHS_INTERNAL_API_KEY,
-    baseUrl: ORACLE_QUERY_API_URL,
-    oauthToken: undefined
-  };
-  const apiHttpClient = new RequestClient(apiOptions);
-
-  // the api client
-  return new PrivateApiClient(apiHttpClient);
+    // the api client
+    return new PrivateApiClient(apiHttpClient);
 };

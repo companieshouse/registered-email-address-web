@@ -6,25 +6,27 @@ import ValidationErrors from "../../models/validation_errors";
 
 @provide(FormValidator)
 export default class FormValidator {
+    private readonly VALIDATION_OPTIONS: ValidationOptions = {
+        abortEarly: false,
+        convert: false,
+    };
 
-  private readonly VALIDATION_OPTIONS: ValidationOptions = {
-    abortEarly: false,
-    convert: false
-  };
+    public validate(body: any, schema: AnySchema): Optional<ValidationErrors> {
+        const result: ValidationResult = schema.validate(body, this.VALIDATION_OPTIONS);
 
-  public validate (body: any, schema: AnySchema): Optional<ValidationErrors> {
-    const result: ValidationResult = schema.validate(body, this.VALIDATION_OPTIONS);
-
-    if (!result.error) {
-      return null;
+        if (!result.error) {
+            return null;
+        }
+        return this.mapJoiErrorsToValidationErrors(result.error.details);
     }
-    return this.mapJoiErrorsToValidationErrors(result.error.details);
-  }
 
-  private mapJoiErrorsToValidationErrors (errors: ValidationErrorItem[]): ValidationErrors {
-    return errors.reduce((totalErrors: ValidationErrors, error: ValidationErrorItem) => ({
-      ...totalErrors,
-      [error.path.join(".")]: error.message
-    }), {});
-  }
+    private mapJoiErrorsToValidationErrors(errors: ValidationErrorItem[]): ValidationErrors {
+        return errors.reduce(
+            (totalErrors: ValidationErrors, error: ValidationErrorItem) => ({
+                ...totalErrors,
+                [error.path.join(".")]: error.message,
+            }),
+            {}
+        );
+    }
 }

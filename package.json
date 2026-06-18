@@ -13,6 +13,8 @@
     "build": "npm run build:server",
     "lint": "eslint 'src/*.ts' 'src/**/*.ts' 'test/src/**/*.ts'",
     "lint:fix": "eslint 'src/*.ts' 'src/**/*.ts' 'test/src/**/*.ts' --fix",
+    "prettier": "prettier . --check",
+    "prettier:fix": "prettier . --write",
     "coverage": "jest --all --coverage --passWithNoTests",
     "coverage:report": "nyc --reporter=lcov --reporter=text npm run test",
     "test:coverage": "nyc npm test",
@@ -22,12 +24,11 @@
     "test": "jest --all",
     "start": "npm run build && node dist/server.js",
     "start:watch": "nodemon",
-    "chs-dev": "nodemon --legacy-watch"
+    "chs-dev": "nodemon --legacy-watch",
+    "prepare": "husky"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint && npm test"
-    }
+  "lint-staged": {
+    "*.{ts,json}": ["prettier --write"]
   },
   "author": "Dale Bradley <dbradley@companieshouse.gov.uk>",
   "license": "MIT",
@@ -75,11 +76,12 @@
     "reflect-metadata": "~0.2.2",
     "supertest": "^7.2.2",
     "ts-jest": "^29.4.11",
+    "tslib": "^2.8.1",
     "typescript-eslint": "^0.0.1-alpha.0",
-    "yargs": "18.0.0",
-    "tslib": "^2.8.1"
+    "yargs": "18.0.0"
   },
   "devDependencies": {
+    "@stylistic/eslint-plugin": "^5.10.0",
     "@types/chai": "^5.2.3",
     "@types/chai-as-promised": "8.0.2",
     "@types/cookie-parser": "^1.4.10",
@@ -93,19 +95,22 @@
     "@types/nunjucks": "3.2.6",
     "@types/sinon": "^21.0.1",
     "@types/supertest": "^7.2.0",
-    "@stylistic/eslint-plugin": "^5.10.0",
     "@typescript-eslint/eslint-plugin": "^8.60.1",
     "chai": "6.2.2",
     "chai-http": "^5.1.2",
     "cheerio": "^1.2.0",
     "eslint": "^10.4.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.6",
     "gulp": "^5.0.1",
     "gulp-clean": "^0.4.0",
     "husky": "^9.1.7",
     "jest": "^30.4.2",
+    "lint-staged": "^17.0.7",
     "nock": "14.0.15",
     "nodemon": "3.1.14",
     "nyc": "^18.0.0",
+    "prettier": "^3.8.4",
     "sinon": "21.1.2",
     "sonarqube-scanner": "^4.3.6",
     "ts-node": "10.9.2",

@@ -7,10 +7,10 @@ import email_router from "./routers/email_router";
 import healthcheck from "./routers/healthcheck";
 
 const router_dispatch = (app: Application) => {
-  app.use(config.HEALTHCHECK_URL, healthcheck);
-  app.use("/", index_router);
-  app.use(config.COMPANY_BASE_URL, company_router);
-  app.use(config.EMAIL_BASE_URL, email_router);
+    app.use(config.HEALTHCHECK_URL, healthcheck);
+    app.use("/", index_router);
+    app.use(config.COMPANY_BASE_URL, company_router);
+    app.use(config.EMAIL_BASE_URL, email_router);
 };
 
 export default router_dispatch;

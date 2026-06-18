@@ -5,16 +5,20 @@
  * @param errorMessage The message to be displayed to the user
  * @returns A validation errors object to display on the page
  */
-export function formatValidationError(errorKey: string, elementName: string, errorMessage: string): {
+export function formatValidationError(
+    errorKey: string,
+    elementName: string,
+    errorMessage: string
+): {
     [key: string]: string;
-  } & {
+} & {
     errorList: {
-      href: string,
-      text: string,
-    }[],
+        href: string;
+        text: string;
+    }[];
 } {
-  const errors = { errorList: [] } as any;
-  errors.errorList.push({ href: elementName, text: errorMessage });
-  errors[errorKey] = errorMessage;
-  return errors;
+    const errors = { errorList: [] } as any;
+    errors.errorList.push({ href: elementName, text: errorMessage });
+    errors[errorKey] = errorMessage;
+    return errors;
 }
