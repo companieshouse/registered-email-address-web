@@ -1,12 +1,12 @@
 const gulp = require("gulp");
-const clean = require("gulp-clean");
+const fs = require("node:fs");
 
 const dstDir = "./dist";
 
 // Purge 'dist' directory before building
-gulp.task("clean", () => {
-    return gulp.src([dstDir], { read: false, allowEmpty: true })
-        .pipe(clean());
+gulp.task("clean", (done) => {
+    fs.rmSync(dstDir, { recursive: true, force: true });
+    done();
 });
 
 gulp.task("serve", gulp.series("clean", () => {
