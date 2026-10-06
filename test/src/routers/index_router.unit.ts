@@ -52,6 +52,15 @@ describe("Index router tests -", () => {
         const ERROR_HEADING = "There is a problem";
         const URL = "test/return-url";
 
+        it("Should call the authentication middleware if URL is uppercase", async () => {
+            await request(app)
+                .get(SIGN_OUT_URL.toUpperCase())
+                .then(response => {
+                    expect(response.status).toBe(StatusCodes.OK);
+                    expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalledTimes(1);
+                });
+        });
+
         it("GET request to signout url", async () => {
             const getSpy = jest.spyOn(SignOutHandler.prototype, "get");
 
