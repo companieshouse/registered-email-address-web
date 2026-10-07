@@ -28,6 +28,13 @@ describe("Company router tests -", () => {
         const PAGE_TITLE = "Confirm this is the correct company – Update a registered email address – GOV.UK";
         const ERROR_PAGE_TITLE = "What is the company number? – Update a registered email address – GOV.UK";
 
+        it("Should call the authentication middleware if URL is uppercase", async () => {
+            await request(app)
+                .get(COMPANY_CONFIRM_URL.toUpperCase())
+                .then(response => {
+                    expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+                });
+        });
         it("Get Request to confirm URL should render company confirmation Page", async () => {
             const getSpy = jest.spyOn(ConfirmCompanyHandler.prototype, "get").mockResolvedValue({
                 title: "Confirm this is the correct company",

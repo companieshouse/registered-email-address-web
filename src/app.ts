@@ -4,28 +4,22 @@ import nunjucks from "nunjucks";
 import path from "path";
 import { logger } from "./utils/common/logger";
 import router_dispatch from "./router_dispatch";
-import { authentication_middleware } from "./middleware/authentication_middleware";
-import { company_authentication_middleware } from "./middleware/company_authentication_middleware";
 import cookieParser from "cookie-parser";
 import { pageNotFound } from "./utils/error/error";
 import { createEnsureSessionCookieSetMiddleware, createSessionMiddleware } from "./middleware/session_middleware";
 import { SessionStore } from "@companieshouse/node-session-handler";
 import Redis from "ioredis";
-import { CACHE_SERVER, COOKIE_DOMAIN, COOKIE_NAME, COOKIE_SECRET, DEFAULT_SESSION_EXPIRATION } from "./config";
-import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
 
 import {
+    CACHE_SERVER,
     APPLICATION_NAME,
     CDN_URL_CSS,
     CDN_URL_JS,
     CDN_HOST,
     CHS_URL,
-    COMPANY_BASE_URL,
-    EMAIL_BASE_URL,
     HOME_URL,
     PIWIK_URL,
     PIWIK_SITE_ID,
-    SIGN_OUT_URL,
 } from "./config";
 import { createCsrfProtectionMiddleware, csrfErrorHandler } from "./middleware/csrf_middleware";
 
@@ -103,15 +97,6 @@ app.use(sessionMiddleware);
 app.use(`${HOME_URL}*`, ensureSessionCookiePresentMiddleware);
 
 app.use(csrfProtectionMiddleware);
-
-// Login redirect for company and email paths and also signout page
-app.use(cookieParser());
-const userAuthRegex = new RegExp(`^((${COMPANY_BASE_URL})|(${EMAIL_BASE_URL}).+)|(${SIGN_OUT_URL})`);
-app.use(userAuthRegex, authentication_middleware);
-
-// Company Auth redirect
-const companyAuthRegex = new RegExp(`^${EMAIL_BASE_URL}/.+`);
-app.use(companyAuthRegex, company_authentication_middleware);
 
 // Channel all requests through router dispatch
 router_dispatch(app);

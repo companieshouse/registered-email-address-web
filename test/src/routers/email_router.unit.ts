@@ -37,6 +37,15 @@ describe("Email router tests", () => {
         });
 
         describe("Change email tests", () => {
+            it("Should call the authentication middleware if URL is uppercase", async () => {
+jest.spyOn(ChangeEmailAddressHandler.prototype, "get").mockResolvedValue(clone(okResponse));
+                await request(app)
+                    .get(EMAIL_CHANGE_EMAIL_ADDRESS_URL.toUpperCase())
+                    .then(response => {
+expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+                        expect(mocks.mockCompanyAuthenticationMiddleware).toHaveBeenCalled();
+                    });
+            });
             it("Should navigate to change email page", async () => {
                 const getSpy = jest
                     .spyOn(ChangeEmailAddressHandler.prototype, "get")
@@ -106,6 +115,13 @@ describe("Email router tests", () => {
             const PAGE_HEADING =
                 "Check your answer before submitting this filing – Update a registered email address – GOV.UK";
 
+            it("Should call the authentication middleware if URL is uppercase", async () => {
+                await request(app)
+                    .get(EMAIL_CHECK_ANSWER_URL.toUpperCase())
+                    .then(response => {
+                        expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+                    });
+            });
             it("Should navigate to confirm email page", async () => {
                 const getSpy = jest
                     .spyOn(CheckAnswerHandler.prototype, "get")
