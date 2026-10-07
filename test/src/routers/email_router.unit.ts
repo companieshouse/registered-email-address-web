@@ -42,7 +42,8 @@ jest.spyOn(ChangeEmailAddressHandler.prototype, "get").mockResolvedValue(clone(o
                 await request(app)
                     .get(EMAIL_CHANGE_EMAIL_ADDRESS_URL.toUpperCase())
                     .then(response => {
-                        expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+                        expect(mocks.mockCompanyAuthenticationMiddleware).toHaveBeenCalled();
                     });
             });
             it("Should navigate to change email page", async () => {
