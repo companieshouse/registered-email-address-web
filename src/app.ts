@@ -9,9 +9,9 @@ import { pageNotFound } from "./utils/error/error";
 import { createEnsureSessionCookieSetMiddleware, createSessionMiddleware } from "./middleware/session_middleware";
 import { SessionStore } from "@companieshouse/node-session-handler";
 import Redis from "ioredis";
-import { CACHE_SERVER } from "./config";
 
 import {
+    CACHE_SERVER,
     APPLICATION_NAME,
     CDN_URL_CSS,
     CDN_URL_JS,
