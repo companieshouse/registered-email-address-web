@@ -38,11 +38,11 @@ describe("Email router tests", () => {
 
         describe("Change email tests", () => {
             it("Should call the authentication middleware if URL is uppercase", async () => {
-jest.spyOn(ChangeEmailAddressHandler.prototype, "get").mockResolvedValue(clone(okResponse));
+                jest.spyOn(ChangeEmailAddressHandler.prototype, "get").mockResolvedValue(clone(okResponse));
                 await request(app)
                     .get(EMAIL_CHANGE_EMAIL_ADDRESS_URL.toUpperCase())
                     .then(response => {
-expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
+                        expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalled();
                         expect(mocks.mockCompanyAuthenticationMiddleware).toHaveBeenCalled();
                     });
             });
