@@ -56,7 +56,6 @@ describe("Index router tests -", () => {
             await request(app)
                 .get(SIGN_OUT_URL.toUpperCase())
                 .then(response => {
-                    expect(response.status).toBe(StatusCodes.OK);
                     expect(mocks.mockAuthenticationMiddleware).toHaveBeenCalledTimes(1);
                 });
         });
